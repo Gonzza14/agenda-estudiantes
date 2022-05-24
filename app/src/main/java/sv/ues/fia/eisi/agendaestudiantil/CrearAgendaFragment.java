@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import sv.ues.fia.eisi.agendaestudiantil.clases.Agenda;
+import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
+
 public class CrearAgendaFragment extends Fragment {
 
     BD helper;

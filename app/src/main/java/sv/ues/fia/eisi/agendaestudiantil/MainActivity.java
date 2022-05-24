@@ -2,14 +2,14 @@ package sv.ues.fia.eisi.agendaestudiantil;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
+
+import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         helper = new BD(this);
         if (helper.verificarExistenciaDeAgenda()) {
-            Intent inte = new Intent(this, sv.ues.fia.eisi.agendaestudiantil.Inicio.class);
+            Intent inte = new Intent(this, sv.ues.fia.eisi.agendaestudiantil.InicioActivity.class);
             startActivity(inte);
             helper.cerrar();
         }

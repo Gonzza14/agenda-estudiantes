@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_agenda">
+
+    <fragment
+        android:id="@+id/nav_agenda"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.agenda.AgendaFragment"
+        android:label="@string/agenda"
+        tools:layout="@layout/fragment_agenda" />
+
+    <fragment
+        android:id="@+id/nav_tarea"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.tarea.TareaFragment"
+        android:label="@string/tarea"
+        tools:layout="@layout/fragment_tarea" />
+
+    <fragment
+        android:id="@+id/nav_examen"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.examen.ExamenFragment"
+        android:label="@string/examen"
+        tools:layout="@layout/fragment_examen" />
+
+    <fragment
+        android:id="@+id/nav_recordatorio"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.recordatorio.RecordatorioFragment"
+        android:label="@string/examen"
+        tools:layout="@layout/fragment_recordatorio" />
+</navigation>

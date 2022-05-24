@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.agendaestudiantil;
+package sv.ues.fia.eisi.agendaestudiantil.clases;
 
 public class Horario {
     private int idHorario;

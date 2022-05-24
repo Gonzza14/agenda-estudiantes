@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.agendaestudiantil;
+package sv.ues.fia.eisi.agendaestudiantil.clases;
 
 import java.sql.Date;
 import java.sql.Time;

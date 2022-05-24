@@ -1,4 +1,4 @@
-package sv.ues.fia.eisi.agendaestudiantil;
+package sv.ues.fia.eisi.agendaestudiantil.clases;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import sv.ues.fia.eisi.agendaestudiantil.clases.Agenda;
+import sv.ues.fia.eisi.agendaestudiantil.clases.AgendaContract;
 
 public class BD {
     private static final String [] camposNotificacion = new String[]{"id_agenda", "id_dia", "con_notificacion", "hora"};

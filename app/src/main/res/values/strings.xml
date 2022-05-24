@@ -10,4 +10,22 @@
     <string name="notas">Notas</string>
     <string name="materias">Materias</string>
     <string name="profesores">Profesores</string>
+    <string name="title_activity_agenda">AgendaActivity</string>
+    <string name="tarea">Tarea</string>
+    <string name="examen">Examen</string>
+    <string name="recordatorio">Recordatorio</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_inicio">InicioActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Opciones</string>
+
+    <string name="menu_agenda">Agenda</string>
+    <string name="menu_tarea">Tarea</string>
+    <string name="menu_examen">Examen</string>
+    <string name="menu_recordatorio">Recordatorio</string>
 </resources>
