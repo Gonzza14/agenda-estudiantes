@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">AgendaEstudiantil</string>
+    <string name="bienvenida">¡Bienvenido!</string>
+    <string name="iniciar">Crear agenda</string>
+    <string name="nombreAgenda">Nombre de la agenda</string>
+    <string name="crear">Crear</string>
+    <string name="agenda">Agenda</string>
+    <string name="calendario">Calendario</string>
+    <string name="horario">Horario</string>
+    <string name="notas">Notas</string>
+    <string name="materias">Materias</string>
+    <string name="profesores">Profesores</string>
 </resources>

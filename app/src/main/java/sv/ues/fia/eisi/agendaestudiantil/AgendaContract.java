@@ -9,7 +9,6 @@ public final class AgendaContract {
     public static class Agenda implements BaseColumns{
         public static final String TABLE_NAME = "agenda";
         public static final String COLUMN_NAME = "nombre";
-        public static final String COLUMN_NOTIFICACION = "notificacion";
     }
 
     public static class Notificacion implements BaseColumns{
@@ -111,7 +110,7 @@ public final class AgendaContract {
     }
 
     public static class Archivo implements BaseColumns{
-        public static final String TABLE_NAME = "estudio";
+        public static final String TABLE_NAME = "archivo";
         public static final String COLUMN_ID_TAREA = "id_tarea";
         public static final String COLUMN_ID_PROFESOR = "id_profesor";
         public static final String COLUMN_ID_EXAMEN = "id_examen";

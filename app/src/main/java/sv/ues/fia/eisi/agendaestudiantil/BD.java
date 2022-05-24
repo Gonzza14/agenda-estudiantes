@@ -1,6 +1,8 @@
 package sv.ues.fia.eisi.agendaestudiantil;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -33,8 +35,7 @@ public class BD {
             = "CREATE TABLE "
             + AgendaContract.Agenda.TABLE_NAME + " ("
             + AgendaContract.Agenda._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + AgendaContract.Agenda.COLUMN_NAME + " TEXT(50) NOT NULL, "
-            + AgendaContract.Agenda.COLUMN_NOTIFICACION + " INTEGER DEFAULT 0)";
+            + AgendaContract.Agenda.COLUMN_NAME + " TEXT(50) NOT NULL)";
 
     private static final String SQL_DELETE_AGENDA
             = "DROP TABLE IF EXISTS " + AgendaContract.Agenda.TABLE_NAME;
@@ -226,10 +227,7 @@ public class BD {
             + AgendaContract.Archivo.COLUMN_ID_PROFESOR+ " INTEGER NOT NULL, "
             + AgendaContract.Archivo.COLUMN_ID_EXAMEN + " INTEGER NOT NULL, "
             + AgendaContract.Archivo.COLUMN_NAME + " TEXT(250) NOT NULL, "
-            + AgendaContract.Archivo.COLUMN_EXTENSION + " TEXT(250) NOT NULL, "
-            + AgendaContract.Archivo.COLUMN_ARCHIVO + " BLOB NOT NULL, "
-            + AgendaContract.Archivo.COLUMN_TAMANIO + " INTEGER NOT NULL, "
-            + AgendaContract.Archivo.COLUMN_TIPO_ARCHIVO + " TEXT(250) NOT NULL, FOREIGN KEY ( "
+            + AgendaContract.Archivo.COLUMN_ARCHIVO + " TEXT NOT NULL, FOREIGN KEY ( "
             + AgendaContract.Archivo.COLUMN_ID_TAREA+ " ) REFERENCES "
             + AgendaContract.Tarea.TABLE_NAME + " ("
             + AgendaContract.Tarea._ID + ") ON DELETE CASCADE, FOREIGN KEY ( "
@@ -267,8 +265,8 @@ public class BD {
                 bD.execSQL(SQL_CREATE_EXAMEN);
                 bD.execSQL(SQL_CREATE_PERIODO);
                 bD.execSQL(SQL_CREATE_NOTA_EXAMEN);
-                bD.execSQL(SQL_CREATE_ESTUDIO);
                 bD.execSQL(SQL_CREATE_ARCHIVO);
+                bD.execSQL(SQL_CREATE_ESTUDIO);
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -286,8 +284,8 @@ public class BD {
             bD.execSQL(SQL_DELETE_EXAMEN);
             bD.execSQL(SQL_DELETE_PERIODO);
             bD.execSQL(SQL_DELETE_NOTA_EXAMEN);
-            bD.execSQL(SQL_DELETE_ESTUDIO);
             bD.execSQL(SQL_DELETE_ARCHIVO);
+            bD.execSQL(SQL_DELETE_ESTUDIO);
             onCreate(bD);
         }
         public void onDowngrade(SQLiteDatabase bD, int oldVersion, int newVersion) {
@@ -296,11 +294,40 @@ public class BD {
     }
 
     public void abrir() throws SQLException{
-        bD = bDHelper.getReadableDatabase();
+        bD = bDHelper.getWritableDatabase();
         return;
     }
 
     public void cerrar(){
         bDHelper.close();
+    }
+
+    public String insertar(Agenda agenda){
+        String mensaje = "Agenda guardada";
+        long nuevaFilaId = 0;
+
+        ContentValues agendas = new ContentValues();
+        agendas.put(AgendaContract.Agenda.COLUMN_NAME, agenda.getNombreAgenda());
+
+        nuevaFilaId = bD.insert(AgendaContract.Agenda.TABLE_NAME,null,agendas);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar la agenda";
+        return mensaje;
+    }
+
+    public Boolean verificarExistenciaDeAgenda(){
+        try
+        {
+            bD = bDHelper.getReadableDatabase();
+            Cursor filas = bD.rawQuery("SELECT * FROM agenda", null);
+            if (filas.moveToFirst()){
+                return true;
+            }else {
+                return false;
+            }
+        }catch (Exception ex){
+            return false;
+        }
     }
 }
