@@ -9,23 +9,107 @@
         android:id="@+id/nav_agenda"
         android:name="sv.ues.fia.eisi.agendaestudiantil.ui.agenda.AgendaFragment"
         android:label="@string/agenda"
-        tools:layout="@layout/fragment_agenda" />
+        tools:layout="@layout/fragment_agenda" >
+        <action
+            android:id="@+id/action_nav_agenda_to_nav_tarea"
+            app:destination="@id/nav_tarea" />
+        <action
+            android:id="@+id/action_nav_agenda_to_nav_examen"
+            app:destination="@id/nav_examen" />
+        <action
+            android:id="@+id/action_nav_agenda_to_nav_recordatorio"
+            app:destination="@id/nav_recordatorio" />
+        <action
+            android:id="@+id/action_nav_agenda_to_nav_profesor"
+            app:destination="@id/nav_profesor" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_tarea"
         android:name="sv.ues.fia.eisi.agendaestudiantil.ui.tarea.TareaFragment"
         android:label="@string/tarea"
-        tools:layout="@layout/fragment_tarea" />
+        tools:layout="@layout/fragment_tarea" >
+        <action
+            android:id="@+id/action_nav_tarea_to_nav_agenda"
+            app:destination="@id/nav_agenda" />
+        <action
+            android:id="@+id/action_nav_tarea_to_nav_examen"
+            app:destination="@id/nav_examen" />
+        <action
+            android:id="@+id/action_nav_tarea_to_nav_recordatorio"
+            app:destination="@id/nav_recordatorio" />
+        <action
+            android:id="@+id/action_nav_tarea_to_nav_profesor"
+            app:destination="@id/nav_profesor" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_examen"
         android:name="sv.ues.fia.eisi.agendaestudiantil.ui.examen.ExamenFragment"
         android:label="@string/examen"
-        tools:layout="@layout/fragment_examen" />
+        tools:layout="@layout/fragment_examen" >
+        <action
+            android:id="@+id/action_nav_examen_to_nav_tarea"
+            app:destination="@id/nav_tarea" />
+        <action
+            android:id="@+id/action_nav_examen_to_nav_recordatorio"
+            app:destination="@id/nav_recordatorio" />
+        <action
+            android:id="@+id/action_nav_examen_to_nav_profesor"
+            app:destination="@id/nav_profesor" />
+        <action
+            android:id="@+id/action_nav_examen_to_nav_agenda"
+            app:destination="@id/nav_agenda" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_recordatorio"
         android:name="sv.ues.fia.eisi.agendaestudiantil.ui.recordatorio.RecordatorioFragment"
-        android:label="@string/examen"
-        tools:layout="@layout/fragment_recordatorio" />
+        android:label="@string/recordatorio"
+        tools:layout="@layout/fragment_recordatorio" >
+        <action
+            android:id="@+id/action_nav_recordatorio_to_nav_agenda"
+            app:destination="@id/nav_agenda" />
+        <action
+            android:id="@+id/action_nav_recordatorio_to_nav_tarea"
+            app:destination="@id/nav_tarea" />
+        <action
+            android:id="@+id/action_nav_recordatorio_to_nav_examen"
+            app:destination="@id/nav_examen" />
+        <action
+            android:id="@+id/action_nav_recordatorio_to_nav_profesor"
+            app:destination="@id/nav_profesor" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_profesor"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorFragment"
+        android:label="@string/profesores"
+        tools:layout="@layout/fragment_profesor" >
+        <action
+            android:id="@+id/action_nav_profesor_to_nav_agregar_profesor"
+            app:destination="@id/nav_agregar_profesor" />
+        <action
+            android:id="@+id/action_nav_profesor_to_nav_agenda"
+            app:destination="@id/nav_agenda" />
+        <action
+            android:id="@+id/action_nav_profesor_to_nav_examen"
+            app:destination="@id/nav_examen" />
+        <action
+            android:id="@+id/action_nav_profesor_to_nav_recordatorio"
+            app:destination="@id/nav_recordatorio" />
+        <action
+            android:id="@+id/action_nav_profesor_to_nav_tarea"
+            app:destination="@id/nav_tarea" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_agregar_profesor"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.profesor.AgregarProfesorFragment"
+        android:label="@string/agregar_profesores"
+        tools:layout="@layout/fragment_agregar_profesor" >
+        <action
+            android:id="@+id/action_nav_agregar_profesor_to_nav_profesor"
+            app:destination="@id/nav_profesor" />
+    </fragment>
 </navigation>

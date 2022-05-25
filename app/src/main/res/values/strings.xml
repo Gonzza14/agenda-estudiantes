@@ -24,8 +24,5 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Opciones</string>
 
-    <string name="menu_agenda">Agenda</string>
-    <string name="menu_tarea">Tarea</string>
-    <string name="menu_examen">Examen</string>
-    <string name="menu_recordatorio">Recordatorio</string>
+    <string name="agregar_profesores">Agregar profesor</string>
 </resources>
