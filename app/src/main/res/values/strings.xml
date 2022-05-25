@@ -14,7 +14,7 @@
     <string name="tarea">Tarea</string>
     <string name="examen">Examen</string>
     <string name="recordatorio">Recordatorio</string>
-    <!-- TODO: Remove or change this placeholder text -->
+>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_inicio">InicioActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -25,4 +25,10 @@
     <string name="action_settings">Opciones</string>
 
     <string name="agregar_profesores">Agregar profesor</string>
+    <string name="datos">Datos</string>
+    <string name="nombre_hint">Nombre del profesor</string>
+    <string name="apellido_hint">Apellido del profesor</string>
+    <string name="telefono">Telefono</string>
+    <string name="correo">Correo</string>
+    <string name="guardar">Guardar</string>
 </resources>

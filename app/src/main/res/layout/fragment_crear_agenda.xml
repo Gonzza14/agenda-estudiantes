@@ -6,7 +6,7 @@
     tools:context=".CrearAgendaFragment">
 
     <EditText
-        android:id="@+id/txtNombre"
+        android:id="@+id/lblNombre"
         android:layout_width="269dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

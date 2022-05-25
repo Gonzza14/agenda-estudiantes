@@ -31,7 +31,7 @@ public class CrearAgendaFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_crear_agenda, container, false);
         helper = new BD(vista.getContext());
-        txtNombre = (EditText) vista.findViewById(R.id.txtNombre);
+        txtNombre = (EditText) vista.findViewById(R.id.lblNombre);
         btnCrear = (Button) vista.findViewById(R.id.btnCrear);
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
