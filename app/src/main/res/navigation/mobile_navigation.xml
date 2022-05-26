@@ -124,6 +124,19 @@
         <action
             android:id="@+id/action_nav_ver_profesor_to_nav_profesor"
             app:destination="@id/nav_profesor" />
+        <action
+            android:id="@+id/action_nav_ver_profesor_to_nav_editar_profesor"
+            app:destination="@id/nav_editar_profesor" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_editar_profesor"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.profesor.EditarProfesorFragment"
+        android:label="@string/editar_profesor"
+        tools:layout="@layout/fragment_editar_profesor" >
+        <action
+            android:id="@+id/action_nav_editar_profesor_to_nav_ver_profesor"
+            app:destination="@id/nav_ver_profesor" />
     </fragment>
 
 </navigation>

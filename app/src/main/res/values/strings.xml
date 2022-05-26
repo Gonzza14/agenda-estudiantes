@@ -26,6 +26,7 @@
 
     <string name="agregar_profesores">Agregar profesor</string>
     <string name="ver_profesor">Detalle profesor</string>
+    <string name="editar_profesor">Editar profesor</string>
     <string name="datos">Datos</string>
     <string name="nombre_hint">Nombre del profesor</string>
     <string name="apellido_hint">Apellido del profesor</string>

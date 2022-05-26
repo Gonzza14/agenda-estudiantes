@@ -39,6 +39,7 @@ public final class AgendaContract {
     public static class Materia implements BaseColumns{
         public static final String TABLE_NAME = "materia";
         public static final String COLUMN_ID_PROFESOR = "id_profesor";
+        public static final String COLUMN_ID_PERIODO = "id_periodo";
         public static final String COLUMN_NAME = "nombre";
         public static final String COLUMN_AULA = "aula";
     }

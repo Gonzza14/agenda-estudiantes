@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,27 +20,23 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import sv.ues.fia.eisi.agendaestudiantil.InicioActivity;
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
-import sv.ues.fia.eisi.agendaestudiantil.ui.agenda.AgendaViewModel;
 
+public class EditarProfesorFragment extends Fragment {
 
-public class AgregarProfesorFragment extends Fragment {
-
-    Context applicactionContext = InicioActivity.getContextOfApplicaction();
     private CircleImageView imgProfesor;
     private EditText txtNombre, txtApellido, txtTelefono, txtCorreo;
     private FloatingActionButton btnGuardar;
@@ -50,17 +45,16 @@ public class AgregarProfesorFragment extends Fragment {
     private static final int CAMERA_REQUEST_CODE = 100;
     private static final int STORAGE_REQUEST_CODE = 101;
 
-    /*private static final int IMAGE_PICK_CAMERA_CODE = 102;
-    private static final int IMAGE_PICK_GALLERY_CODE = 103;*/
-
     private String[] cameraPermissions;
     private String[] storagePermissions;
 
     private Uri imageUri;
 
+    private int id = 0;
+
     private BD helper;
 
-    public AgregarProfesorFragment() {
+    public EditarProfesorFragment() {
         // Required empty public constructor
     }
 
@@ -84,7 +78,8 @@ public class AgregarProfesorFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         profesor = new ViewModelProvider(this).get(ProfesorViewModel.class);
-        return inflater.inflate(R.layout.fragment_agregar_profesor, container, false);
+
+        return inflater.inflate(R.layout.fragment_editar_profesor, container, false);
     }
 
     @Override
@@ -106,34 +101,35 @@ public class AgregarProfesorFragment extends Fragment {
         txtTelefono = (EditText) view.findViewById(R.id.txtTelefono);
         txtCorreo = (EditText) view.findViewById(R.id.txtCorreo);
 
+        id = (int) getArguments().getInt("ID");
+        profesor = helper.verProfesor(id);
+
+        if (profesor != null){
+            txtNombre.setText(profesor.getNombreProfesor());
+            txtApellido.setText(profesor.getApellidoProfesor());
+            txtTelefono.setText(profesor.getTelefonoProfesor());
+            txtCorreo.setText(profesor.getCorreoProfesor());
+            imageUri = Uri.parse(profesor.getImagenProfesor());
+            imgProfesor.setImageURI(Uri.parse(profesor.getImagenProfesor()));
+        }
+
         btnGuardar = (FloatingActionButton) view.findViewById(R.id.btnGuardarProfesor);
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String nombreProfesor = txtNombre.getText().toString();
-                String apellidoProfesor = txtApellido.getText().toString();
-                String telefonoProfesor = txtTelefono.getText().toString();
-                String correoProfesor = txtCorreo.getText().toString();
-                String imagenProfesor = imageUri.toString();
-
-                String mensaje;
-
-                profesor.setNombreProfesor(nombreProfesor);
-                profesor.setApellidoProfesor(apellidoProfesor);
-                profesor.setTelefonoProfesor(telefonoProfesor);
-                profesor.setCorreoProfesor(correoProfesor);
-                profesor.setImagenProfesor(imagenProfesor);
+                profesor.setNombreProfesor(txtNombre.getText().toString());
+                profesor.setApellidoProfesor(txtApellido.getText().toString());
+                profesor.setTelefonoProfesor(txtTelefono.getText().toString());
+                profesor.setCorreoProfesor(txtCorreo.getText().toString());
+                profesor.setImagenProfesor(imageUri.toString());
 
                 helper.abrir();
-                mensaje = helper.insertar(profesor);
+                String estado = helper.actualizar(profesor);
                 helper.cerrar();
-                Toast.makeText(getActivity().getApplicationContext(),mensaje,Toast.LENGTH_SHORT).show();
 
-                txtNombre.setText("");
-                txtApellido.setText("");
-                txtTelefono.setText("");
-                txtCorreo.setText("");
-                imgProfesor.setImageResource(android.R.color.transparent);
+                Toast.makeText(view.getContext(),estado,Toast.LENGTH_SHORT).show();
+
+                Navigation.findNavController(view).popBackStack();
             }
         });
 
@@ -227,17 +223,17 @@ public class AgregarProfesorFragment extends Fragment {
                     new ActivityCompat.OnRequestPermissionsResultCallback() {
                         @Override
                         public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-                                if (requestCode == CAMERA_REQUEST_CODE){
-                                    if (grantResults.length>0){
-                                        boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                                        boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                            if (requestCode == CAMERA_REQUEST_CODE){
+                                if (grantResults.length>0){
+                                    boolean cameraAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                                    boolean storageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
 
-                                        if (cameraAccepted && storageAccepted)
-                                            pickFromCamera();
-                                        else
-                                            Toast.makeText(getContext(), "Se requieren permisos de camara y almacenamiento", Toast.LENGTH_SHORT);
-                                    }
+                                    if (cameraAccepted && storageAccepted)
+                                        pickFromCamera();
+                                    else
+                                        Toast.makeText(getContext(), "Se requieren permisos de camara y almacenamiento", Toast.LENGTH_SHORT);
                                 }
+                            }
                         }
                     };
                 }
@@ -261,4 +257,5 @@ public class AgregarProfesorFragment extends Fragment {
     private void requestStoragePermission(){
         ActivityCompat.requestPermissions(getActivity(),storagePermissions, STORAGE_REQUEST_CODE);
     }
+
 }

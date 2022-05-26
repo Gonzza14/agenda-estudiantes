@@ -24,9 +24,11 @@
         <entry key="app/src/main/res/layout/fragment_agregar_profesor.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.3541666666666667" />
         <entry key="app/src/main/res/layout/fragment_crear_agenda.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_editar_profesor.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_examen.xml" value="0.27717391304347827" />
         <entry key="app/src/main/res/layout/fragment_gallery.xml" value="0.3541666666666667" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_materia.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_profesor.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_recordatorio.xml" value="0.3541666666666667" />
         <entry key="app/src/main/res/layout/fragment_scrolling.xml" value="0.1" />

@@ -94,11 +94,15 @@ public class BD {
             + AgendaContract.Materia.TABLE_NAME + " ("
             + AgendaContract.Materia._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + AgendaContract.Materia.COLUMN_ID_PROFESOR + " INTEGER NOT NULL, "
+            + AgendaContract.Materia.COLUMN_ID_PERIODO + " INTEGER NOT NULL, "
             + AgendaContract.Materia.COLUMN_NAME + " TEXT(50) NOT NULL, "
             + AgendaContract.Materia.COLUMN_AULA + " TEXT(20), FOREIGN KEY ( "
             + AgendaContract.Materia.COLUMN_ID_PROFESOR + " ) REFERENCES "
             + AgendaContract.Profesor.TABLE_NAME + " ("
-            + AgendaContract.Profesor._ID + ") ON DELETE RESTRICT)";
+            + AgendaContract.Profesor._ID + ") ON DELETE RESTRICT, FOREIGN KEY ( "
+            + AgendaContract.Materia.COLUMN_ID_PERIODO + " ) REFERENCES "
+            + AgendaContract.Periodo.TABLE_NAME + " ("
+            + AgendaContract.Periodo._ID + ") ON DELETE RESTRICT)";
 
     private static final String SQL_DELETE_MATERIA
             = "DROP TABLE IF EXISTS " + AgendaContract.Materia.TABLE_NAME;
@@ -403,4 +407,30 @@ public class BD {
 
         return profesor;
     }
+
+    public String actualizar(ProfesorViewModel profesor){
+        String[] id = {String.valueOf(profesor.getIdProfesor())};
+        ContentValues profesores = new ContentValues();
+
+        profesores.put(AgendaContract.Profesor.COLUMN_NAME, profesor.getNombreProfesor());
+        profesores.put(AgendaContract.Profesor.COLUMN_APELLIDO, profesor.getApellidoProfesor());
+        profesores.put(AgendaContract.Profesor.COLUMN_TELEFONO, profesor.getTelefonoProfesor());
+        profesores.put(AgendaContract.Profesor.COLUMN_CORREO, profesor.getCorreoProfesor());
+        profesores.put(AgendaContract.Profesor.COLUMN_IMAGEN, profesor.getImagenProfesor());
+
+        bD.update(AgendaContract.Profesor.TABLE_NAME, profesores, AgendaContract.Profesor._ID + " = ?", id);
+
+        return "Profesor actualizado correctamente";
+    }
+
+
+    public String eliminar(ProfesorViewModel profesor){
+        String mensaje = "Profesor eliminado";
+        long contador = 0;
+
+        String[] id = {String.valueOf(profesor.getIdProfesor())};
+        bD.delete(AgendaContract.Profesor.TABLE_NAME, AgendaContract.Profesor._ID + " = ?", id);
+        return mensaje;
+    }
+
 }

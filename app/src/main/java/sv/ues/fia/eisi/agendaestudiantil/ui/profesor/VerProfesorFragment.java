@@ -5,12 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -54,6 +57,7 @@ public class VerProfesorFragment extends Fragment {
         lblTelefonoView = view.findViewById(R.id.lblTelefonoView);
         lblCorreoView = view.findViewById(R.id.lblCorreoView);
         FloatingActionButton fab = binding.btnEditarProfesor;
+        FloatingActionButton btnEliminarProfesor = binding.btnEliminarProfesor;
         id = (int) getArguments().getInt("ID");
         profesor = helper.verProfesor(id);
 
@@ -67,8 +71,26 @@ public class VerProfesorFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Bundle bundle = new Bundle();
+                bundle.putInt("ID", id);
+                Navigation.findNavController(view).navigate(R.id.nav_editar_profesor, bundle);
+            }
+        });
+
+        btnEliminarProfesor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mensaje;
+                ProfesorViewModel profesor = new ProfesorViewModel();
+                profesor.setIdProfesor(id);
+
+                helper.abrir();
+                mensaje = helper.eliminar(profesor);
+                helper.cerrar();
+
+                Toast.makeText(view.getContext(),mensaje, Toast.LENGTH_SHORT).show();
+
+                Navigation.findNavController(view).popBackStack();
             }
         });
     }
