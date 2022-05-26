@@ -3,10 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="sv.ues.fia.eisi.agendaestudiantil" >
 
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28"/>
-
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
         android:allowBackup="true"
@@ -22,7 +23,7 @@
             android:name=".InicioActivity"
             android:exported="false"
             android:label="@string/title_activity_inicio"
-            android:theme="@style/Theme.AgendaEstudiantil.NoActionBar" />
+            android:theme="@style/Theme.AgendaEstudiantil.ActionBar" />
         <activity
             android:name=".MainActivity"
             android:exported="true" >
@@ -32,9 +33,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.canhub.cropper.CropImageView"
-            android:theme="@style/Base.Theme.AppCompat"/> <!-- optional (needed if default theme has no action bar) -->
     </application>
 
 </manifest>

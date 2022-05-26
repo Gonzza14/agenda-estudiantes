@@ -7,6 +7,8 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.util.ArrayList;
+
 import sv.ues.fia.eisi.agendaestudiantil.clases.Agenda;
 import sv.ues.fia.eisi.agendaestudiantil.clases.AgendaContract;
 import sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorViewModel;
@@ -352,5 +354,53 @@ public class BD {
         if (nuevaFilaId == -1 || nuevaFilaId == 0)
             mensaje = "Error al insertar el profesor";
         return mensaje;
+    }
+
+    public ArrayList<ProfesorViewModel> mostrarProfesores(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<ProfesorViewModel> listaProfesores = new ArrayList<>();
+        ProfesorViewModel profesor = null;
+        Cursor cursorProfesores = null;
+
+        cursorProfesores = bD.rawQuery("SELECT * FROM " + AgendaContract.Profesor.TABLE_NAME + " ORDER BY " + AgendaContract.Profesor.COLUMN_NAME + " ASC ", null);
+
+        if (cursorProfesores.moveToFirst()){
+            do {
+                profesor = new ProfesorViewModel();
+                profesor.setIdProfesor(cursorProfesores.getInt(0));
+                profesor.setNombreProfesor(cursorProfesores.getString(1));
+                profesor.setApellidoProfesor(cursorProfesores.getString(2));
+                profesor.setTelefonoProfesor(cursorProfesores.getString(3));
+                profesor.setCorreoProfesor(cursorProfesores.getString(4));
+                profesor.setImagenProfesor(cursorProfesores.getString(5));
+                listaProfesores.add(profesor);
+            }while (cursorProfesores.moveToNext());
+        }
+        cursorProfesores.close();
+
+        return listaProfesores;
+    }
+
+    public ProfesorViewModel verProfesor(int id){
+        bD = bDHelper.getWritableDatabase();
+
+        ProfesorViewModel profesor = null;
+        Cursor cursorProfesores = null;
+
+        cursorProfesores = bD.rawQuery("SELECT * FROM " + AgendaContract.Profesor.TABLE_NAME + " WHERE " + AgendaContract.Profesor._ID  + " = " + id + " LIMIT 1", null);
+
+        if (cursorProfesores.moveToFirst()){
+                profesor = new ProfesorViewModel();
+                profesor.setIdProfesor(cursorProfesores.getInt(0));
+                profesor.setNombreProfesor(cursorProfesores.getString(1));
+                profesor.setApellidoProfesor(cursorProfesores.getString(2));
+                profesor.setTelefonoProfesor(cursorProfesores.getString(3));
+                profesor.setCorreoProfesor(cursorProfesores.getString(4));
+                profesor.setImagenProfesor(cursorProfesores.getString(5));
+        }
+        cursorProfesores.close();
+
+        return profesor;
     }
 }

@@ -101,6 +101,9 @@
         <action
             android:id="@+id/action_nav_profesor_to_nav_tarea"
             app:destination="@id/nav_tarea" />
+        <action
+            android:id="@+id/action_nav_profesor_to_nav_ver_profesor"
+            app:destination="@id/nav_ver_profesor" />
     </fragment>
 
     <fragment
@@ -112,4 +115,15 @@
             android:id="@+id/action_nav_agregar_profesor_to_nav_profesor"
             app:destination="@id/nav_profesor" />
     </fragment>
+
+    <fragment
+        android:id="@+id/nav_ver_profesor"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.profesor.VerProfesorFragment"
+        android:label="@string/ver_profesor"
+        tools:layout="@layout/fragment_ver_profesor" >
+        <action
+            android:id="@+id/action_nav_ver_profesor_to_nav_profesor"
+            app:destination="@id/nav_profesor" />
+    </fragment>
+
 </navigation>
