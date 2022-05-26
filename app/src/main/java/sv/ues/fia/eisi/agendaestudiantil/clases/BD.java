@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import sv.ues.fia.eisi.agendaestudiantil.clases.Agenda;
 import sv.ues.fia.eisi.agendaestudiantil.clases.AgendaContract;
+import sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorViewModel;
 
 public class BD {
     private static final String [] camposNotificacion = new String[]{"id_agenda", "id_dia", "con_notificacion", "hora"};
@@ -79,8 +80,9 @@ public class BD {
             + AgendaContract.Profesor._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + AgendaContract.Profesor.COLUMN_NAME + " TEXT(50) NOT NULL, "
             + AgendaContract.Profesor.COLUMN_APELLIDO + " TEXT(50) NOT NULL, "
-            + AgendaContract.Profesor.COLUMN_TELEFONO + " NUMERIC(9), "
-            + AgendaContract.Profesor.COLUMN_CORREO + " TEXT(50))";
+            + AgendaContract.Profesor.COLUMN_TELEFONO + " TEXT(9), "
+            + AgendaContract.Profesor.COLUMN_CORREO + " TEXT(50), "
+            + AgendaContract.Profesor.COLUMN_IMAGEN + " TEXT)";
 
     private static final String SQL_DELETE_PROFESOR
             = "DROP TABLE IF EXISTS " + AgendaContract.Profesor.TABLE_NAME;
@@ -332,5 +334,23 @@ public class BD {
         }catch (Exception ex){
             return false;
         }
+    }
+
+    public String insertar(ProfesorViewModel profesor){
+        String mensaje = "Profesor guardado";
+        long nuevaFilaId = 0;
+
+        ContentValues profesores = new ContentValues();
+        profesores.put(AgendaContract.Profesor.COLUMN_NAME, profesor.getNombreProfesor());
+        profesores.put(AgendaContract.Profesor.COLUMN_APELLIDO, profesor.getApellidoProfesor());
+        profesores.put(AgendaContract.Profesor.COLUMN_TELEFONO, profesor.getTelefonoProfesor());
+        profesores.put(AgendaContract.Profesor.COLUMN_CORREO, profesor.getCorreoProfesor());
+        profesores.put(AgendaContract.Profesor.COLUMN_IMAGEN, profesor.getImagenProfesor());
+
+        nuevaFilaId = bD.insert(AgendaContract.Profesor.TABLE_NAME,null,profesores);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar el profesor";
+        return mensaje;
     }
 }

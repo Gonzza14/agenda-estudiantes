@@ -8,16 +8,18 @@ public class ProfesorViewModel extends ViewModel {
     private String apellidoProfesor;
     private String telefonoProfesor;
     private String correoProfesor;
+    private String imagenProfesor;
 
     public ProfesorViewModel() {
     }
 
-    public ProfesorViewModel(int idProfesor, String nombreProfesor, String apellidoProfesor, String telefonoProfesor, String correoProfesor) {
+    public ProfesorViewModel(int idProfesor, String nombreProfesor, String apellidoProfesor, String telefonoProfesor, String correoProfesor, String imagenProfesor) {
         this.idProfesor = idProfesor;
         this.nombreProfesor = nombreProfesor;
         this.apellidoProfesor = apellidoProfesor;
         this.telefonoProfesor = telefonoProfesor;
         this.correoProfesor = correoProfesor;
+        this.imagenProfesor = imagenProfesor;
     }
 
     public int getIdProfesor() {
@@ -58,5 +60,13 @@ public class ProfesorViewModel extends ViewModel {
 
     public void setCorreoProfesor(String correoProfesor) {
         this.correoProfesor = correoProfesor;
+    }
+
+    public String getImagenProfesor() {
+        return imagenProfesor;
+    }
+
+    public void setImagenProfesor(String imagenProfesor) {
+        this.imagenProfesor = imagenProfesor;
     }
 }

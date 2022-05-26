@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.agendaestudiantil;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
@@ -18,6 +19,11 @@ import sv.ues.fia.eisi.agendaestudiantil.databinding.ActivityInicioBinding;
 
 public class InicioActivity extends AppCompatActivity {
 
+    public static Context contextOfApplicaction;
+    public static Context getContextOfApplicaction(){
+        return contextOfApplicaction;
+    }
+
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityInicioBinding binding;
 
@@ -25,6 +31,7 @@ public class InicioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        contextOfApplicaction = getApplicationContext();
         binding = ActivityInicioBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 

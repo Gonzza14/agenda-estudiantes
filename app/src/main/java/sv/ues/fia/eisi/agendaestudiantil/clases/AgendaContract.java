@@ -32,6 +32,8 @@ public final class AgendaContract {
         public static final String COLUMN_APELLIDO = "apellido";
         public static final String COLUMN_TELEFONO = "telefono";
         public static final String COLUMN_CORREO = "correo";
+        public static final String COLUMN_IMAGEN = "imagen";
+
     }
 
     public static class Materia implements BaseColumns{
