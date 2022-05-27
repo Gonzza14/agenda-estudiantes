@@ -2,7 +2,11 @@ package sv.ues.fia.eisi.agendaestudiantil.ui.periodo;
 
 import androidx.lifecycle.ViewModel;
 
-import java.sql.Date;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Comparator;
 
 public class PeriodoViewModel extends ViewModel {
     private int idPeriodo;
@@ -20,6 +24,27 @@ public class PeriodoViewModel extends ViewModel {
         this.inicioPeriodo = inicioPeriodo;
         this.finPeriodo = finPeriodo;
     }
+
+    public static Comparator<PeriodoViewModel> dateComparator = new Comparator<PeriodoViewModel>() {
+        DateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        int result = 0;
+        Date fecha1;
+        Date fecha2;
+        @Override
+        public int compare(PeriodoViewModel p1, PeriodoViewModel p2) {
+            try {
+                fecha1 = f.parse(p1.getInicioPeriodo());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            try {
+                fecha2 = f.parse(p2.getInicioPeriodo());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return fecha1.compareTo(fecha2);
+        }
+    };
 
     public int getIdPeriodo() {
         return idPeriodo;

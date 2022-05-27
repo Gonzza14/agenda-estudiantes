@@ -16,14 +16,15 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginRight="16dp"
-            android:textSize="18sp"></TextView>
+            android:textSize="18sp"
+            android:textColor="@color/black"></TextView>
 
         <TextView
             android:id="@+id/lblFechaView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="2dp"
             android:layout_marginRight="16dp"
             android:textSize="18sp"></TextView>
     </LinearLayout>

@@ -428,6 +428,7 @@ public class BD {
             }while (cursorPeriodos.moveToNext());
         }
         cursorPeriodos.close();
+        bDHelper.close();
         return listaPeriodos;
     }
 
@@ -453,6 +454,26 @@ public class BD {
         return profesor;
     }
 
+    public PeriodoViewModel verPeriodo(int id){
+        bD = bDHelper.getWritableDatabase();
+
+        PeriodoViewModel periodo = null;
+        Cursor cursorPeriodos = null;
+
+        cursorPeriodos = bD.rawQuery("SELECT * FROM " + AgendaContract.Periodo.TABLE_NAME + " WHERE " + AgendaContract.Periodo._ID  + " = " + id + " LIMIT 1", null);
+
+        if (cursorPeriodos.moveToFirst()){
+                periodo = new PeriodoViewModel();
+                periodo.setIdPeriodo(cursorPeriodos.getInt(0));
+                periodo.setTituloPeriodo(cursorPeriodos.getString(1));
+                periodo.setInicioPeriodo((cursorPeriodos.getString(2)));
+                periodo.setFinPeriodo((cursorPeriodos.getString(3)));
+        }
+        cursorPeriodos.close();
+
+        return periodo;
+    }
+
     public String actualizar(ProfesorViewModel profesor){
         String[] id = {String.valueOf(profesor.getIdProfesor())};
         ContentValues profesores = new ContentValues();
@@ -466,6 +487,19 @@ public class BD {
         bD.update(AgendaContract.Profesor.TABLE_NAME, profesores, AgendaContract.Profesor._ID + " = ?", id);
 
         return "Profesor actualizado correctamente";
+    }
+
+    public String actualizar(PeriodoViewModel periodo){
+        String[] id = {String.valueOf(periodo.getIdPeriodo())};
+        ContentValues periodos = new ContentValues();
+
+        periodos.put(AgendaContract.Periodo.COLUMN_TITULO, periodo.getTituloPeriodo());
+        periodos.put(AgendaContract.Periodo.COLUMN_INICIO, periodo.getInicioPeriodo());
+        periodos.put(AgendaContract.Periodo.COLUMN_FIN, periodo.getFinPeriodo());
+
+        bD.update(AgendaContract.Periodo.TABLE_NAME, periodos, AgendaContract.Periodo._ID + " = ?", id);
+
+        return "Periodo actualizado correctamente";
     }
 
 
