@@ -24,5 +24,10 @@
             android:id="@+id/nav_profesor"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/profesores" />
+
+        <item
+            android:id="@+id/nav_periodo"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/periodo" />
     </group>
 </menu>

@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_nav_agenda_to_nav_profesor"
             app:destination="@id/nav_profesor" />
+        <action
+            android:id="@+id/action_nav_agenda_to_nav_periodo"
+            app:destination="@id/nav_periodo" />
     </fragment>
 
     <fragment
@@ -82,6 +85,32 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_periodo"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.periodo.PeriodoFragment"
+        android:label="@string/periodo"
+        tools:layout="@layout/fragment_periodo"
+        >
+        <action
+            android:id="@+id/action_nav_periodo_to_nav_agenda"
+            app:destination="@id/nav_agenda" />
+        <action
+            android:id="@+id/action_nav_periodo_to_nav_profesor"
+            app:destination="@id/nav_profesor" />
+        <action
+            android:id="@+id/action_nav_periodo_to_nav_recordatorio"
+            app:destination="@id/nav_recordatorio" />
+        <action
+            android:id="@+id/action_nav_periodo_to_nav_examen"
+            app:destination="@id/nav_examen" />
+        <action
+            android:id="@+id/action_nav_periodo_to_nav_tarea"
+            app:destination="@id/nav_tarea" />
+        <action
+            android:id="@+id/action_nav_periodo_to_nav_agregar_periodo"
+            app:destination="@id/nav_agregar_periodo" />
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_profesor"
         android:name="sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorFragment"
         android:label="@string/profesores"
@@ -139,4 +168,14 @@
             app:destination="@id/nav_ver_profesor" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_agregar_periodo"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.periodo.AgregarPeriodoFragment"
+        android:label="@string/agregar_periodo"
+        tools:layout="@layout/fragment_agregar_periodo"
+        >
+        <action
+            android:id="@+id/action_nav_agregar_periodo_to_nav_periodo"
+            app:destination="@id/nav_periodo" />
+    </fragment>
 </navigation>

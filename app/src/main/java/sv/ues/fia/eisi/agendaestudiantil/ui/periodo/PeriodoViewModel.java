@@ -7,14 +7,14 @@ import java.sql.Date;
 public class PeriodoViewModel extends ViewModel {
     private int idPeriodo;
     private String tituloPeriodo;
-    private Date inicioPeriodo;
-    private Date finPeriodo;
+    private String inicioPeriodo;
+    private String finPeriodo;
 
     public PeriodoViewModel() {
 
     }
 
-    public PeriodoViewModel(int idPeriodo, String tituloPeriodo, Date inicioPeriodo, Date finPeriodo) {
+    public PeriodoViewModel(int idPeriodo, String tituloPeriodo, String inicioPeriodo, String finPeriodo) {
         this.idPeriodo = idPeriodo;
         this.tituloPeriodo = tituloPeriodo;
         this.inicioPeriodo = inicioPeriodo;
@@ -37,19 +37,19 @@ public class PeriodoViewModel extends ViewModel {
         this.tituloPeriodo = tituloPeriodo;
     }
 
-    public Date getInicioPeriodo() {
+    public String getInicioPeriodo() {
         return inicioPeriodo;
     }
 
-    public void setInicioPeriodo(Date inicioPeriodo) {
+    public void setInicioPeriodo(String inicioPeriodo) {
         this.inicioPeriodo = inicioPeriodo;
     }
 
-    public Date getFinPeriodo() {
+    public String getFinPeriodo() {
         return finPeriodo;
     }
 
-    public void setFinPeriodo(Date finPeriodo) {
+    public void setFinPeriodo(String finPeriodo) {
         this.finPeriodo = finPeriodo;
     }
 }

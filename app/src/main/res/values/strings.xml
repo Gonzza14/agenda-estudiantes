@@ -35,4 +35,11 @@
     <string name="guardar">Guardar</string>
     <string name="title_activity_detalle_profesor">DetalleProfesorActivity</string>
     <string name="large_text"></string>
+
+
+    <string name="periodo">Periodo</string>
+    <string name="agregar_periodo">Agregar periodo</string>
+    <string name="periodo_hint">Titulo del periodo</string>
+    <string name="inicio_hint">Inicio del periodo</string>
+    <string name="fin_hint">Fin del periodo</string>
 </resources>

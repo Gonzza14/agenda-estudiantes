@@ -7,10 +7,13 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
-import sv.ues.fia.eisi.agendaestudiantil.clases.Agenda;
-import sv.ues.fia.eisi.agendaestudiantil.clases.AgendaContract;
+import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.AgregarPeriodoFragment;
+import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.PeriodoViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorViewModel;
 
 public class BD {
@@ -32,6 +35,7 @@ public class BD {
     private final Context context;
     private DataBaseHelper bDHelper;
     private SQLiteDatabase bD;
+
 
     public BD(Context ctx){
         this.context = ctx;
@@ -360,6 +364,23 @@ public class BD {
         return mensaje;
     }
 
+    public String insertar(PeriodoViewModel periodo){
+        String mensaje = "Periodo guardado";
+        long nuevaFilaId = 0;
+
+        ContentValues periodos = new ContentValues();
+        periodos.put(AgendaContract.Periodo.COLUMN_TITULO, periodo.getTituloPeriodo());
+        periodos.put(AgendaContract.Periodo.COLUMN_INICIO, String.valueOf(periodo.getInicioPeriodo()));
+        periodos.put(AgendaContract.Periodo.COLUMN_FIN, String.valueOf(periodo.getFinPeriodo()));
+
+        nuevaFilaId = bD.insert(AgendaContract.Periodo.TABLE_NAME, null, periodos);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar el periodo";
+        return mensaje;
+
+    }
+
     public ArrayList<ProfesorViewModel> mostrarProfesores(){
         bD = bDHelper.getWritableDatabase();
 
@@ -384,6 +405,30 @@ public class BD {
         cursorProfesores.close();
 
         return listaProfesores;
+    }
+
+    public ArrayList<PeriodoViewModel> mostrarPeriodos(){
+
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<PeriodoViewModel> listaPeriodos = new ArrayList<>();
+        PeriodoViewModel periodo = null;
+        Cursor cursorPeriodos = null;
+
+        cursorPeriodos = bD.rawQuery("SELECT * FROM " + AgendaContract.Periodo.TABLE_NAME + " ORDER BY " + AgendaContract.Periodo.COLUMN_INICIO, null);
+
+        if (cursorPeriodos.moveToFirst()){
+            do {
+                periodo = new PeriodoViewModel();
+                periodo.setIdPeriodo(cursorPeriodos.getInt(0));
+                periodo.setTituloPeriodo(cursorPeriodos.getString(1));
+                periodo.setInicioPeriodo((cursorPeriodos.getString(2)));
+                periodo.setFinPeriodo((cursorPeriodos.getString(3)));
+                listaPeriodos.add(periodo);
+            }while (cursorPeriodos.moveToNext());
+        }
+        cursorPeriodos.close();
+        return listaPeriodos;
     }
 
     public ProfesorViewModel verProfesor(int id){
