@@ -9,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
@@ -34,7 +36,6 @@ public class ListaMateriaAdapter extends RecyclerView.Adapter<ListaMateriaAdapte
     public void onBindViewHolder(@NonNull MateriaViewHolder holder, int position) {
         holder.lblMateriaView.setText(listaMateria.get(position).getNombreMateria());
         holder.lblAulaView.setText(listaMateria.get(position).getAulaMateria());
-        holder.lblPeriodoView.setText(listaMateria.get(position).getIdPeriodo());
     }
 
     @Override
@@ -42,6 +43,19 @@ public class ListaMateriaAdapter extends RecyclerView.Adapter<ListaMateriaAdapte
         return listaMateria.size();
     }
 
+    public void updateItem(MateriaViewModel materia, int position){
+        listaMateria.set(position, materia);
+        notifyItemChanged(position);
+        Collections.sort(listaMateria, MateriaViewModel.alfabeticamente);
+        notifyDataSetChanged();
+    }
+
+    public void deleteItem(int position){
+        listaMateria.remove(position);
+        notifyItemRemoved(position);
+        Collections.sort(listaMateria, MateriaViewModel.alfabeticamente);
+        notifyDataSetChanged();
+    }
     public void setOnClickListener(View.OnClickListener listener) {
         this.listener = listener;
     }

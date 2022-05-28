@@ -26,8 +26,6 @@ public class EditarPeriodoView extends RelativeLayout {
     private PeriodoViewModel periodo;
 
 
-
-
     public EditarPeriodoView(Context context) {
         super(context);
         init(context);

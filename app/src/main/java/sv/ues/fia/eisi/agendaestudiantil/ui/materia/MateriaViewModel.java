@@ -2,6 +2,8 @@ package sv.ues.fia.eisi.agendaestudiantil.ui.materia;
 
 import androidx.lifecycle.ViewModel;
 
+import java.util.Comparator;
+
 public class MateriaViewModel extends ViewModel {
     private int idMateria;
     private int idProfesor;
@@ -21,6 +23,12 @@ public class MateriaViewModel extends ViewModel {
         this.aulaMateria = aulaMateria;
     }
 
+    public static Comparator<MateriaViewModel> alfabeticamente = new Comparator<MateriaViewModel>() {
+        @Override
+        public int compare(MateriaViewModel m1, MateriaViewModel m2) {
+            return m1.getNombreMateria().compareTo(m2.getNombreMateria());
+        }
+    };
     public int getIdMateria() {
         return idMateria;
     }

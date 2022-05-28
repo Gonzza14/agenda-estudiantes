@@ -10,8 +10,11 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -32,6 +35,7 @@ public class AgregarMateriaFragment extends Fragment {
     ArrayList<PeriodoViewModel> listaArrayMateria;
     private BD helper;
     private MateriaViewModel materia;
+    private int idProfesor, idPeriodo;
 
 
     public AgregarMateriaFragment() {
@@ -62,6 +66,59 @@ public class AgregarMateriaFragment extends Fragment {
         spPeriodoMateria = view.findViewById(R.id.spPeriodoMateria);
         btnGuardarMateria = view.findViewById(R.id.btnGuardarMateria);
 
+        ArrayList<ProfesorViewModel> profesores = helper.mostrarProfesores();
+        ArrayAdapter<ProfesorViewModel> adaptadorProfesores = new ArrayAdapter<>(view.getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, profesores);
+        spProfesorMateria.setAdapter(adaptadorProfesores);
+
+        spProfesorMateria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                idProfesor = ((ProfesorViewModel) adapterView.getSelectedItem()).getIdProfesor();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        ArrayList<PeriodoViewModel> periodos = helper.mostrarPeriodos();
+        ArrayAdapter<PeriodoViewModel> adaptadorPeriodos = new ArrayAdapter<>(view.getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, periodos);
+        spPeriodoMateria.setAdapter(adaptadorPeriodos);
+
+        spPeriodoMateria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                idPeriodo = ((PeriodoViewModel) adapterView.getSelectedItem()).getIdPeriodo();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        btnGuardarMateria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mensaje;
+                String nombreMateria = txtNombreMateria.getText().toString();
+                String aulaMateria = txtAulaMateria.getText().toString();
+
+                materia.setNombreMateria(nombreMateria);
+                materia.setAulaMateria(aulaMateria);
+                materia.setIdProfesor(idProfesor);
+                materia.setIdPeriodo(idPeriodo);
+
+                helper.abrir();
+                mensaje = helper.insertar(materia);
+                helper.cerrar();
+
+                Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
+
+                txtNombreMateria.setText("");
+                txtAulaMateria.setText("");
+            }
+        });
 
     }
 }
