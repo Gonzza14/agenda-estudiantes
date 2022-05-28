@@ -31,7 +31,7 @@ public class ProfesorFragment extends Fragment {
     private FloatingActionButton btnAgregarProfesor;
     private BD helper;
     ArrayList<ProfesorViewModel> listaArrayProfesores;
-    private ProfesorViewModel mViewModel;
+
 
     public static ProfesorFragment newInstance() {
         return new ProfesorFragment();

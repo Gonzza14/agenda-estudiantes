@@ -69,4 +69,8 @@ public class ProfesorViewModel extends ViewModel {
     public void setImagenProfesor(String imagenProfesor) {
         this.imagenProfesor = imagenProfesor;
     }
+
+    public String toString(){
+        return nombreProfesor + " " + apellidoProfesor;
+    }
 }

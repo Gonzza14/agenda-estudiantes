@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -41,13 +42,12 @@ public class PeriodoFragment extends Fragment {
     private PeriodoViewModel periodo;
     private RecyclerView listaPeriodos;
     private FloatingActionButton btnAgregarPeriodo;
+    private Button btnEditar, btnEliminar, btnCancelar;
     private ListaPeriodoAdapter adapter;
     private EditText txtPeriodo, txtInicio, txtFin;
     private BD helper;
     ArrayList<PeriodoViewModel> listaArrayPeriodos;
     private int id = 0, position = 0;
-
-
 
 
     public static PeriodoFragment newInstance() {
@@ -92,16 +92,17 @@ public class PeriodoFragment extends Fragment {
         });
     }
 
-
     private void showCustomViewDialog(View view, int id, int position) {
-
         EditarPeriodoView customView = new EditarPeriodoView(view.getContext());
         helper = new BD(view.getContext());
-
 
         txtPeriodo = customView.findViewById(R.id.txtTituloPeriodoVIew);
         txtInicio = customView.findViewById(R.id.txtInicioPeriodoView);
         txtFin = customView.findViewById(R.id.txtFinPeriodoView);
+        btnEditar = customView.findViewById(R.id.btnEditarPeriodo);
+        btnEliminar = customView.findViewById(R.id.btnEliminarPeriodo);
+        btnCancelar = customView.findViewById(R.id.btnCancelar);
+
 
         periodo = new PeriodoViewModel();
         periodo = helper.verPeriodo(id);
@@ -111,12 +112,13 @@ public class PeriodoFragment extends Fragment {
             txtInicio.setText(periodo.getInicioPeriodo());
             txtFin.setText(periodo.getFinPeriodo());
         }
-        AlertDialog.Builder dialog = new AlertDialog.Builder(view.getContext());
-        dialog.setView(customView);
-        dialog.setPositiveButton("Editar", new DialogInterface.OnClickListener() {
+        final AlertDialog alertDialog;
+        final AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+        builder.setView(customView);
+        alertDialog = builder.create();
+        btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
+            public void onClick(View view) {
                 periodo.setTituloPeriodo(txtPeriodo.getText().toString());
                 periodo.setInicioPeriodo(txtInicio.getText().toString());
                 periodo.setFinPeriodo(txtFin.getText().toString());
@@ -126,15 +128,32 @@ public class PeriodoFragment extends Fragment {
                 helper.cerrar();
 
                 adapter.updateItem(periodo, position);
-
-
-
-
                 Toast.makeText(view.getContext(),estado,Toast.LENGTH_SHORT).show();
-
+                alertDialog.dismiss();
             }
         });
-        dialog.show();
+        btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mensaje;
+                periodo.setIdPeriodo(id);
+
+                helper.abrir();
+                mensaje = helper.eliminar(periodo);
+                helper.cerrar();
+
+                adapter.deleteItem(position);
+                Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
+                alertDialog.dismiss();
+            }
+        });
+        btnCancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+        alertDialog.show();
         /*MaterialDialog.Builder dialog = new MaterialDialog.Builder(view.getContext());
         DialogCustomViewExtKt.customView(dialog, null, customView, false, false, true, true);
         dialog.positiveButton(null, "Editar", new );

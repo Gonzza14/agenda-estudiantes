@@ -14,7 +14,7 @@
     <string name="tarea">Tarea</string>
     <string name="examen">Examen</string>
     <string name="recordatorio">Recordatorio</string>
-    >
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_inicio">InicioActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -36,10 +36,18 @@
     <string name="title_activity_detalle_profesor">DetalleProfesorActivity</string>
     <string name="large_text"></string>
 
-
     <string name="periodo">Periodo</string>
     <string name="agregar_periodo">Agregar periodo</string>
     <string name="periodo_hint">Titulo del periodo</string>
     <string name="inicio_hint">Inicio del periodo</string>
     <string name="fin_hint">Fin del periodo</string>
+    <string name="editar">Editar</string>
+    <string name="eliminar">eliminar</string>
+    <string name="cancelar">cancelar</string>
+
+    <string name="materia">Materia</string>
+    <string name="materia_hint">Nombre de la materia</string>
+    <string name="aula_hint">Aula de la materia</string>
+    <string name="profesor_hint">Profesor de la materia</string>}
+    <string name="agregar_materia">Agregar materia</string>
 </resources>

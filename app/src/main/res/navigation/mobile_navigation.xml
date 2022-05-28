@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_nav_agenda_to_nav_periodo"
             app:destination="@id/nav_periodo" />
+        <action
+            android:id="@+id/action_nav_agenda_to_nav_materia"
+            app:destination="@id/nav_materia" />
     </fragment>
 
     <fragment
@@ -44,6 +47,12 @@
         <action
             android:id="@+id/action_nav_tarea_to_nav_profesor"
             app:destination="@id/nav_profesor" />
+        <action
+            android:id="@+id/action_nav_tarea_to_nav_periodo"
+            app:destination="@id/nav_periodo" />
+        <action
+            android:id="@+id/action_nav_tarea_to_nav_materia"
+            app:destination="@id/nav_materia" />
     </fragment>
 
     <fragment
@@ -63,6 +72,12 @@
         <action
             android:id="@+id/action_nav_examen_to_nav_agenda"
             app:destination="@id/nav_agenda" />
+        <action
+            android:id="@+id/action_nav_examen_to_nav_materia"
+            app:destination="@id/nav_materia" />
+        <action
+            android:id="@+id/action_nav_examen_to_nav_periodo"
+            app:destination="@id/nav_periodo" />
     </fragment>
 
     <fragment
@@ -82,6 +97,12 @@
         <action
             android:id="@+id/action_nav_recordatorio_to_nav_profesor"
             app:destination="@id/nav_profesor" />
+        <action
+            android:id="@+id/action_nav_recordatorio_to_nav_periodo"
+            app:destination="@id/nav_periodo" />
+        <action
+            android:id="@+id/action_nav_recordatorio_to_nav_materia"
+            app:destination="@id/nav_materia" />
     </fragment>
 
     <fragment
@@ -108,6 +129,9 @@
         <action
             android:id="@+id/action_nav_periodo_to_nav_agregar_periodo"
             app:destination="@id/nav_agregar_periodo" />
+        <action
+            android:id="@+id/action_nav_periodo_to_nav_materia"
+            app:destination="@id/nav_materia" />
     </fragment>
 
     <fragment
@@ -133,6 +157,12 @@
         <action
             android:id="@+id/action_nav_profesor_to_nav_ver_profesor"
             app:destination="@id/nav_ver_profesor" />
+        <action
+            android:id="@+id/action_nav_profesor_to_nav_periodo"
+            app:destination="@id/nav_periodo" />
+        <action
+            android:id="@+id/action_nav_profesor_to_nav_materia"
+            app:destination="@id/nav_materia" />
     </fragment>
 
     <fragment
@@ -172,10 +202,44 @@
         android:id="@+id/nav_agregar_periodo"
         android:name="sv.ues.fia.eisi.agendaestudiantil.ui.periodo.AgregarPeriodoFragment"
         android:label="@string/agregar_periodo"
-        tools:layout="@layout/fragment_agregar_periodo"
-        >
+        tools:layout="@layout/fragment_agregar_periodo">
         <action
             android:id="@+id/action_nav_agregar_periodo_to_nav_periodo"
             app:destination="@id/nav_periodo" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_materia"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaFragment"
+        android:label="@string/materia"
+        tools:layout="@layout/fragment_materia">
+        <action
+            android:id="@+id/action_nav_materia_to_nav_periodo"
+            app:destination="@id/nav_periodo" />
+        <action
+            android:id="@+id/action_nav_materia_to_nav_profesor"
+            app:destination="@id/nav_profesor" />
+        <action
+            android:id="@+id/action_nav_materia_to_nav_recordatorio"
+            app:destination="@id/nav_recordatorio" />
+        <action
+            android:id="@+id/action_nav_materia_to_nav_examen"
+            app:destination="@id/nav_examen" />
+        <action
+            android:id="@+id/action_nav_materia_to_nav_tarea"
+            app:destination="@id/nav_tarea" />
+        <action
+            android:id="@+id/action_nav_materia_to_nav_agregar_materia"
+            app:destination="@id/nav_agregar_materia" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_agregar_materia"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.materia.AgregarMateriaFragment"
+        android:label="@string/agregar_materia"
+        tools:layout="@layout/fragment_agregar_materia">
+        <action
+            android:id="@+id/action_nav_agregar_materia_to_nav_materia"
+            app:destination="@id/nav_materia" />
     </fragment>
 </navigation>

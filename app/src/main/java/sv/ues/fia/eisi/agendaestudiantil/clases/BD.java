@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.AgregarPeriodoFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.PeriodoViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorViewModel;
@@ -432,6 +433,30 @@ public class BD {
         return listaPeriodos;
     }
 
+    public ArrayList<MateriaViewModel> mostrarMaterias(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<MateriaViewModel> listaMaterias = new ArrayList<>();
+        MateriaViewModel materia = null;
+        Cursor cursorMaterias = null;
+
+        cursorMaterias = bD.rawQuery("SELECT * FROM " + AgendaContract.Materia.TABLE_NAME + " ORDER BY " + AgendaContract.Materia.COLUMN_NAME, null);
+
+        if (cursorMaterias.moveToFirst()){
+            do {
+                materia = new MateriaViewModel();
+                materia.setIdMateria(cursorMaterias.getInt(0));
+                materia.setIdProfesor(cursorMaterias.getInt(1));
+                materia.setIdPeriodo(cursorMaterias.getInt(2));
+                materia.setNombreMateria(cursorMaterias.getString(3));
+                materia.setAulaMateria(cursorMaterias.getString(4));
+                listaMaterias.add(materia);
+            }while (cursorMaterias.moveToNext());
+        }
+        cursorMaterias.close();
+        return listaMaterias;
+    }
+
     public ProfesorViewModel verProfesor(int id){
         bD = bDHelper.getWritableDatabase();
 
@@ -509,6 +534,15 @@ public class BD {
 
         String[] id = {String.valueOf(profesor.getIdProfesor())};
         bD.delete(AgendaContract.Profesor.TABLE_NAME, AgendaContract.Profesor._ID + " = ?", id);
+        return mensaje;
+    }
+
+    public String eliminar(PeriodoViewModel periodo){
+        String mensaje = "Periodo Eliminado";
+        long contador = 0;
+
+        String[] id = {String.valueOf(periodo.getIdPeriodo())};
+        bD.delete(AgendaContract.Periodo.TABLE_NAME, AgendaContract.Periodo._ID + " = ?", id);
         return mensaje;
     }
 

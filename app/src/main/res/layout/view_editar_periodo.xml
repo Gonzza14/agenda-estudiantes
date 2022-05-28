@@ -55,11 +55,11 @@
 
     <EditText
         android:id="@+id/txtFinPeriodoView"
-        android:layout_below="@id/lblFinPeriodo"
-        android:layout_marginTop="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/lblFinPeriodo"
         android:layout_marginLeft="16dp"
+        android:layout_marginTop="0dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
@@ -79,4 +79,27 @@
         android:layout_marginLeft="16dp"
         android:layout_marginBottom="0dp"
         android:text="@string/fin_hint" />
+
+    <Button
+        android:id="@+id/btnEditarPeriodo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtFinPeriodoView"
+        android:text="@string/editar"/>
+
+    <Button
+        android:id="@+id/btnEliminarPeriodo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtFinPeriodoView"
+        android:layout_toRightOf="@id/btnEditarPeriodo"
+        android:text="@string/eliminar" />
+
+    <Button
+        android:id="@+id/btnCancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtFinPeriodoView"
+        android:layout_toRightOf="@id/btnEliminarPeriodo"
+        android:text="@string/cancelar" />
 </RelativeLayout>

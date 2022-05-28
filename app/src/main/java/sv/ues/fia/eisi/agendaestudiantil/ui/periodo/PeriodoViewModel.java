@@ -77,4 +77,8 @@ public class PeriodoViewModel extends ViewModel {
     public void setFinPeriodo(String finPeriodo) {
         this.finPeriodo = finPeriodo;
     }
+
+    public String toString(){
+        return tituloPeriodo;
+    }
 }

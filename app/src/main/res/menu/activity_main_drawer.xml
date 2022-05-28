@@ -29,5 +29,10 @@
             android:id="@+id/nav_periodo"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/periodo" />
+
+        <item
+            android:id="@+id/nav_materia"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/materia"/>
     </group>
 </menu>

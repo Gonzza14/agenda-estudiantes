@@ -53,9 +53,7 @@ public class ListaPeriodoAdapter extends RecyclerView.Adapter<ListaPeriodoAdapte
 
     }
 
-    public void setOnClickListener(View.OnClickListener listener)
-    {
-
+    public void setOnClickListener(View.OnClickListener listener) {
         this.listener = listener;
     }
     @Override
@@ -75,6 +73,13 @@ public class ListaPeriodoAdapter extends RecyclerView.Adapter<ListaPeriodoAdapte
     public void updateItem(PeriodoViewModel periodo, int position){
         listaPeriodo.set(position, periodo);
         notifyItemChanged(position);
+        Collections.sort(listaPeriodo, PeriodoViewModel.dateComparator);
+        notifyDataSetChanged();
+    }
+
+    public void deleteItem(int position){
+        listaPeriodo.remove(position);
+        notifyItemRemoved(position);
         Collections.sort(listaPeriodo, PeriodoViewModel.dateComparator);
         notifyDataSetChanged();
     }
