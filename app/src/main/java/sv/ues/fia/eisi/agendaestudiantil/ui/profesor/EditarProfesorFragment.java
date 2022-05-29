@@ -113,7 +113,7 @@ public class EditarProfesorFragment extends Fragment {
             imgProfesor.setImageURI(Uri.parse(profesor.getImagenProfesor()));
         }
 
-        btnGuardar = (FloatingActionButton) view.findViewById(R.id.btnGuardarProfesor);
+        btnGuardar = (FloatingActionButton) view.findViewById(R.id.btnGuardarClase);
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

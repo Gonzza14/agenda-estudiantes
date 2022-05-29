@@ -48,6 +48,24 @@
     <string name="materia">Materia</string>
     <string name="materia_hint">Nombre de la materia</string>
     <string name="aula_hint">Aula de la materia</string>
-    <string name="profesor_hint">Profesor de la materia</string>}
+    <string name="profesor_hint">Profesor de la materia</string>
     <string name="agregar_materia">Agregar materia</string>
+
+    <string-array name="my_header_title">
+        <item></item>
+        <item>L</item>
+        <item>M</item>
+        <item>M</item>
+        <item>J</item>
+        <item>V</item>
+        <item>S</item>
+        <item>D</item>
+    </string-array>
+
+    <string name="agregar_clase">Agregar clase</string>
+    <string name="aula_clase_hint">Aula de la clase</string>
+    <string name="dia_clase">Dia de la clase</string>
+    <string name="hora_inicio">Inicio de la clase</string>
+    <string name="hora_fin">Fin de la clase</string>
+    <string name="descripcion_clase">Descripcion</string>
 </resources>

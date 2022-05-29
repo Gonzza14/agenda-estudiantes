@@ -27,7 +27,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -36,7 +35,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import sv.ues.fia.eisi.agendaestudiantil.InicioActivity;
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
-import sv.ues.fia.eisi.agendaestudiantil.ui.agenda.AgendaViewModel;
 
 
 public class AgregarProfesorFragment extends Fragment {
@@ -106,7 +104,7 @@ public class AgregarProfesorFragment extends Fragment {
         txtTelefono = (EditText) view.findViewById(R.id.txtTelefono);
         txtCorreo = (EditText) view.findViewById(R.id.txtCorreo);
 
-        btnGuardar = (FloatingActionButton) view.findViewById(R.id.btnGuardarProfesor);
+        btnGuardar = (FloatingActionButton) view.findViewById(R.id.btnGuardarClase);
         btnGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -68,4 +68,8 @@ public class MateriaViewModel extends ViewModel {
     public void setAulaMateria(String aulaMateria) {
         this.aulaMateria = aulaMateria;
     }
+
+    public String toString(){
+        return nombreMateria;
+    }
 }

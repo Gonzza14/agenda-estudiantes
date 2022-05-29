@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import sv.ues.fia.eisi.agendaestudiantil.ui.horario.ClaseViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.AgregarPeriodoFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.PeriodoViewModel;
@@ -116,8 +117,7 @@ public class BD {
             = "CREATE TABLE "
             + AgendaContract.Horario.TABLE_NAME + " ("
             + AgendaContract.Horario._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + AgendaContract.Horario.COLUMN_NOTIFICACIONES + " INTEGER DEFAULT 0, "
-            + AgendaContract.Horario.COLUMN_NOTIFICACION_CLASE+ " INTEGER NOT NULL)";
+            + AgendaContract.Horario.COLUMN_NAME+ " TEXT(20) NOT NULL)";
 
     private static final String SQL_DELETE_HORARIO
             = "DROP TABLE IF EXISTS " + AgendaContract.Horario.TABLE_NAME;
@@ -128,6 +128,8 @@ public class BD {
             + AgendaContract.Clase._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + AgendaContract.Clase.COLUMN_ID_HORARIO + " INTEGER NOT NULL, "
             + AgendaContract.Clase.COLUMN_ID_MATERIA + " INTEGER NOT NULL, "
+            + AgendaContract.Clase.COLUMN_ID_PROFESOR+ " INTEGER NOT NULL, "
+            + AgendaContract.Clase.COLUMN_AULA+ " TEXT(20), "
             + AgendaContract.Clase.COLUMN_DIA + " TEXT NOT NULL, "
             + AgendaContract.Clase.COLUMN_INICIO + " TEXT NOT NULL, "
             + AgendaContract.Clase.COLUMN_FIN + " TEXT NOT NULL, "
@@ -137,7 +139,10 @@ public class BD {
             + AgendaContract.Horario._ID + ") ON DELETE CASCADE, FOREIGN KEY ( "
             + AgendaContract.Clase.COLUMN_ID_MATERIA + " ) REFERENCES "
             + AgendaContract.Materia.TABLE_NAME + " ("
-            + AgendaContract.Materia._ID + ") ON DELETE CASCADE)";
+            + AgendaContract.Materia._ID + ") ON DELETE CASCADE, FOREIGN KEY ( "
+            + AgendaContract.Clase.COLUMN_ID_PROFESOR + " ) REFERENCES "
+            + AgendaContract.Profesor.TABLE_NAME + " ("
+            + AgendaContract.Profesor._ID + ") ON DELETE CASCADE)";
 
     private static final String SQL_DELETE_CLASE
             = "DROP TABLE IF EXISTS " + AgendaContract.Clase.TABLE_NAME;
@@ -254,9 +259,16 @@ public class BD {
             + AgendaContract.Examen.TABLE_NAME + " ("
             + AgendaContract.Examen._ID + ") ON DELETE CASCADE)";
 
-
     private static final String SQL_DELETE_ARCHIVO
             = "DROP TABLE IF EXISTS " + AgendaContract.Archivo.TABLE_NAME;
+
+    private static final String SQL_INSERT_HORARIO
+            = "INSERT INTO "
+            + AgendaContract.Horario.TABLE_NAME + "(" +AgendaContract.Horario._ID + ", " + AgendaContract.Horario.COLUMN_NAME + ") VALUES (1,'Horario predeterminado')";
+
+    private static final String SQL_INSERT_AGENDA
+            = "INSERT INTO "
+            + AgendaContract.Agenda.TABLE_NAME + "(" +AgendaContract.Agenda._ID + ", " + AgendaContract.Agenda.COLUMN_NAME + ") VALUES (1,'Agenda predeterminada')";
 
     private static class DataBaseHelper extends SQLiteOpenHelper{
         private static final String BASE_DATOS = "agenda-bd.s3db";
@@ -283,6 +295,8 @@ public class BD {
                 bD.execSQL(SQL_CREATE_NOTA_EXAMEN);
                 bD.execSQL(SQL_CREATE_ARCHIVO);
                 bD.execSQL(SQL_CREATE_ESTUDIO);
+                bD.execSQL(SQL_INSERT_HORARIO);
+                bD.execSQL(SQL_INSERT_AGENDA);
             }catch (SQLException e){
                 e.printStackTrace();
             }
@@ -398,6 +412,27 @@ public class BD {
             mensaje = "Error al insertar la materia";
         return mensaje;
 
+    }
+
+    public String insertar(ClaseViewModel clase){
+        String mensaje = "Clase guardada";
+        long nuevaFilaId = 0;
+
+        ContentValues clases = new ContentValues();
+        clases.put(AgendaContract.Clase.COLUMN_ID_HORARIO, clase.getIdHorario());
+        clases.put(AgendaContract.Clase.COLUMN_ID_MATERIA, clase.getIdMateria());
+        clases.put(AgendaContract.Clase.COLUMN_ID_PROFESOR, clase.getIdProfesor());
+        clases.put(AgendaContract.Clase.COLUMN_AULA, clase.getIdMateria());
+        clases.put(AgendaContract.Clase.COLUMN_DIA, clase.getIdMateria());
+        clases.put(AgendaContract.Clase.COLUMN_INICIO, clase.getIdMateria());
+        clases.put(AgendaContract.Clase.COLUMN_FIN, clase.getIdMateria());
+        clases.put(AgendaContract.Clase.COLUMN_DESCRIPCION, clase.getIdMateria());
+
+        nuevaFilaId = bD.insert(AgendaContract.Clase.TABLE_NAME, null, clases);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar la clase";
+        return mensaje;
     }
 
     public ArrayList<ProfesorViewModel> mostrarProfesores(){

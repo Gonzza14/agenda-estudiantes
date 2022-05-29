@@ -34,5 +34,10 @@
             android:id="@+id/nav_materia"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/materia"/>
+
+        <item
+            android:id="@+id/nav_horario"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/horario"/>
     </group>
 </menu>

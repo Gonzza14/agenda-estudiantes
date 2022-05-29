@@ -46,14 +46,15 @@ public final class AgendaContract {
 
     public static class Horario implements BaseColumns{
         public static final String TABLE_NAME = "horario";
-        public static final String COLUMN_NOTIFICACIONES = "notificaciones";
-        public static final String COLUMN_NOTIFICACION_CLASE = "notificacion_clase";
+        public static final String COLUMN_NAME = "nombre";
     }
 
     public static class Clase implements BaseColumns{
         public static final String TABLE_NAME = "clase";
         public static final String COLUMN_ID_HORARIO = "id_horario";
         public static final String COLUMN_ID_MATERIA = "id_materia";
+        public static final String COLUMN_ID_PROFESOR = "id_profesor";
+        public static final String COLUMN_AULA = "aula";
         public static final String COLUMN_DIA = "dia";
         public static final String COLUMN_INICIO = "inicio";
         public static final String COLUMN_FIN = "fin";

@@ -32,7 +32,6 @@ public class AgregarMateriaFragment extends Fragment {
     private EditText txtNombreMateria, txtAulaMateria;
     private Spinner spPeriodoMateria, spProfesorMateria;
     private FloatingActionButton btnGuardarMateria;
-    ArrayList<PeriodoViewModel> listaArrayMateria;
     private BD helper;
     private MateriaViewModel materia;
     private int idProfesor, idPeriodo;
