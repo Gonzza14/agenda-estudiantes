@@ -62,6 +62,7 @@
         <item>D</item>
     </string-array>
 
+    <string name="editar_clase">Editar clase</string>
     <string name="agregar_clase">Agregar clase</string>
     <string name="aula_clase_hint">Aula de la clase</string>
     <string name="dia_clase">Dia de la clase</string>

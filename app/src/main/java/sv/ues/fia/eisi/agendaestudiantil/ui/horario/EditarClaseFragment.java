@@ -1,8 +1,5 @@
 package sv.ues.fia.eisi.agendaestudiantil.ui.horario;
 
-import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
@@ -10,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
@@ -24,7 +22,6 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.list.DialogListExtKt;
-import com.github.tlaabs.timetableview.TimetableView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -37,32 +34,40 @@ import sv.ues.fia.eisi.agendaestudiantil.clases.TimePickerFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorViewModel;
 
-public class ClaseFragment extends Fragment{
+public class EditarClaseFragment extends Fragment {
 
+    private String registroMateria, registroProfesor;
     private Spinner spMateriaClase, spProfesorClase;
     private EditText txtAulaClase, txtDiaClase, txtInicioClase, txtFinClase, txtDescripcionClase;
-    private FloatingActionButton btnGuardarClase;
+    private FloatingActionButton btnEditarClase, btnEliminarClase;
+    private ArrayAdapter<ProfesorViewModel> adaptadorProfesores;
+    private ArrayAdapter<MateriaViewModel> adaptadorMaterias;
     private BD helper;
     private int idMateria, idProfesor;
     private ClaseViewModel clase;
     private String diaClase;
     private int id = 0;
 
-    public static ClaseFragment newInstance() {
-        return new ClaseFragment();
+    public EditarClaseFragment() {
+        // Required empty public constructor
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
         clase = new ViewModelProvider(this).get(ClaseViewModel.class);
-        return inflater.inflate(R.layout.fragment_clase, container, false);
+        return inflater.inflate(R.layout.fragment_editar_clase, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
 
         helper = new BD(view.getContext());
         txtAulaClase = view.findViewById(R.id.txtAulaClase);
@@ -96,7 +101,7 @@ public class ClaseFragment extends Fragment{
         spProfesorClase = view.findViewById(R.id.spProfesorClase);
 
         ArrayList<MateriaViewModel> materias = helper.mostrarMaterias();
-        ArrayAdapter<MateriaViewModel> adaptadorMaterias = new ArrayAdapter<>(view.getContext(),androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, materias);
+        adaptadorMaterias = new ArrayAdapter<>(view.getContext(),androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, materias);
         spMateriaClase.setAdapter(adaptadorMaterias);
 
         spMateriaClase.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -112,7 +117,7 @@ public class ClaseFragment extends Fragment{
         });
 
         ArrayList<ProfesorViewModel> profesores = helper.mostrarProfesores();
-        ArrayAdapter<ProfesorViewModel> adaptadorProfesores = new ArrayAdapter<>(view.getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, profesores);
+        adaptadorProfesores = new ArrayAdapter<>(view.getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, profesores);
         spProfesorClase.setAdapter(adaptadorProfesores);
 
         spProfesorClase.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -127,45 +132,61 @@ public class ClaseFragment extends Fragment{
             }
         });
 
-        btnGuardarClase = view.findViewById(R.id.btnGuardarClase);
-        btnGuardarClase.setOnClickListener(new View.OnClickListener() {
+        id = (int) getArguments().getInt("ID");
+
+        clase = helper.verClase(id);
+
+        registroMateria = helper.obtenerMateriaDeClase(id);
+        registroProfesor = helper.obtenerProfesorDeClase(id);
+
+        if (clase !=null){
+            txtAulaClase.setText(clase.getAulaClase());
+            txtDescripcionClase.setText(clase.getDescripcionClase());
+            txtDiaClase.setText(clase.getDiaClase());
+            txtInicioClase.setText(clase.getInicioClase());
+            txtFinClase.setText(clase.getFinClase());
+            spMateriaClase.setSelection(obtenerPosicionMateria(spMateriaClase, registroMateria));
+            spProfesorClase.setSelection(obtenerPosicionProfesor(spProfesorClase, registroProfesor));
+        }
+
+        btnEditarClase = view.findViewById(R.id.btnEditarClase);
+        btnEditarClase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mensaje;
-                String aulaClase = txtAulaClase.getText().toString();
-                String diaClase = txtDiaClase.getText().toString();
-                String inicioClase = txtInicioClase.getText().toString();
-                String finClase = txtFinClase.getText().toString();
-                String descripcionClase = txtDescripcionClase.getText().toString();
-
                 clase.setIdHorario(1);
                 clase.setIdMateria(idMateria);
                 clase.setIdProfesor(idProfesor);
-                clase.setAulaClase(aulaClase);
-                clase.setDiaClase(diaClase);
-                clase.setInicioClase(inicioClase);
-                clase.setFinClase(finClase);
-                clase.setDescripcionClase(descripcionClase);
+                clase.setAulaClase(txtAulaClase.getText().toString());
+                clase.setDiaClase(txtDiaClase.getText().toString());
+                clase.setInicioClase(txtInicioClase.getText().toString());
+                clase.setFinClase(txtFinClase.getText().toString());
+                clase.setDescripcionClase(txtDescripcionClase.getText().toString());
 
                 helper.abrir();
-                mensaje = helper.insertar(clase);
+                String estado = helper.actualizar(clase);
                 helper.cerrar();
 
-                id = helper.obtenerUltimoIdFilaInsertada();
+                Toast.makeText(view.getContext(), estado, Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(view).popBackStack();
+            }
+        });
+
+        btnEliminarClase = view.findViewById(R.id.btnEliminarClase);
+        btnEliminarClase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mensaje;
+                clase.setIdClase(id);
+
+                helper.abrir();;
+                mensaje = helper.eliminar(clase);
+                helper.cerrar();
 
                 Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).popBackStack();
-
-                /*Bundle bundle = new Bundle();
-                bundle.putInt("ID", id);*/
-
-                txtAulaClase.setText("");
-                txtDiaClase.setText("");
-                txtInicioClase.setText("");
-                txtFinClase.setText("");
-                txtDescripcionClase.setText("");
             }
         });
+
     }
 
     @SuppressLint("CheckResult")
@@ -184,6 +205,7 @@ public class ClaseFragment extends Fragment{
         });
         dialog.show();
     }
+
 
     private void showTimePickerDialog(final EditText editText){
         TimePickerFragment newFragment = TimePickerFragment.newInstance(new TimePickerDialog.OnTimeSetListener() {
@@ -210,4 +232,25 @@ public class ClaseFragment extends Fragment{
     private String twoDigits(int n) {
         return (n<=9) ? ("0"+n) : String.valueOf(n);
     }
+
+    public int obtenerPosicionMateria(Spinner spinner, String valor){
+        int position = 0;
+        for (int i = 0; i <adaptadorMaterias.getCount(); i++){
+            if (valor.equals(adaptadorMaterias.getItem(i).toString())){
+                position = i;
+            }
+        }
+        return position;
+    }
+
+    public int obtenerPosicionProfesor(Spinner spinner, String valor){
+        int position = 0;
+        for (int i = 0; i <adaptadorProfesores.getCount(); i++){
+            if (valor.equals(adaptadorProfesores.getItem(i).toString())){
+                position = i;
+            }
+        }
+        return position;
+    }
+
 }

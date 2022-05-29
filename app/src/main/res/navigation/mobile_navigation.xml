@@ -304,5 +304,18 @@
         <action
             android:id="@+id/action_nav_agregar_clase_to_nav_horario"
             app:destination="@id/nav_horario" />
+        <action
+            android:id="@+id/action_nav_agregar_clase_to_nav_editar_clase"
+            app:destination="@id/nav_editar_clase" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_editar_clase"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.horario.EditarClaseFragment"
+        android:label="@string/editar_clase"
+        tools:layout="@layout/fragment_editar_clase">
+        <action
+            android:id="@+id/action_nav_editar_clase_to_nav_agregar_clase"
+            app:destination="@id/nav_agregar_clase" />
     </fragment>
 </navigation>

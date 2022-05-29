@@ -422,11 +422,11 @@ public class BD {
         clases.put(AgendaContract.Clase.COLUMN_ID_HORARIO, clase.getIdHorario());
         clases.put(AgendaContract.Clase.COLUMN_ID_MATERIA, clase.getIdMateria());
         clases.put(AgendaContract.Clase.COLUMN_ID_PROFESOR, clase.getIdProfesor());
-        clases.put(AgendaContract.Clase.COLUMN_AULA, clase.getIdMateria());
-        clases.put(AgendaContract.Clase.COLUMN_DIA, clase.getIdMateria());
-        clases.put(AgendaContract.Clase.COLUMN_INICIO, clase.getIdMateria());
-        clases.put(AgendaContract.Clase.COLUMN_FIN, clase.getIdMateria());
-        clases.put(AgendaContract.Clase.COLUMN_DESCRIPCION, clase.getIdMateria());
+        clases.put(AgendaContract.Clase.COLUMN_AULA, clase.getAulaClase());
+        clases.put(AgendaContract.Clase.COLUMN_DIA, clase.getDiaClase());
+        clases.put(AgendaContract.Clase.COLUMN_INICIO, clase.getInicioClase());
+        clases.put(AgendaContract.Clase.COLUMN_FIN, clase.getFinClase());
+        clases.put(AgendaContract.Clase.COLUMN_DESCRIPCION, clase.getDescripcionClase());
 
         nuevaFilaId = bD.insert(AgendaContract.Clase.TABLE_NAME, null, clases);
 
@@ -510,6 +510,60 @@ public class BD {
         return listaMaterias;
     }
 
+    public ArrayList<ClaseViewModel> mostrarClases(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<ClaseViewModel> listaClases = new ArrayList<>();
+        ClaseViewModel clase = null;
+        Cursor cursorClases = null;
+
+        cursorClases = bD.rawQuery("SELECT * FROM " + AgendaContract.Clase.TABLE_NAME, null);
+
+        if (cursorClases.moveToFirst()){
+            do {
+                clase = new ClaseViewModel();
+                clase.setIdClase(cursorClases.getInt(0));
+                clase.setIdHorario(cursorClases.getInt(1));
+                clase.setIdMateria(cursorClases.getInt(2));
+                clase.setIdProfesor(cursorClases.getInt(3));
+                clase.setAulaClase(cursorClases.getString(4));
+                clase.setDiaClase(cursorClases.getString(5));
+                clase.setInicioClase(cursorClases.getString(6));
+                clase.setFinClase(cursorClases.getString(7));
+                clase.setDescripcionClase(cursorClases.getString(8));
+                listaClases.add(clase);
+            }while (cursorClases.moveToNext());
+        }
+        cursorClases.close();
+        return listaClases;
+    }
+
+    public ClaseViewModel verClase(int id){
+        bD = bDHelper.getWritableDatabase();
+
+        ClaseViewModel clase = null;
+        Cursor cursorClases = null;
+
+        cursorClases = bD.rawQuery("SELECT * FROM " + AgendaContract.Clase.TABLE_NAME + " WHERE " + AgendaContract.Clase._ID  + " = " + id + " LIMIT 1", null);
+
+        if (cursorClases.moveToFirst()){
+            clase = new ClaseViewModel();
+            clase.setIdClase(cursorClases.getInt(0));
+            clase.setIdHorario(cursorClases.getInt(1));
+            clase.setIdMateria(cursorClases.getInt(2));
+            clase.setIdProfesor(cursorClases.getInt(3));
+            clase.setAulaClase(cursorClases.getString(4));
+            clase.setDiaClase(cursorClases.getString(5));
+            clase.setInicioClase(cursorClases.getString(6));
+            clase.setFinClase(cursorClases.getString(7));
+            clase.setDescripcionClase(cursorClases.getString(8));
+        }
+        cursorClases.close();
+        return clase;
+    }
+
+
+
     public ProfesorViewModel verProfesor(int id){
         bD = bDHelper.getWritableDatabase();
 
@@ -554,6 +608,42 @@ public class BD {
         }
         cursor.close();
         return cadena;
+    }
+
+    public String obtenerMateriaDeClase(int id){
+        bD = bDHelper.getWritableDatabase();
+        String cadena = "";
+        Cursor cursor = null;
+        cursor = bD.rawQuery("SELECT " + AgendaContract.Materia.TABLE_NAME + "." + AgendaContract.Materia.COLUMN_NAME + " FROM " + AgendaContract.Clase.TABLE_NAME + ", " + AgendaContract.Materia.TABLE_NAME + " WHERE " + AgendaContract.Clase.TABLE_NAME + "." + AgendaContract.Clase.COLUMN_ID_MATERIA + " = " + AgendaContract.Materia.TABLE_NAME + "." + AgendaContract.Materia._ID + " AND " + AgendaContract.Clase.TABLE_NAME + "." + AgendaContract.Clase._ID + " = " + id, null);
+        if (cursor.moveToFirst()){
+            cadena = cursor.getString(0);
+        }
+        cursor.close();
+        return cadena;
+    }
+
+    public String obtenerProfesorDeClase(int id){
+        bD = bDHelper.getWritableDatabase();
+        String cadena = "";
+        Cursor cursor = null;
+        cursor = bD.rawQuery("SELECT " + AgendaContract.Profesor.TABLE_NAME + "." + AgendaContract.Profesor.COLUMN_NAME + ", " + AgendaContract.Profesor.TABLE_NAME + "." + AgendaContract.Profesor.COLUMN_APELLIDO + " FROM " + AgendaContract.Clase.TABLE_NAME + ", " + AgendaContract.Profesor.TABLE_NAME + " WHERE " + AgendaContract.Clase.TABLE_NAME + "." +AgendaContract.Clase.COLUMN_ID_PROFESOR + " = " + AgendaContract.Profesor.TABLE_NAME + "." + AgendaContract.Profesor._ID + " AND " + AgendaContract.Clase.TABLE_NAME + "." + AgendaContract.Clase._ID + " = " + id , null );
+        if (cursor.moveToFirst()) {
+            cadena = cursor.getString(0) + " " + cursor.getString(1);
+        }
+        cursor.close();
+        return cadena;
+    }
+
+    public int obtenerUltimoIdFilaInsertada(){
+        bD = bDHelper.getWritableDatabase();
+        int id = 0;
+        Cursor cursor = null;
+        cursor = bD.rawQuery(" SELECT " + AgendaContract.Clase._ID + " FROM " +AgendaContract.Clase.TABLE_NAME +" ORDER BY " + AgendaContract.Clase._ID + " DESC LIMIT 1;  ", null);
+        if (cursor.moveToFirst()){
+            id = cursor.getInt(0);
+        }
+        cursor.close();
+        return id;
     }
 
     public PeriodoViewModel verPeriodo(int id){
@@ -638,6 +728,24 @@ public class BD {
         return "Materia actualizada correctamente";
     }
 
+    public String actualizar(ClaseViewModel clase){
+        String[] id = {String.valueOf(clase.getIdClase())};
+        ContentValues clases = new ContentValues();
+
+        clases.put(AgendaContract.Clase.COLUMN_ID_HORARIO, clase.getIdHorario());
+        clases.put(AgendaContract.Clase.COLUMN_ID_MATERIA, clase.getIdMateria());
+        clases.put(AgendaContract.Clase.COLUMN_ID_PROFESOR, clase.getIdProfesor());
+        clases.put(AgendaContract.Clase.COLUMN_AULA, clase.getAulaClase());
+        clases.put(AgendaContract.Clase.COLUMN_DIA, clase.getDiaClase());
+        clases.put(AgendaContract.Clase.COLUMN_INICIO, clase.getInicioClase());
+        clases.put(AgendaContract.Clase.COLUMN_FIN, clase.getFinClase());
+        clases.put(AgendaContract.Clase.COLUMN_DESCRIPCION, clase.getDescripcionClase());
+
+        bD.update(AgendaContract.Clase.TABLE_NAME, clases,AgendaContract.Clase._ID + " = ?", id);
+
+        return "Clase actualizada correctamente";
+    }
+
 
 
     public String eliminar(ProfesorViewModel profesor){
@@ -664,6 +772,15 @@ public class BD {
 
         String[] id = {String.valueOf(materia.getIdProfesor())};
         bD.delete(AgendaContract.Materia.TABLE_NAME,AgendaContract.Materia._ID + " = ?", id);
+        return mensaje;
+    }
+
+    public String eliminar(ClaseViewModel clase){
+        String mensaje = "Clase eliminada";
+        long contado = 0;
+
+        String[] id = {String.valueOf(clase.getIdClase())};
+        bD.delete(AgendaContract.Clase.TABLE_NAME,AgendaContract.Clase._ID + " = ?", id);
         return mensaje;
     }
 
