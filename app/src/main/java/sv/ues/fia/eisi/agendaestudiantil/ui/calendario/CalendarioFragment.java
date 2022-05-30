@@ -1,5 +1,8 @@
 package sv.ues.fia.eisi.agendaestudiantil.ui.calendario;
 
+import static sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils.daysInMonthArray;
+import static sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils.monthYearFromDate;
+
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -9,6 +12,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,8 +36,7 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
 
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
-    private LocalDate selectedDate;
-    private Button btnAtras, btnAdelante;
+    private Button btnAtras, btnAdelante, btnSemanal;
 
     public static CalendarioFragment newInstance() {
         return new CalendarioFragment();
@@ -50,14 +53,14 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initWidgets();
-        selectedDate = LocalDate.now();
+        CalendarUtils.selectedDate = LocalDate.now();
         setMonthView();
 
         btnAtras = view.findViewById(R.id.btnAtras);
         btnAtras.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectedDate = selectedDate.minusMonths(1);
+                CalendarUtils.selectedDate = CalendarUtils.selectedDate.minusMonths(1);
                 setMonthView();
             }
         });
@@ -66,8 +69,16 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
         btnAdelante.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                selectedDate = selectedDate.plusMonths(1);
+                CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusMonths(1);
                 setMonthView();
+            }
+        });
+
+        btnSemanal = view.findViewById(R.id.btnSemanal);
+        btnSemanal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.nav_calendario_semanal);
             }
         });
 
@@ -75,8 +86,8 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setMonthView() {
-        monthYearText.setText(monthYearFromDate(selectedDate));
-        ArrayList<String> daysInMonth = daysInMonthArray(selectedDate);
+        monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
+        ArrayList<LocalDate> daysInMonth = daysInMonthArray(CalendarUtils.selectedDate);
 
         CalendarAdapter calendarAdapter = new CalendarAdapter(daysInMonth, this);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 7);
@@ -84,27 +95,7 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
         calendarRecyclerView.setAdapter(calendarAdapter);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private ArrayList<String> daysInMonthArray(LocalDate date) {
-        ArrayList<String> daysInMonthLista = new ArrayList<>();
-        YearMonth yearMonth = YearMonth.from(date);
-        int daysInMonth = yearMonth.lengthOfMonth();
-        LocalDate firstOfMounth = selectedDate.withDayOfMonth(1);
-        int dayOfWeek = firstOfMounth.getDayOfWeek().getValue();
-        for (int i = 1; i <= 42; i++){
-            if(i <= dayOfWeek || i > daysInMonth + dayOfWeek)
-                daysInMonthLista.add("");
-            else
-                daysInMonthLista.add(String.valueOf(i - dayOfWeek));
-        }
-        return daysInMonthLista;
-    }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    private String monthYearFromDate(LocalDate date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
-        return date.format(formatter);
-    }
 
     private void initWidgets() {
         calendarRecyclerView = getView().findViewById(R.id.calendarRecyclerView);
@@ -113,11 +104,10 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
-    public void onItemClick(int position, String dayText) {
-        if (dayText.equals("")){
-            String mensaje = "Fecha seleccionada " + dayText + " " + monthYearFromDate(selectedDate);
-            Toast.makeText(getContext(), mensaje, Toast.LENGTH_LONG).show();
-
+    public void onItemClick(int position, LocalDate date) {
+        if (date != null) {
+            CalendarUtils.selectedDate = date;
+            setMonthView();
         }
     }
 }

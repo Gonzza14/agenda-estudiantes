@@ -348,7 +348,6 @@
         android:name="sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarioFragment"
         android:label="@string/calendario"
         tools:layout="@layout/fragment_calendario">
-        >
         <action
             android:id="@+id/action_nav_calendario_to_nav_agenda"
             app:destination="@id/nav_agenda" />
@@ -373,5 +372,30 @@
         <action
             android:id="@+id/action_nav_calendario_to_nav_tarea"
             app:destination="@id/nav_tarea" />
+        <action
+            android:id="@+id/action_nav_calendario_to_nav_calendario_semanal"
+            app:destination="@id/nav_calendario_semanal" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_calendario_semanal"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.calendario.WeekViewFragment"
+        android:label="@string/calendario_semanal"
+        tools:layout="@layout/fragment_week_view">
+        <action
+            android:id="@+id/action_nav_calendario_semanal_to_nav_calendario"
+            app:destination="@id/nav_calendario" />
+        <action
+            android:id="@+id/action_nav_calendario_semanal_to_nav_agregar_examen"
+            app:destination="@id/nav_agregar_examen" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_agregar_examen"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.examen.AgregarExamenFragment"
+        android:label="@string/agregar_examen"
+        tools:layout="@layout/fragment_agregar_examen">
+        <action
+            android:id="@+id/action_nav_agregar_examen_to_nav_calendario_semanal"
+            app:destination="@id/nav_calendario_semanal" />
     </fragment>
 </navigation>

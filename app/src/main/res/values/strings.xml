@@ -81,5 +81,8 @@
     <string name="viernes">V</string>
     <string name="sabado">S</string>
     <string name="cellDayText">1</string>
+    <string name="calendario_semanal">Semanal</string>
+
+    <string name="agregar_examen">Agregar examen</string>
 
 </resources>
