@@ -31,6 +31,9 @@
         <action
             android:id="@+id/action_nav_agenda_to_nav_horario"
             app:destination="@id/nav_horario" />
+        <action
+            android:id="@+id/action_nav_agenda_to_nav_calendario"
+            app:destination="@id/nav_calendario" />
     </fragment>
 
     <fragment
@@ -59,6 +62,9 @@
         <action
             android:id="@+id/action_nav_tarea_to_nav_horario"
             app:destination="@id/nav_horario" />
+        <action
+            android:id="@+id/action_nav_tarea_to_nav_calendario"
+            app:destination="@id/nav_calendario" />
     </fragment>
 
     <fragment
@@ -87,6 +93,9 @@
         <action
             android:id="@+id/action_nav_examen_to_nav_horario"
             app:destination="@id/nav_horario" />
+        <action
+            android:id="@+id/action_nav_examen_to_nav_calendario"
+            app:destination="@id/nav_calendario" />
     </fragment>
 
     <fragment
@@ -115,6 +124,9 @@
         <action
             android:id="@+id/action_nav_recordatorio_to_nav_horario"
             app:destination="@id/nav_horario" />
+        <action
+            android:id="@+id/action_nav_recordatorio_to_nav_calendario"
+            app:destination="@id/nav_calendario" />
     </fragment>
 
     <fragment
@@ -147,6 +159,9 @@
         <action
             android:id="@+id/action_nav_periodo_to_nav_horario"
             app:destination="@id/nav_horario" />
+        <action
+            android:id="@+id/action_nav_periodo_to_nav_calendario"
+            app:destination="@id/nav_calendario" />
     </fragment>
 
     <fragment
@@ -181,6 +196,9 @@
         <action
             android:id="@+id/action_nav_profesor_to_nav_horario"
             app:destination="@id/nav_horario" />
+        <action
+            android:id="@+id/action_nav_profesor_to_nav_calendario"
+            app:destination="@id/nav_calendario" />
     </fragment>
 
     <fragment
@@ -252,6 +270,9 @@
         <action
             android:id="@+id/action_nav_materia_to_nav_horario2"
             app:destination="@id/nav_horario" />
+        <action
+            android:id="@+id/action_nav_materia_to_nav_calendario"
+            app:destination="@id/nav_calendario" />
     </fragment>
 
     <fragment
@@ -293,6 +314,9 @@
         <action
             android:id="@+id/action_nav_horario_to_nav_agregar_clase"
             app:destination="@id/nav_agregar_clase" />
+        <action
+            android:id="@+id/action_nav_horario_to_nav_calendario"
+            app:destination="@id/nav_calendario" />
     </fragment>
 
     <fragment
@@ -317,5 +341,37 @@
         <action
             android:id="@+id/action_nav_editar_clase_to_nav_agregar_clase"
             app:destination="@id/nav_agregar_clase" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_calendario"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarioFragment"
+        android:label="@string/calendario"
+        tools:layout="@layout/fragment_calendario">
+        >
+        <action
+            android:id="@+id/action_nav_calendario_to_nav_agenda"
+            app:destination="@id/nav_agenda" />
+        <action
+            android:id="@+id/action_nav_calendario_to_nav_horario"
+            app:destination="@id/nav_horario" />
+        <action
+            android:id="@+id/action_nav_calendario_to_nav_materia"
+            app:destination="@id/nav_materia" />
+        <action
+            android:id="@+id/action_nav_calendario_to_nav_periodo"
+            app:destination="@id/nav_periodo" />
+        <action
+            android:id="@+id/action_nav_calendario_to_nav_profesor"
+            app:destination="@id/nav_profesor" />
+        <action
+            android:id="@+id/action_nav_calendario_to_nav_recordatorio"
+            app:destination="@id/nav_recordatorio" />
+        <action
+            android:id="@+id/action_nav_calendario_to_nav_examen"
+            app:destination="@id/nav_examen" />
+        <action
+            android:id="@+id/action_nav_calendario_to_nav_tarea"
+            app:destination="@id/nav_tarea" />
     </fragment>
 </navigation>

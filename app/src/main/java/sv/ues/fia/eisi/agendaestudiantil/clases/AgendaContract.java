@@ -80,6 +80,7 @@ public final class AgendaContract {
     public static class Examen implements BaseColumns{
         public static final String TABLE_NAME = "examen";
         public static final String COLUMN_ID_AGENDA = "id_agenda";
+        public static final String COLUMN_ID_MATERIA = "id_materia";
         public static final String COLUMN_ID_TIPO_EXAMEN = "id_tipo_examen";
         public static final String COLUMN_FECHA = "fecha";
         public static final String COLUMN_HORA = "hora";

@@ -182,6 +182,7 @@ public class BD {
             + AgendaContract.Examen.TABLE_NAME + " ("
             + AgendaContract.Examen._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + AgendaContract.Examen.COLUMN_ID_AGENDA + " INTEGER NOT NULL, "
+            + AgendaContract.Examen.COLUMN_ID_MATERIA + " INTEGER NOT NULL, "
             + AgendaContract.Examen.COLUMN_ID_TIPO_EXAMEN + " INTEGER NOT NULL, "
             + AgendaContract.Examen.COLUMN_FECHA + " TEXT NOT NULL, "
             + AgendaContract.Examen.COLUMN_HORA + " TEXT NOT NULL, "
@@ -190,6 +191,9 @@ public class BD {
             + AgendaContract.Examen.COLUMN_ID_AGENDA + " ) REFERENCES "
             + AgendaContract.Agenda.TABLE_NAME + " ("
             + AgendaContract.Agenda._ID + ") ON DELETE CASCADE, FOREIGN KEY ( "
+            + AgendaContract.Examen.COLUMN_ID_MATERIA + " ) REFERENCES "
+            + AgendaContract.Materia.TABLE_NAME + " ("
+            + AgendaContract.Materia._ID + ") ON DELETE CASCADE, FOREIGN KEY ( "
             + AgendaContract.Examen.COLUMN_ID_TIPO_EXAMEN + " ) REFERENCES "
             + AgendaContract.TipoExamen.TABLE_NAME + " ("
             + AgendaContract.TipoExamen._ID + ") ON DELETE RESTRICT)";
@@ -270,6 +274,26 @@ public class BD {
             = "INSERT INTO "
             + AgendaContract.Agenda.TABLE_NAME + "(" +AgendaContract.Agenda._ID + ", " + AgendaContract.Agenda.COLUMN_NAME + ") VALUES (1,'Agenda predeterminada')";
 
+    private static final String SQL_INSERT_TIPO_EXAMEN
+            = "INSERT INTO "
+            + AgendaContract.TipoExamen.TABLE_NAME + "(" +AgendaContract.TipoExamen._ID + ", " + AgendaContract.TipoExamen.COLUMN_NAME + ") VALUES (1,'Examen parcial')";
+
+    private static final String SQL_INSERT_TIPO_EXAMEN_2
+            = "INSERT INTO "
+            + AgendaContract.TipoExamen.TABLE_NAME + "(" +AgendaContract.TipoExamen._ID + ", " + AgendaContract.TipoExamen.COLUMN_NAME + ") VALUES (2,'Examen corto')";
+
+    private static final String SQL_INSERT_TIPO_EXAMEN_3
+            = "INSERT INTO "
+            + AgendaContract.TipoExamen.TABLE_NAME + "(" +AgendaContract.TipoExamen._ID + ", " + AgendaContract.TipoExamen.COLUMN_NAME + ") VALUES (3,'Evaluado de laboratorio')";
+
+    private static final String SQL_INSERT_TIPO_EXAMEN_4
+            = "INSERT INTO "
+            + AgendaContract.TipoExamen.TABLE_NAME + "(" +AgendaContract.TipoExamen._ID + ", " + AgendaContract.TipoExamen.COLUMN_NAME + ") VALUES (4,'Examen oral')";
+
+    private static final String SQL_INSERT_TIPO_EXAMEN_5
+            = "INSERT INTO "
+            + AgendaContract.TipoExamen.TABLE_NAME + "(" +AgendaContract.TipoExamen._ID + ", " + AgendaContract.TipoExamen.COLUMN_NAME + ") VALUES (5,'Examen escrito')";
+
     private static class DataBaseHelper extends SQLiteOpenHelper{
         private static final String BASE_DATOS = "agenda-bd.s3db";
         private static final int VERSION = 1;
@@ -297,6 +321,12 @@ public class BD {
                 bD.execSQL(SQL_CREATE_ESTUDIO);
                 bD.execSQL(SQL_INSERT_HORARIO);
                 bD.execSQL(SQL_INSERT_AGENDA);
+                bD.execSQL(SQL_INSERT_TIPO_EXAMEN);
+                bD.execSQL(SQL_INSERT_TIPO_EXAMEN_2);
+                bD.execSQL(SQL_INSERT_TIPO_EXAMEN_3);
+                bD.execSQL(SQL_INSERT_TIPO_EXAMEN_4);
+                bD.execSQL(SQL_INSERT_TIPO_EXAMEN_5);
+
             }catch (SQLException e){
                 e.printStackTrace();
             }

@@ -69,4 +69,17 @@
     <string name="hora_inicio">Inicio de la clase</string>
     <string name="hora_fin">Fin de la clase</string>
     <string name="descripcion_clase">Descripcion</string>
+    <string name="atras"><![CDATA[<-]]></string>
+    <string name="adelante"><![CDATA[->]]></string>
+    <string name="mes_año">Mayo 2022</string>
+
+    <string name="domingo">D</string>
+    <string name="lunes">L</string>
+    <string name="martes">Ma</string>
+    <string name="miercoles">Mie</string>
+    <string name="jueves">J</string>
+    <string name="viernes">V</string>
+    <string name="sabado">S</string>
+    <string name="cellDayText">1</string>
+
 </resources>
