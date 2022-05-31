@@ -159,7 +159,7 @@ public class EditarExamenFragment extends Fragment {
                 String estado = helper.actualizar(examen);
                 helper.cerrar();
 
-                ArrayList<Event> events = new ArrayList<>();
+
                 Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 if (Event.eventsList == null)
                     Event.eventsList = new ArrayList<>();
@@ -175,6 +175,35 @@ public class EditarExamenFragment extends Fragment {
                 PrefCofig.writeListInPref(getActivity().getApplicationContext(), Event.eventsList);
                 Toast.makeText(view.getContext(), estado, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).popBackStack();
+            }
+        });
+
+        btnEliminarExamen = view.findViewById(R.id.btnEliminarExamen);
+        btnEliminarExamen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mensaje;
+
+                ArrayList<Event> eventoEliminar = new ArrayList<>();
+                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
+                if (Event.eventsList == null)
+                    Event.eventsList = new ArrayList<>();
+                for (Event event : Event.eventsList){
+                    if (event.getIdEvento() == examen.getIdExamen() && event.getNombre().equals(examen.getNombreExamen())) {
+                        eventoEliminar.add(event);
+                    }
+                }
+                Event.eventsList.removeAll(eventoEliminar);
+                PrefCofig.writeListInPref(getActivity().getApplicationContext(), Event.eventsList);
+
+                examen.setIdExamen(id);
+                helper.abrir();;
+                mensaje = helper.eliminar(examen);
+                helper.cerrar();
+
+                Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
+                Navigation.findNavController(view).popBackStack();
+
             }
         });
 

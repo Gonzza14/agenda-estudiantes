@@ -955,4 +955,13 @@ public class BD {
         return mensaje;
     }
 
+    public String eliminar(ExamenViewModel examen){
+        String mensaje = "Examen eliminado";
+        long contado = 0;
+
+        String[] id = {String.valueOf(examen.getIdExamen())};
+        bD.delete(AgendaContract.Examen.TABLE_NAME,AgendaContract.Examen._ID + " = ?", id);
+        return mensaje;
+    }
+
 }
