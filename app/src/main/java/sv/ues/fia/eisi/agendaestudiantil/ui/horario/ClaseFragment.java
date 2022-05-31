@@ -46,7 +46,6 @@ public class ClaseFragment extends Fragment{
     private int idMateria, idProfesor;
     private ClaseViewModel clase;
     private String diaClase;
-    private int id = 0;
 
     public static ClaseFragment newInstance() {
         return new ClaseFragment();
@@ -151,13 +150,8 @@ public class ClaseFragment extends Fragment{
                 mensaje = helper.insertar(clase);
                 helper.cerrar();
 
-                id = helper.obtenerUltimoIdFilaInsertada();
-
                 Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).popBackStack();
-
-                /*Bundle bundle = new Bundle();
-                bundle.putInt("ID", id);*/
 
                 txtAulaClase.setText("");
                 txtDiaClase.setText("");

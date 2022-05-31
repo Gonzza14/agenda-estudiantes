@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,21 +27,41 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.afollestad.materialdialogs.list.DialogListExtKt;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.CalendarAdapter;
+import sv.ues.fia.eisi.agendaestudiantil.adaptadores.EventAdapter;
+import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
+import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.ui.examen.ExamenViewModel;
 
 
 public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItemListener{
 
+    private BD helper;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
+    private ListView eventListView;
     Button btnSemanaAtras, btnSemanaAdelante;
     FloatingActionButton btnNuevoEvento;
+    /*@RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<ExamenViewModel> examenesPorFecha(LocalDate date){
+        ArrayList<ExamenViewModel> examenes = new ArrayList<>();
+
+        for (ExamenViewModel examen : helper.mostrarExamenes()) {
+            LocalDate fecha = LocalDate.parse(examen.getFechaExamen());
+            if (fecha.equals(date))
+                examenes.add(examen);
+        }
+        return examenes;
+    }*/
+
     public WeekViewFragment() {
         // Required empty public constructor
     }
@@ -63,6 +84,9 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
         super.onViewCreated(view, savedInstanceState);
         initWidgets();
         setWeekView();
+
+        helper = new BD(view.getContext());
+
 
         btnSemanaAtras = view.findViewById(R.id.btnAtras);
         btnSemanaAdelante = view.findViewById(R.id.btnAdelante);
@@ -90,6 +114,45 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
                 showPlainListDialog();
             }
         });
+
+
+        String tiempo, hora = "", amPm, minuto;
+        String [] parts, parts2;
+        int convertirHora;
+        ArrayList<ExamenViewModel> examenes = helper.mostrarExamenes();
+
+        for (int i = 0; i<examenes.size(); i++){
+            Event eventoExamen = new Event();
+            eventoExamen.setIdEvento(examenes.get(i).getIdExamen());
+            eventoExamen.setNombre(examenes.get(i).getNombreExamen());
+            eventoExamen.setFecha(LocalDate.parse(examenes.get(i).getFechaExamen()));
+
+            tiempo = examenes.get(i).getHoraExamen();
+            parts = tiempo.split(" ");
+            parts2 = tiempo.split(":");
+            minuto = parts2[1];
+            amPm = parts[1];
+
+            convertirHora = Integer.parseInt(parts2[0]);
+
+            if (amPm.equals("PM") && convertirHora != 12){
+                convertirHora += 12;
+                hora=convertirHora+":"+minuto.substring(0,2)+":00";
+            }
+            if (amPm.equals("AM") && convertirHora == 12) {
+                convertirHora += 12;
+                hora="0"+convertirHora+":"+minuto.substring(0,2)+":00";
+            }
+            if (amPm.equals("AM"))
+                if (convertirHora < 10)
+                    hora="0"+parts[0]+":00";
+                else
+                    hora=parts[0]+":00";
+
+            eventoExamen.setHora(LocalTime.parse(hora));
+            eventoExamen.setDescripcion(examenes.get(i).getDescripcionExamen());
+            Event.eventsList.add(eventoExamen);
+        }
     }
 
     private void showPlainListDialog() {
@@ -116,12 +179,14 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+        setEventAdapter();
     }
 
 
     private void initWidgets() {
         calendarRecyclerView = getView().findViewById(R.id.calendarRecyclerView);
         monthYearText = getView().findViewById(R.id.mesAñoCalendario);
+        eventListView = getView().findViewById(R.id.eventListView);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -129,5 +194,17 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
     public void onItemClick(int position, LocalDate date) {
         CalendarUtils.selectedDate = date;
         setWeekView();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setEventAdapter();
+    }
+
+    private void setEventAdapter() {
+        ArrayList<Event> dailyEvents = Event.eventsForDate(CalendarUtils.selectedDate);
+        EventAdapter eventAdapter = new EventAdapter(getActivity().getApplicationContext(),dailyEvents);
+        eventListView.setAdapter(eventAdapter);
     }
 }

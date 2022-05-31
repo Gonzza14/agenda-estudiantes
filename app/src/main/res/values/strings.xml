@@ -84,5 +84,9 @@
     <string name="calendario_semanal">Semanal</string>
 
     <string name="agregar_examen">Agregar examen</string>
+    <string name="fecha_examen">Fecha examen</string>
+    <string name="aula">Aula</string>
+    <string name="descripcion_examen">Descripcion examen</string>
+    <string name="hora_del_examen">Hora del examen</string>
 
 </resources>

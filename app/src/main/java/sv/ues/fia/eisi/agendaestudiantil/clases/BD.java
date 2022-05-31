@@ -12,6 +12,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import sv.ues.fia.eisi.agendaestudiantil.ui.examen.ExamenViewModel;
+import sv.ues.fia.eisi.agendaestudiantil.ui.examen.TipoExamenViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.horario.ClaseViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.AgregarPeriodoFragment;
@@ -19,21 +21,6 @@ import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.PeriodoViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorViewModel;
 
 public class BD {
-    private static final String [] camposNotificacion = new String[]{"id_agenda", "id_dia", "con_notificacion", "hora"};
-    private static final String [] camposAgenda = new String[]{"id_agenda", "nombre", "notificacion"};
-    private static final String [] camposRecordatorio = new String[]{"id_recordatorio","id_agenda","fecha", "descripcion_recordatorio"};
-    private static final String [] camposClase = new String[]{"id_clase","id_horario","id_materia", "dia", "inicio", "fin", "descripcion_clase"};
-    private static final String [] camposHorario = new String[]{"id_horario", "notificaciones", "notificacion_clase"};
-    private static final String [] camposMateria = new String[]{"id_materia", "id_profesor", "nombre_materia", "aula_materia"};
-    private static final String [] camposTarea = new String[]{"id_tarea","id_materia","id_agenda","titulo_tarea", "descripcion_tarea", "fecha_tarea", "finalizada", "archivada"};
-    private static final String [] camposExamen = new String[]{"id_examen", "id_agenda", "id_tipo_examen", "fecha_examen", "hora_examen", "descripcion_examen","aula_examen"};
-    private static final String [] camposTipoExamen = new String[]{"id_tipo_examen", "nombre_tipo_examen"};
-    private static final String [] camposEstudio = new String[]{"id_estudio", "dia", "inicio", "fin", "descripcion_estudio"};
-    private static final String [] camposNotaExamen = new String[]{"id_nota_examen", "id_examen", "id_periodo", "calificaion", "fecha", "porcentaje", "descripcion_nota"};
-    private static final String [] camposProfesor = new String[]{"id_profesor, nombre, apellido, telefono,correo"};
-    private static final String [] camposArchivo = new String[]{"id_archivo", "id_tarea", "id_profesor", "id_examen", "nombre_archivo", "extension", "archivo", "tamaño", "tipo_archivo"};
-    private static final String [] camposPeriodo = new String[]{"id_periodo","titulo","inicio", "fin"};
-
     private final Context context;
     private DataBaseHelper bDHelper;
     private SQLiteDatabase bD;
@@ -72,8 +59,10 @@ public class BD {
             = "CREATE TABLE "
             + AgendaContract.Recordatorio.TABLE_NAME + " ("
             + AgendaContract.Recordatorio._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + AgendaContract.Recordatorio.COLUMN_NAME + " TEXT(50) NOT NULL, "
             + AgendaContract.Recordatorio.COLUMN_ID_AGENDA + " INTEGER NOT NULL, "
             + AgendaContract.Recordatorio.COLUMN_FECHA + " TEXT NOT NULL, "
+            + AgendaContract.Recordatorio.COLUMN_HORA + " TEXT NOT NULL, "
             + AgendaContract.Recordatorio.COLUMN_DESCRIPCION + " TEXT(250), FOREIGN KEY ( "
             + AgendaContract.Recordatorio.COLUMN_ID_AGENDA + " ) REFERENCES "
             + AgendaContract.Agenda.TABLE_NAME + " ("
@@ -151,11 +140,13 @@ public class BD {
             = "CREATE TABLE "
             + AgendaContract.Tarea.TABLE_NAME + " ("
             + AgendaContract.Tarea._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + AgendaContract.Tarea.COLUMN_NAME + " TEXT(50) NOT NULL, "
             + AgendaContract.Tarea.COLUMN_ID_MATERIA + " INTEGER NOT NULL, "
             + AgendaContract.Tarea.COLUMN_ID_AGENDA + " INTEGER NOT NULL, "
             + AgendaContract.Tarea.COLUMN_TITULO + " TEXT(100) NOT NULL, "
             + AgendaContract.Tarea.COLUMN_DESCRIPCION + " TEXT(250), "
             + AgendaContract.Tarea.COLUMN_FECHA + " TEXT NOT NULL, "
+            + AgendaContract.Tarea.COLUMN_HORA + " TEXT NOT NULL, "
             + AgendaContract.Tarea.COLUMN_FINALIZADA + " INTEGER DEFAULT 0, "
             + AgendaContract.Tarea.COLUMN_ARCHIVADA + " INTEGER DEFAULT 0, FOREIGN KEY ( "
             + AgendaContract.Tarea.COLUMN_ID_AGENDA + " ) REFERENCES "
@@ -181,6 +172,7 @@ public class BD {
             = "CREATE TABLE "
             + AgendaContract.Examen.TABLE_NAME + " ("
             + AgendaContract.Examen._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + AgendaContract.Examen.COLUMN_NAME + " TEXT(50) NOT NULL, "
             + AgendaContract.Examen.COLUMN_ID_AGENDA + " INTEGER NOT NULL, "
             + AgendaContract.Examen.COLUMN_ID_MATERIA + " INTEGER NOT NULL, "
             + AgendaContract.Examen.COLUMN_ID_TIPO_EXAMEN + " INTEGER NOT NULL, "
@@ -409,6 +401,27 @@ public class BD {
         return mensaje;
     }
 
+    public String insertar(ExamenViewModel examen){
+        String mensaje = "Profesor guardado";
+        long nuevaFilaId = 0;
+
+        ContentValues examenes = new ContentValues();
+        examenes.put(AgendaContract.Examen.COLUMN_NAME, examen.getNombreExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_ID_AGENDA, examen.getIdAgenda());
+        examenes.put(AgendaContract.Examen.COLUMN_ID_MATERIA, examen.getIdMateria());
+        examenes.put(AgendaContract.Examen.COLUMN_ID_TIPO_EXAMEN, examen.getIdTipoExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_FECHA, examen.getFechaExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_HORA, examen.getHoraExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_DESCRIPCION, examen.getDescripcionExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_AULA, examen.getAulaExamen());
+
+        nuevaFilaId = bD.insert(AgendaContract.Examen.TABLE_NAME,null,examenes);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar el examen";
+        return mensaje;
+    }
+
     public String insertar(PeriodoViewModel periodo){
         String mensaje = "Periodo guardado";
         long nuevaFilaId = 0;
@@ -516,6 +529,34 @@ public class BD {
         return listaPeriodos;
     }
 
+    public ArrayList<ExamenViewModel> mostrarExamenes(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<ExamenViewModel> listaExamenes = new ArrayList<>();
+        ExamenViewModel examen = null;
+        Cursor cursorExamenes = null;
+
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME, null);
+
+        if (cursorExamenes.moveToFirst()) {
+            do {
+                examen = new ExamenViewModel();
+                examen.setIdExamen(cursorExamenes.getInt(0));
+                examen.setNombreExamen(cursorExamenes.getString(1));
+                examen.setIdAgenda(cursorExamenes.getInt(2));
+                examen.setIdMateria(cursorExamenes.getInt(3));
+                examen.setIdTipoExamen(cursorExamenes.getInt(4));
+                examen.setFechaExamen(cursorExamenes.getString(5));
+                examen.setHoraExamen(cursorExamenes.getString(6));
+                examen.setDescripcionExamen(cursorExamenes.getString(7));
+                examen.setAulaExamen(cursorExamenes.getString(8));
+                listaExamenes.add(examen);
+            } while (cursorExamenes.moveToNext());
+        }
+            cursorExamenes.close();
+            return listaExamenes;
+    }
+
     public ArrayList<MateriaViewModel> mostrarMaterias(){
         bD = bDHelper.getWritableDatabase();
 
@@ -566,6 +607,27 @@ public class BD {
         }
         cursorClases.close();
         return listaClases;
+    }
+
+    public ArrayList<TipoExamenViewModel> mostrarTipoExamen(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<TipoExamenViewModel> listaTipoExamen = new ArrayList<>();
+        TipoExamenViewModel tipoExamen = null;
+        Cursor cursorTipoExamen = null;
+
+        cursorTipoExamen = bD.rawQuery("SELECT * FROM " + AgendaContract.TipoExamen.TABLE_NAME, null);
+
+        if (cursorTipoExamen.moveToFirst()){
+            do {
+                tipoExamen = new TipoExamenViewModel();
+                tipoExamen.setIdTipoExamen(cursorTipoExamen.getInt(0));
+                tipoExamen.setNombreTipoExamen(cursorTipoExamen.getString(1));
+                listaTipoExamen.add(tipoExamen);
+            }while (cursorTipoExamen.moveToNext());
+        }
+        cursorTipoExamen.close();
+        return listaTipoExamen;
     }
 
     public ClaseViewModel verClase(int id){

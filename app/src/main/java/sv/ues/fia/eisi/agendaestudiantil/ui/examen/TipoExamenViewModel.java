@@ -1,13 +1,16 @@
-package sv.ues.fia.eisi.agendaestudiantil.clases;
+package sv.ues.fia.eisi.agendaestudiantil.ui.examen;
 
-public class TipoExamen {
+import androidx.lifecycle.ViewModel;
+
+public class TipoExamenViewModel extends ViewModel {
+
     private int idTipoExamen;
     private String nombreTipoExamen;
 
-    public TipoExamen() {
+    public TipoExamenViewModel() {
     }
 
-    public TipoExamen(int idTipoExamen, String nombreTipoExamen) {
+    public TipoExamenViewModel(int idTipoExamen, String nombreTipoExamen) {
         this.idTipoExamen = idTipoExamen;
         this.nombreTipoExamen = nombreTipoExamen;
     }
@@ -26,5 +29,9 @@ public class TipoExamen {
 
     public void setNombreTipoExamen(String nombreTipoExamen) {
         this.nombreTipoExamen = nombreTipoExamen;
+    }
+
+    public String toString(){
+        return  nombreTipoExamen;
     }
 }

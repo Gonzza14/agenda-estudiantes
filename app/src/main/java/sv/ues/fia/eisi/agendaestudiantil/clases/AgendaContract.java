@@ -21,8 +21,10 @@ public final class AgendaContract {
 
     public static class Recordatorio implements BaseColumns{
         public static final String TABLE_NAME = "recordatorio";
+        public static final String COLUMN_NAME = "nombre";
         public static final String COLUMN_ID_AGENDA = "id_agenda";
         public static final String COLUMN_FECHA = "fecha";
+        public static final String COLUMN_HORA = "hora";
         public static final String COLUMN_DESCRIPCION = "descripcion";
     }
 
@@ -63,11 +65,13 @@ public final class AgendaContract {
 
     public static class Tarea implements BaseColumns{
         public static final String TABLE_NAME = "tarea";
+        public static final String COLUMN_NAME = "nombre";
         public static final String COLUMN_ID_MATERIA = "id_materia";
         public static final String COLUMN_ID_AGENDA = "id_agenda";
         public static final String COLUMN_TITULO = "titulo";
         public static final String COLUMN_DESCRIPCION = "descripcion";
         public static final String COLUMN_FECHA = "fecha";
+        public static final String COLUMN_HORA = "hora";
         public static final String COLUMN_FINALIZADA = "finalizada";
         public static final String COLUMN_ARCHIVADA = "archivada";
     }
@@ -79,6 +83,7 @@ public final class AgendaContract {
 
     public static class Examen implements BaseColumns{
         public static final String TABLE_NAME = "examen";
+        public static final String COLUMN_NAME = "nombre";
         public static final String COLUMN_ID_AGENDA = "id_agenda";
         public static final String COLUMN_ID_MATERIA = "id_materia";
         public static final String COLUMN_ID_TIPO_EXAMEN = "id_tipo_examen";
