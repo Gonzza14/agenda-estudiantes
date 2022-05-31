@@ -33,6 +33,7 @@
         <entry key="app/src/main/res/layout/fragment_clase.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_crear_agenda.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_editar_clase.xml" value="0.265625" />
+        <entry key="app/src/main/res/layout/fragment_editar_examen.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_editar_profesor.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_event_edit.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_examen.xml" value="0.27717391304347827" />

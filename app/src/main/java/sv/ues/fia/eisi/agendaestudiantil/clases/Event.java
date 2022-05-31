@@ -9,24 +9,14 @@ import java.util.Date;
 public class Event {
     public static ArrayList<Event> eventsList = new ArrayList<>();
 
-    public static ArrayList<Event> eventsForDate(LocalDate date)
-    {
-        ArrayList<Event> events = new ArrayList<>();
-
-        for (Event event : eventsList){
-            if (event.getFecha().equals(date))
-                events.add(event);
-        }
-        return events;
-    }
 
     private int idEvento;
     private String nombre;
-    private LocalDate fecha;
-    private LocalTime hora;
+    private String fecha;
+    private String hora;
     private String descripcion;
 
-    public Event(int idEvento, String nombre, LocalDate fecha, LocalTime hora, String descripcion) {
+    public Event(int idEvento, String nombre, String fecha, String hora, String descripcion) {
         this.idEvento = idEvento;
         this.nombre = nombre;
         this.fecha = fecha;
@@ -53,19 +43,19 @@ public class Event {
         this.nombre = nombre;
     }
 
-    public LocalDate getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
-    public LocalTime getHora() {
+    public String getHora() {
         return hora;
     }
 
-    public void setHora(LocalTime hora) {
+    public void setHora(String hora) {
         this.hora = hora;
     }
 

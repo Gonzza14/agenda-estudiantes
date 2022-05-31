@@ -714,6 +714,31 @@ public class BD {
         return cadena;
     }
 
+    public String obtenerMateriaDeExamen(int id){
+        bD = bDHelper.getWritableDatabase();
+        String cadena = "";
+        Cursor cursor = null;
+        cursor = bD.rawQuery("SELECT " + AgendaContract.Materia.TABLE_NAME + "." + AgendaContract.Materia.COLUMN_NAME + " FROM " + AgendaContract.Examen.TABLE_NAME + ", " + AgendaContract.Materia.TABLE_NAME + " WHERE " + AgendaContract.Examen.TABLE_NAME + "." + AgendaContract.Examen.COLUMN_ID_MATERIA + " = " + AgendaContract.Materia.TABLE_NAME + "." + AgendaContract.Materia._ID + " AND " + AgendaContract.Examen.TABLE_NAME + "." + AgendaContract.Examen._ID + " = " + id, null);
+        if (cursor.moveToFirst()){
+            cadena = cursor.getString(0);
+        }
+        cursor.close();
+        return cadena;
+    }
+
+    public String obtenerTipoExamenDeExamen(int id){
+        bD = bDHelper.getWritableDatabase();
+        String cadena = "";
+        Cursor cursor = null;
+        cursor = bD.rawQuery("SELECT " + AgendaContract.TipoExamen.TABLE_NAME + "." + AgendaContract.TipoExamen.COLUMN_NAME + " FROM " + AgendaContract.Examen.TABLE_NAME + ", " + AgendaContract.TipoExamen.TABLE_NAME + " WHERE " + AgendaContract.Examen.TABLE_NAME + "." + AgendaContract.Examen.COLUMN_ID_TIPO_EXAMEN + " = " + AgendaContract.TipoExamen.TABLE_NAME + "." + AgendaContract.TipoExamen._ID + " AND " + AgendaContract.Examen.TABLE_NAME + "." + AgendaContract.Examen._ID + " = " + id, null);
+        if (cursor.moveToFirst()){
+            cadena = cursor.getString(0);
+        }
+        cursor.close();
+        return cadena;
+    }
+
+
     public String obtenerProfesorDeClase(int id){
         bD = bDHelper.getWritableDatabase();
         String cadena = "";
@@ -726,11 +751,23 @@ public class BD {
         return cadena;
     }
 
-    public int obtenerUltimoIdFilaInsertada(){
+    public int obtenerUltimoIdFilaInsertadaClase(){
         bD = bDHelper.getWritableDatabase();
         int id = 0;
         Cursor cursor = null;
         cursor = bD.rawQuery(" SELECT " + AgendaContract.Clase._ID + " FROM " +AgendaContract.Clase.TABLE_NAME +" ORDER BY " + AgendaContract.Clase._ID + " DESC LIMIT 1;  ", null);
+        if (cursor.moveToFirst()){
+            id = cursor.getInt(0);
+        }
+        cursor.close();
+        return id;
+    }
+
+    public int obtenerUltimoIdFilaInsertadaExamen(){
+        bD = bDHelper.getWritableDatabase();
+        int id = 0;
+        Cursor cursor = null;
+        cursor = bD.rawQuery(" SELECT " + AgendaContract.Examen._ID + " FROM " +AgendaContract.Examen.TABLE_NAME +" ORDER BY " + AgendaContract.Examen._ID + " DESC LIMIT 1;  ", null);
         if (cursor.moveToFirst()){
             id = cursor.getInt(0);
         }
@@ -776,6 +813,30 @@ public class BD {
         }
         cursorMaterias.close();
         return materia;
+    }
+
+    public ExamenViewModel verExamen(int id){
+        bD = bDHelper.getWritableDatabase();
+
+        ExamenViewModel examen = null;
+        Cursor cursorExamenes = null;
+
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen._ID  + " = " + id + " LIMIT 1", null);
+
+        if (cursorExamenes.moveToFirst()){
+            examen = new ExamenViewModel();
+            examen.setIdExamen(cursorExamenes.getInt(0));
+            examen.setNombreExamen(cursorExamenes.getString(1));
+            examen.setIdAgenda(cursorExamenes.getInt(2));
+            examen.setIdMateria(cursorExamenes.getInt(3));
+            examen.setIdTipoExamen(cursorExamenes.getInt(4));
+            examen.setFechaExamen(cursorExamenes.getString(5));
+            examen.setHoraExamen(cursorExamenes.getString(6));
+            examen.setDescripcionExamen(cursorExamenes.getString(7));
+            examen.setAulaExamen(cursorExamenes.getString(8));
+        }
+        cursorExamenes.close();
+        return examen;
     }
 
     public String actualizar(ProfesorViewModel profesor){
@@ -836,6 +897,24 @@ public class BD {
         bD.update(AgendaContract.Clase.TABLE_NAME, clases,AgendaContract.Clase._ID + " = ?", id);
 
         return "Clase actualizada correctamente";
+    }
+
+    public String actualizar(ExamenViewModel examen){
+        String[] id = {String.valueOf(examen.getIdExamen())};
+        ContentValues examenes = new ContentValues();
+
+        examenes.put(AgendaContract.Examen.COLUMN_NAME, examen.getNombreExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_ID_AGENDA, examen.getIdAgenda());
+        examenes.put(AgendaContract.Examen.COLUMN_ID_MATERIA, examen.getIdMateria());
+        examenes.put(AgendaContract.Examen.COLUMN_ID_TIPO_EXAMEN, examen.getIdTipoExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_FECHA, examen.getFechaExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_HORA, examen.getHoraExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_DESCRIPCION, examen.getDescripcionExamen());
+        examenes.put(AgendaContract.Examen.COLUMN_AULA, examen.getAulaExamen());
+
+        bD.update(AgendaContract.Examen.TABLE_NAME, examenes,AgendaContract.Examen._ID + " = ?", id);
+
+        return "Examen actualizado correctamente";
     }
 
 

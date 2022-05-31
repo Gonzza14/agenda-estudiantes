@@ -25,8 +25,6 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.ArrayList;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
@@ -38,22 +36,27 @@ import sv.ues.fia.eisi.agendaestudiantil.clases.TimePickerFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
 import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
 
-public class AgregarExamenFragment extends Fragment {
-
+public class EditarExamenFragment extends Fragment {
+    private String registroMateria, registroTipoExamen;
     private Spinner spMateriaExamen, spTipoExamen;
     private EditText txtFechaExamen, txtHoraExamen, txtDescripcionExamen, txtAulaExamen;
-    private FloatingActionButton btnGuardarExamen;
+    private FloatingActionButton btnEditarExamen, btnEliminarExamen;
+    private ArrayAdapter<MateriaViewModel> adaptadorMaterias;
+    private ArrayAdapter<TipoExamenViewModel> adaptadorTiposExamenes;
     private BD helper;
     private int idMateria, idTipoExamen;
     private ExamenViewModel examen;
-    private int id;
-    public AgregarExamenFragment() {
+    private int id = 0;
+
+
+    public EditarExamenFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -61,14 +64,13 @@ public class AgregarExamenFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         examen = new ViewModelProvider(this).get(ExamenViewModel.class);
-        return inflater.inflate(R.layout.fragment_agregar_examen, container, false);
+        return inflater.inflate(R.layout.fragment_editar_examen, container, false);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         helper = new BD(view.getContext());
         txtDescripcionExamen = view.findViewById(R.id.txtDescripcionExamen);
         txtAulaExamen = view.findViewById(R.id.txtAulaExamen);
@@ -92,7 +94,7 @@ public class AgregarExamenFragment extends Fragment {
 
         spMateriaExamen = view.findViewById(R.id.spMateriaExamen);
         ArrayList<MateriaViewModel> materias = helper.mostrarMaterias();
-        ArrayAdapter<MateriaViewModel> adaptadorMaterias = new ArrayAdapter<>(view.getContext(),androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, materias);
+        adaptadorMaterias = new ArrayAdapter<>(view.getContext(),androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, materias);
         spMateriaExamen.setAdapter(adaptadorMaterias);
 
         spMateriaExamen.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -109,7 +111,7 @@ public class AgregarExamenFragment extends Fragment {
 
         spTipoExamen = view.findViewById(R.id.spTipoExamen);
         ArrayList<TipoExamenViewModel> tipoExamenes = helper.mostrarTipoExamen();
-        ArrayAdapter<TipoExamenViewModel> adaptadorTiposExamenes = new ArrayAdapter<>(view.getContext(),androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, tipoExamenes);
+        adaptadorTiposExamenes = new ArrayAdapter<>(view.getContext(),androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, tipoExamenes);
         spTipoExamen.setAdapter(adaptadorTiposExamenes);
 
         spTipoExamen.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -124,47 +126,58 @@ public class AgregarExamenFragment extends Fragment {
             }
         });
 
-        btnGuardarExamen = view.findViewById(R.id.btnGuardarExamen);
-        btnGuardarExamen.setOnClickListener(new View.OnClickListener() {
+        id = (int) getArguments().getInt("ID");
+
+        examen = helper.verExamen(id);
+
+        registroMateria = helper.obtenerMateriaDeExamen(id);
+        registroTipoExamen = helper.obtenerTipoExamenDeExamen(id);
+
+        if (examen !=null){
+            txtAulaExamen.setText(examen.getAulaExamen());
+            txtDescripcionExamen.setText(examen.getDescripcionExamen());
+            txtFechaExamen.setText(examen.getFechaExamen());
+            txtHoraExamen.setText(examen.getHoraExamen());
+            spMateriaExamen.setSelection(obtenerPosicionMateria(spMateriaExamen, registroMateria));
+            spTipoExamen.setSelection(obtenerPosicionTipoExamen(spTipoExamen, registroTipoExamen));
+        }
+
+        btnEditarExamen = view.findViewById(R.id.btnEditarExamen);
+        btnEditarExamen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String mensaje;
-                String aulaExamen = txtAulaExamen.getText().toString();
-                String descripcionExamen = txtDescripcionExamen.getText().toString();
-                String fechaExamen = txtFechaExamen.getText().toString();
-                String horaExamen = txtHoraExamen.getText().toString();
-
                 examen.setNombreExamen("Examen");
                 examen.setIdAgenda(1);
                 examen.setIdMateria(idMateria);
                 examen.setIdTipoExamen(idTipoExamen);
-                examen.setFechaExamen(fechaExamen);
-                examen.setHoraExamen(horaExamen);
-                examen.setDescripcionExamen(descripcionExamen);
-                examen.setAulaExamen(aulaExamen);
+                examen.setFechaExamen(txtFechaExamen.getText().toString());
+                examen.setHoraExamen(txtHoraExamen.getText().toString());
+                examen.setDescripcionExamen(txtDescripcionExamen.getText().toString());
+                examen.setAulaExamen(txtAulaExamen.getText().toString());
 
                 helper.abrir();
-                mensaje = helper.insertar(examen);
+                String estado = helper.actualizar(examen);
                 helper.cerrar();
 
-                id = helper.obtenerUltimoIdFilaInsertadaExamen();
-
-                examen = helper.verExamen(id);
-
-                Event eventoExamen = new Event();
-                eventoExamen.setIdEvento(examen.getIdExamen());
-                eventoExamen.setNombre(examen.getNombreExamen());
-                eventoExamen.setFecha(examen.getFechaExamen());
-                eventoExamen.setHora(examen.getHoraExamen());
-                eventoExamen.setDescripcion(examen.getDescripcionExamen());
-                Event.eventsList.add(eventoExamen);
+                ArrayList<Event> events = new ArrayList<>();
+                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
+                if (Event.eventsList == null)
+                    Event.eventsList = new ArrayList<>();
+                for (Event event : Event.eventsList){
+                    if (event.getIdEvento() == examen.getIdExamen() && event.getNombre().equals(examen.getNombreExamen())){
+                        event.setIdEvento(examen.getIdExamen());
+                        event.setNombre(examen.getNombreExamen());
+                        event.setFecha(examen.getFechaExamen());
+                        event.setHora(examen.getHoraExamen());
+                        event.setDescripcion(examen.getDescripcionExamen());
+                    }
+                }
                 PrefCofig.writeListInPref(getActivity().getApplicationContext(), Event.eventsList);
-
-                Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), estado, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).popBackStack();
-
             }
         });
+
     }
 
     private void showDatePickerDialog(final EditText editText) {
@@ -203,5 +216,25 @@ public class AgregarExamenFragment extends Fragment {
             }
         });
         newFragment.show(getActivity().getSupportFragmentManager(),"timePicker");
+    }
+
+    public int obtenerPosicionMateria(Spinner spinner, String valor){
+        int position = 0;
+        for (int i = 0; i <adaptadorMaterias.getCount(); i++){
+            if (valor.equals(adaptadorMaterias.getItem(i).toString())){
+                position = i;
+            }
+        }
+        return position;
+    }
+
+    public int obtenerPosicionTipoExamen(Spinner spinner, String valor){
+        int position = 0;
+        for (int i = 0; i < adaptadorTiposExamenes.getCount(); i++){
+            if (valor.equals(adaptadorTiposExamenes.getItem(i).toString())){
+                position = i;
+            }
+        }
+        return position;
     }
 }

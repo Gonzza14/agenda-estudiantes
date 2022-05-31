@@ -88,5 +88,6 @@
     <string name="aula">Aula</string>
     <string name="descripcion_examen">Descripcion examen</string>
     <string name="hora_del_examen">Hora del examen</string>
+    <string name="editar_examen">Editar examen</string>
 
 </resources>
