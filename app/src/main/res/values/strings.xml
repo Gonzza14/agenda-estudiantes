@@ -89,5 +89,12 @@
     <string name="descripcion_examen">Descripcion examen</string>
     <string name="hora_del_examen">Hora del examen</string>
     <string name="editar_examen">Editar examen</string>
+    <string name="hora_de_entrega">Hora de entrega</string>
+    <string name="titulo_de_la_tarea">Titulo de la tarea</string>
+    <string name="descripcion_de_la_tarea">Descripcion de la tarea</string>
+    <string name="fecha_de_la_tarea">Fecha de la tarea</string>
 
+
+    <string name="agregar_tarea">Agregar tarea</string>
+    <string name="editar_tarea">Editar tarea</string>
 </resources>

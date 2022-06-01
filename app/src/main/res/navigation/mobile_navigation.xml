@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_nav_tarea_to_nav_calendario"
             app:destination="@id/nav_calendario" />
+        <action
+            android:id="@+id/action_nav_tarea_to_nav_agregar_tarea"
+            app:destination="@id/nav_agregar_tarea" />
     </fragment>
 
     <fragment
@@ -96,6 +99,9 @@
         <action
             android:id="@+id/action_nav_examen_to_nav_calendario"
             app:destination="@id/nav_calendario" />
+        <action
+            android:id="@+id/action_nav_examen_to_nav_agregar_examen"
+            app:destination="@id/nav_agregar_examen" />
     </fragment>
 
     <fragment
@@ -391,6 +397,12 @@
         <action
             android:id="@+id/action_nav_calendario_semanal_to_nav_editar_examen"
             app:destination="@id/nav_editar_examen" />
+        <action
+            android:id="@+id/action_nav_calendario_semanal_to_nav_agregar_tarea"
+            app:destination="@id/nav_agregar_tarea" />
+        <action
+            android:id="@+id/action_nav_calendario_semanal_to_nav_editar_tarea"
+            app:destination="@id/nav_editar_tarea" />
     </fragment>
     <fragment
         android:id="@+id/nav_agregar_examen"
@@ -400,15 +412,41 @@
         <action
             android:id="@+id/action_nav_agregar_examen_to_nav_calendario_semanal"
             app:destination="@id/nav_calendario_semanal" />
+        <action
+            android:id="@+id/action_nav_agregar_examen_to_nav_examen"
+            app:destination="@id/nav_examen" />
     </fragment>
 
     <fragment
         android:id="@+id/nav_editar_examen"
         android:name="sv.ues.fia.eisi.agendaestudiantil.ui.examen.EditarExamenFragment"
         android:label="@string/editar_examen"
-        tools:layout="@layout/fragment_editar_examen">>
+        tools:layout="@layout/fragment_editar_examen">
         <action
             android:id="@+id/action_nav_editar_examen_to_nav_calendario_semanal"
+            app:destination="@id/nav_calendario_semanal" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_agregar_tarea"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.tarea.AgregarTareaFragment"
+        android:label="@string/agregar_tarea"
+        tools:layout="@layout/fragment_agregar_tarea">
+        <action
+            android:id="@+id/action_nav_agregar_tarea_to_nav_calendario_semanal"
+            app:destination="@id/nav_calendario_semanal" />
+        <action
+            android:id="@+id/action_nav_agregar_tarea_to_nav_tarea"
+            app:destination="@id/nav_tarea" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_editar_tarea"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.tarea.EditarTareaFragment"
+        android:label="@string/editar_tarea"
+        tools:layout="@layout/fragment_editar_tarea">
+        <action
+            android:id="@+id/action_nav_editar_tarea_to_nav_calendario_semanal"
             app:destination="@id/nav_calendario_semanal" />
     </fragment>
 </navigation>

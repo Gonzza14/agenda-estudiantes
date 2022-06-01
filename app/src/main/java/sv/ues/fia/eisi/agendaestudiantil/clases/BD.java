@@ -19,6 +19,7 @@ import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.AgregarPeriodoFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.PeriodoViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorViewModel;
+import sv.ues.fia.eisi.agendaestudiantil.ui.tarea.TareaViewModel;
 
 public class BD {
     private final Context context;
@@ -402,7 +403,7 @@ public class BD {
     }
 
     public String insertar(ExamenViewModel examen){
-        String mensaje = "Profesor guardado";
+        String mensaje = "Examen guardada";
         long nuevaFilaId = 0;
 
         ContentValues examenes = new ContentValues();
@@ -419,6 +420,28 @@ public class BD {
 
         if (nuevaFilaId == -1 || nuevaFilaId == 0)
             mensaje = "Error al insertar el examen";
+        return mensaje;
+    }
+
+    public String insertar(TareaViewModel tarea){
+        String mensaje = "Tarea guardada";
+        long nuevaFilaId = 0;
+
+        ContentValues tareas = new ContentValues();
+        tareas.put(AgendaContract.Tarea.COLUMN_NAME, tarea.getNombre());
+        tareas.put(AgendaContract.Tarea.COLUMN_ID_MATERIA, tarea.getIdMateria());
+        tareas.put(AgendaContract.Tarea.COLUMN_ID_AGENDA, tarea.getIdAgenda());
+        tareas.put(AgendaContract.Tarea.COLUMN_TITULO, tarea.getTituloTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_DESCRIPCION, tarea.getDescripcionTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_FECHA, tarea.getFechaTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_HORA, tarea.getHoraTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_FINALIZADA, tarea.getFinalizadaTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_ARCHIVADA, tarea.getArchivadaTarea());
+
+        nuevaFilaId = bD.insert(AgendaContract.Tarea.TABLE_NAME,null,tareas);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar la tarea";
         return mensaje;
     }
 
@@ -726,6 +749,18 @@ public class BD {
         return cadena;
     }
 
+    public String obtenerMateriaDeTarea(int id){
+        bD = bDHelper.getWritableDatabase();
+        String cadena = "";
+        Cursor cursor = null;
+        cursor = bD.rawQuery("SELECT " + AgendaContract.Materia.TABLE_NAME + "." + AgendaContract.Materia.COLUMN_NAME + " FROM " + AgendaContract.Tarea.TABLE_NAME + ", " + AgendaContract.Materia.TABLE_NAME + " WHERE " + AgendaContract.Tarea.TABLE_NAME + "." + AgendaContract.Tarea.COLUMN_ID_MATERIA + " = " + AgendaContract.Materia.TABLE_NAME + "." + AgendaContract.Materia._ID + " AND " + AgendaContract.Tarea.TABLE_NAME + "." + AgendaContract.Tarea._ID + " = " + id, null);
+        if (cursor.moveToFirst()){
+            cadena = cursor.getString(0);
+        }
+        cursor.close();
+        return cadena;
+    }
+
     public String obtenerTipoExamenDeExamen(int id){
         bD = bDHelper.getWritableDatabase();
         String cadena = "";
@@ -768,6 +803,18 @@ public class BD {
         int id = 0;
         Cursor cursor = null;
         cursor = bD.rawQuery(" SELECT " + AgendaContract.Examen._ID + " FROM " +AgendaContract.Examen.TABLE_NAME +" ORDER BY " + AgendaContract.Examen._ID + " DESC LIMIT 1;  ", null);
+        if (cursor.moveToFirst()){
+            id = cursor.getInt(0);
+        }
+        cursor.close();
+        return id;
+    }
+
+    public int obtenerUltimoIdFilaInsertadaTarea(){
+        bD = bDHelper.getWritableDatabase();
+        int id = 0;
+        Cursor cursor = null;
+        cursor = bD.rawQuery(" SELECT " + AgendaContract.Tarea._ID + " FROM " +AgendaContract.Tarea.TABLE_NAME +" ORDER BY " + AgendaContract.Tarea._ID + " DESC LIMIT 1;  ", null);
         if (cursor.moveToFirst()){
             id = cursor.getInt(0);
         }
@@ -837,6 +884,31 @@ public class BD {
         }
         cursorExamenes.close();
         return examen;
+    }
+
+    public TareaViewModel verTarea(int id){
+        bD = bDHelper.getWritableDatabase();
+
+        TareaViewModel tarea = null;
+        Cursor cursorTareas = null;
+
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea._ID  + " = " + id + " LIMIT 1", null);
+
+        if (cursorTareas.moveToFirst()){
+            tarea = new TareaViewModel();
+            tarea.setIdTarea(cursorTareas.getInt(0));
+            tarea.setNombre(cursorTareas.getString(1));
+            tarea.setIdMateria(cursorTareas.getInt(2));
+            tarea.setIdAgenda(cursorTareas.getInt(3));
+            tarea.setTituloTarea(cursorTareas.getString(4));
+            tarea.setDescripcionTarea(cursorTareas.getString(5));
+            tarea.setFechaTarea(cursorTareas.getString(6));
+            tarea.setHoraTarea(cursorTareas.getString(7));
+            tarea.setFinalizadaTarea(cursorTareas.getInt(8));
+            tarea.setArchivadaTarea(cursorTareas.getInt(9));
+        }
+        cursorTareas.close();
+        return tarea;
     }
 
     public String actualizar(ProfesorViewModel profesor){
@@ -917,7 +989,24 @@ public class BD {
         return "Examen actualizado correctamente";
     }
 
+    public String actualizar(TareaViewModel tarea){
+        String[] id = {String.valueOf(tarea.getIdTarea())};
+        ContentValues tareas = new ContentValues();
 
+        tareas.put(AgendaContract.Tarea.COLUMN_NAME, tarea.getNombre());
+        tareas.put(AgendaContract.Tarea.COLUMN_ID_MATERIA, tarea.getIdMateria());
+        tareas.put(AgendaContract.Tarea.COLUMN_ID_AGENDA, tarea.getIdAgenda());
+        tareas.put(AgendaContract.Tarea.COLUMN_TITULO, tarea.getTituloTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_DESCRIPCION, tarea.getDescripcionTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_FECHA, tarea.getFechaTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_HORA, tarea.getHoraTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_FINALIZADA, tarea.getFinalizadaTarea());
+        tareas.put(AgendaContract.Tarea.COLUMN_ARCHIVADA, tarea.getArchivadaTarea());
+
+        bD.update(AgendaContract.Tarea.TABLE_NAME, tareas,AgendaContract.Tarea._ID + " = ?", id);
+
+        return "Tarea actualizado correctamente";
+    }
 
     public String eliminar(ProfesorViewModel profesor){
         String mensaje = "Profesor eliminado";
@@ -961,6 +1050,15 @@ public class BD {
 
         String[] id = {String.valueOf(examen.getIdExamen())};
         bD.delete(AgendaContract.Examen.TABLE_NAME,AgendaContract.Examen._ID + " = ?", id);
+        return mensaje;
+    }
+
+    public String eliminar(TareaViewModel tarea){
+        String mensaje = "Tarea eliminada";
+        long contado = 0;
+
+        String[] id = {String.valueOf(tarea.getIdTarea())};
+        bD.delete(AgendaContract.Tarea.TABLE_NAME,AgendaContract.Tarea._ID + " = ?", id);
         return mensaje;
     }
 

@@ -71,7 +71,10 @@ public class EventAdapter extends ArrayAdapter<Event> {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("ID", event.getIdEvento());
-                Navigation.findNavController(view).navigate(R.id.nav_editar_examen, bundle);
+                if (event.getNombre().equals("Examen"))
+                    Navigation.findNavController(view).navigate(R.id.nav_editar_examen, bundle);
+                else if (event.getNombre().equals("Tarea"))
+                    Navigation.findNavController(view).navigate(R.id.nav_editar_tarea, bundle);
             }
         });
         return convertView;

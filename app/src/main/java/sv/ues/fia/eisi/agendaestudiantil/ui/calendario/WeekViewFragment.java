@@ -179,6 +179,8 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
         MaterialDialog dialog = new MaterialDialog(getContext(), MaterialDialog.getDEFAULT_BEHAVIOR());
         dialog.title(null, "Seleccione el evento");
         DialogListExtKt.listItems(dialog, null, list, null, false, (materialDialog, integer, s) -> {
+            if (integer == 0)
+                Navigation.findNavController(getView()).navigate(R.id.nav_agregar_tarea);
             if (integer == 1)
                 Navigation.findNavController(getView()).navigate(R.id.nav_agregar_examen);
             dialog.dismiss();
