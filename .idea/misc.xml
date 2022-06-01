@@ -28,6 +28,7 @@
         <entry key="app/src/main/res/layout/fragment_agregar_materia.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_agregar_periodo.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_agregar_profesor.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_agregar_recordatorio.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_agregar_tarea.xml" value="0.16101694915254236" />
         <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.3541666666666667" />
         <entry key="app/src/main/res/layout/fragment_calendario.xml" value="0.265625" />
@@ -36,6 +37,7 @@
         <entry key="app/src/main/res/layout/fragment_editar_clase.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_editar_examen.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_editar_profesor.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_editar_recordatorio.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_editar_tarea.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_event_edit.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_examen.xml" value="0.27717391304347827" />

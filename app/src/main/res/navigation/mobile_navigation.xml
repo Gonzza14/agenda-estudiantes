@@ -133,6 +133,9 @@
         <action
             android:id="@+id/action_nav_recordatorio_to_nav_calendario"
             app:destination="@id/nav_calendario" />
+        <action
+            android:id="@+id/action_nav_recordatorio_to_nav_agregar_recordatorio"
+            app:destination="@id/nav_agregar_recordatorio" />
     </fragment>
 
     <fragment
@@ -403,6 +406,12 @@
         <action
             android:id="@+id/action_nav_calendario_semanal_to_nav_editar_tarea"
             app:destination="@id/nav_editar_tarea" />
+        <action
+            android:id="@+id/action_nav_calendario_semanal_to_nav_agregar_recordatorio"
+            app:destination="@id/nav_agregar_recordatorio" />
+        <action
+            android:id="@+id/action_nav_calendario_semanal_to_nav_editar_recordatorio"
+            app:destination="@id/nav_editar_recordatorio" />
     </fragment>
     <fragment
         android:id="@+id/nav_agregar_examen"
@@ -447,6 +456,29 @@
         tools:layout="@layout/fragment_editar_tarea">
         <action
             android:id="@+id/action_nav_editar_tarea_to_nav_calendario_semanal"
+            app:destination="@id/nav_calendario_semanal" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_agregar_recordatorio"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.recordatorio.AgregarRecordatorioFragment"
+        android:label="@string/agregar_recordatorio"
+        tools:layout="@layout/fragment_agregar_recordatorio">
+        <action
+            android:id="@+id/action_nav_agregar_recordatorio_to_nav_calendario_semanal"
+            app:destination="@id/nav_calendario_semanal" />
+        <action
+            android:id="@+id/action_nav_agregar_recordatorio_to_nav_recordatorio"
+            app:destination="@id/nav_recordatorio" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_editar_recordatorio"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.recordatorio.EditarRecordatorioFragment"
+        android:label="@string/editar_recordatorio"
+        tools:layout="@layout/fragment_editar_recordatorio">
+        <action
+            android:id="@+id/action_nav_editar_recordatorio_to_nav_calendario_semanal"
             app:destination="@id/nav_calendario_semanal" />
     </fragment>
 </navigation>

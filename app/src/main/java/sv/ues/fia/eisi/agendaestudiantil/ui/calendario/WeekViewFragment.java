@@ -183,6 +183,8 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
                 Navigation.findNavController(getView()).navigate(R.id.nav_agregar_tarea);
             if (integer == 1)
                 Navigation.findNavController(getView()).navigate(R.id.nav_agregar_examen);
+            if (integer == 2)
+                Navigation.findNavController(getView()).navigate(R.id.nav_agregar_recordatorio);
             dialog.dismiss();
             return null;
         });

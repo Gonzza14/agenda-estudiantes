@@ -19,6 +19,7 @@ import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.AgregarPeriodoFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.PeriodoViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.profesor.ProfesorViewModel;
+import sv.ues.fia.eisi.agendaestudiantil.ui.recordatorio.RecordatorioViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.tarea.TareaViewModel;
 
 public class BD {
@@ -501,6 +502,24 @@ public class BD {
         return mensaje;
     }
 
+    public String insertar(RecordatorioViewModel recordatorio){
+        String mensaje = "Recordatorio guardado";
+        long nuevaFilaId = 0;
+
+        ContentValues recordatorios = new ContentValues();
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_NAME, recordatorio.getNombreRecordatorio());
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_ID_AGENDA, recordatorio.getIdAgenda());
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_FECHA, recordatorio.getFecha());
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_HORA, recordatorio.getHora());
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_DESCRIPCION, recordatorio.getDescripcionRecordatorio());
+
+        nuevaFilaId = bD.insert(AgendaContract.Recordatorio.TABLE_NAME, null, recordatorios);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar el recordatorio";
+        return mensaje;
+    }
+
     public ArrayList<ProfesorViewModel> mostrarProfesores(){
         bD = bDHelper.getWritableDatabase();
 
@@ -677,8 +696,6 @@ public class BD {
         return clase;
     }
 
-
-
     public ProfesorViewModel verProfesor(int id){
         bD = bDHelper.getWritableDatabase();
 
@@ -822,6 +839,18 @@ public class BD {
         return id;
     }
 
+    public int obtenerUltimoIdFilaInsertadaRecordatorio(){
+        bD = bDHelper.getWritableDatabase();
+        int id = 0;
+        Cursor cursor = null;
+        cursor = bD.rawQuery(" SELECT " + AgendaContract.Recordatorio._ID + " FROM " +AgendaContract.Recordatorio.TABLE_NAME +" ORDER BY " + AgendaContract.Recordatorio._ID + " DESC LIMIT 1;  ", null);
+        if (cursor.moveToFirst()){
+            id = cursor.getInt(0);
+        }
+        cursor.close();
+        return id;
+    }
+
     public PeriodoViewModel verPeriodo(int id){
         bD = bDHelper.getWritableDatabase();
 
@@ -909,6 +938,26 @@ public class BD {
         }
         cursorTareas.close();
         return tarea;
+    }
+
+    public RecordatorioViewModel verRecordatorio(int id) {
+        bD = bDHelper.getWritableDatabase();
+        RecordatorioViewModel recordatorio = null;
+        Cursor cursorRecordatorios = null;
+
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio._ID  + " = " + id + " LIMIT 1", null);
+
+        if (cursorRecordatorios.moveToFirst()){
+            recordatorio = new RecordatorioViewModel();
+            recordatorio.setIdRecordatorio(cursorRecordatorios.getInt(0));
+            recordatorio.setNombreRecordatorio(cursorRecordatorios.getString(1));
+            recordatorio.setIdAgenda(cursorRecordatorios.getInt(2));
+            recordatorio.setFecha(cursorRecordatorios.getString(3));
+            recordatorio.setHora(cursorRecordatorios.getString(4));
+            recordatorio.setDescripcionRecordatorio(cursorRecordatorios.getString(5));
+        }
+        cursorRecordatorios.close();
+        return recordatorio;
     }
 
     public String actualizar(ProfesorViewModel profesor){
@@ -1005,7 +1054,22 @@ public class BD {
 
         bD.update(AgendaContract.Tarea.TABLE_NAME, tareas,AgendaContract.Tarea._ID + " = ?", id);
 
-        return "Tarea actualizado correctamente";
+        return "Tarea actualizada correctamente";
+    }
+
+    public String actualizar(RecordatorioViewModel recordatorio){
+        String[] id = {String.valueOf(recordatorio.getIdRecordatorio())};
+        ContentValues recordatorios = new ContentValues();
+
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_NAME, recordatorio.getNombreRecordatorio());
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_ID_AGENDA, recordatorio.getIdAgenda());
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_FECHA, recordatorio.getFecha());
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_HORA, recordatorio.getHora());
+        recordatorios.put(AgendaContract.Recordatorio.COLUMN_DESCRIPCION, recordatorio.getDescripcionRecordatorio());
+
+        bD.update(AgendaContract.Recordatorio.TABLE_NAME, recordatorios,AgendaContract.Recordatorio._ID + " = ?", id);
+
+        return "Recordatorio actualizado correctamente";
     }
 
     public String eliminar(ProfesorViewModel profesor){
@@ -1061,5 +1125,15 @@ public class BD {
         bD.delete(AgendaContract.Tarea.TABLE_NAME,AgendaContract.Tarea._ID + " = ?", id);
         return mensaje;
     }
+
+    public String eliminar(RecordatorioViewModel recordatorio){
+        String mensaje = "Recordatorio eliminado";
+        long contado = 0;
+
+        String[] id = {String.valueOf(recordatorio.getIdRecordatorio())};
+        bD.delete(AgendaContract.Recordatorio.TABLE_NAME,AgendaContract.Recordatorio._ID + " = ?", id);
+        return mensaje;
+    }
+
 
 }

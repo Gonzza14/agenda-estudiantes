@@ -97,4 +97,9 @@
 
     <string name="agregar_tarea">Agregar tarea</string>
     <string name="editar_tarea">Editar tarea</string>
+    <string name="hora_del_recordatorio">Hora del recordatorio</string>
+    <string name="descripcion_de_recordatorio">Descripcion de recordatorio</string>
+    <string name="fecha_del_recordatorio">Fecha del recordatorio</string>
+    <string name="agregar_recordatorio">Agregar recordatorio</string>
+    <string name="editar_recordatorio">Editar recordatorio</string>
 </resources>

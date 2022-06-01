@@ -75,6 +75,8 @@ public class EventAdapter extends ArrayAdapter<Event> {
                     Navigation.findNavController(view).navigate(R.id.nav_editar_examen, bundle);
                 else if (event.getNombre().equals("Tarea"))
                     Navigation.findNavController(view).navigate(R.id.nav_editar_tarea, bundle);
+                else if (event.getNombre().equals("Recordatorio"))
+                    Navigation.findNavController(view).navigate(R.id.nav_editar_recordatorio, bundle);
             }
         });
         return convertView;
