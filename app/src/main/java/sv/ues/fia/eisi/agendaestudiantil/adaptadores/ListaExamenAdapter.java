@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.agendaestudiantil.adaptadores;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
@@ -43,6 +46,11 @@ public class ListaExamenAdapter extends RecyclerView.Adapter<ListaExamenAdapter.
     @Override
     public int getItemCount() {
         return listaExamen.size();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void ordenarPorFecha(){
+        Collections.sort(listaExamen, ExamenViewModel.dateComparator);
     }
 
     public class ExamenViewHolder extends RecyclerView.ViewHolder {

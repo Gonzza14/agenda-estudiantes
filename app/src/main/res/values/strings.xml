@@ -102,4 +102,14 @@
     <string name="fecha_del_recordatorio">Fecha del recordatorio</string>
     <string name="agregar_recordatorio">Agregar recordatorio</string>
     <string name="editar_recordatorio">Editar recordatorio</string>
+
+    <string-array name="agenda_fechas">
+        <item>Ayer</item>
+        <item>Hoy</item>
+        <item>Mañana</item>
+        <item>Proximos 7 dias</item>
+        <item>Este mes</item>
+        <item>Siguiente mes</item>
+        <item>Todo</item>
+    </string-array>
 </resources>

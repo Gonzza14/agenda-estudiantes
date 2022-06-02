@@ -20,23 +20,50 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.list.DialogListExtKt;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.CalendarAdapter;
+import sv.ues.fia.eisi.agendaestudiantil.adaptadores.EventAdapter;
+import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 
 public class CalendarioFragment extends Fragment implements CalendarAdapter.OnItemListener {
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public ArrayList<Event> eventsForDate(LocalDate date)
+    {
+        ArrayList<Event> events = new ArrayList<>();
+        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
+        if (Event.eventsList == null)
+            Event.eventsList = new ArrayList<>();
+        for (Event event : Event.eventsList){
+            LocalDate fecha = LocalDate.parse(event.getFecha());
+            if (fecha.equals(date))
+                events.add(event);
+        }
+        return events;
+    }
+
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
+    private ListView eventListView;
     private Button btnAtras, btnAdelante, btnSemanal;
+    private FloatingActionButton btnNuevoEvento;
 
     public static CalendarioFragment newInstance() {
         return new CalendarioFragment();
@@ -53,7 +80,8 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initWidgets();
-        CalendarUtils.selectedDate = LocalDate.now();
+        if (CalendarUtils.selectedDate == null)
+            CalendarUtils.selectedDate = LocalDate.now();
         setMonthView();
 
         btnAtras = view.findViewById(R.id.btnAtras);
@@ -82,6 +110,33 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
             }
         });
 
+        btnNuevoEvento = view.findViewById(R.id.btnNuevoEvento);
+        btnNuevoEvento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showPlainListDialog();
+            }
+        });
+
+    }
+
+    private void showPlainListDialog() {
+        String[] args = {"Agregar tarea", "Agregar examen", "Agregar recordatorio"};
+        List<String> list = Arrays.asList(args);
+
+        MaterialDialog dialog = new MaterialDialog(getContext(), MaterialDialog.getDEFAULT_BEHAVIOR());
+        dialog.title(null, "Seleccione el evento");
+        DialogListExtKt.listItems(dialog, null, list, null, false, (materialDialog, integer, s) -> {
+            if (integer == 0)
+                Navigation.findNavController(getView()).navigate(R.id.nav_agregar_tarea);
+            if (integer == 1)
+                Navigation.findNavController(getView()).navigate(R.id.nav_agregar_examen);
+            if (integer == 2)
+                Navigation.findNavController(getView()).navigate(R.id.nav_agregar_recordatorio);
+            dialog.dismiss();
+            return null;
+        });
+        dialog.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -93,6 +148,7 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+        setEventAdapter();
     }
 
 
@@ -100,6 +156,7 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
     private void initWidgets() {
         calendarRecyclerView = getView().findViewById(R.id.calendarRecyclerView);
         monthYearText = getView().findViewById(R.id.mesAñoCalendario);
+        eventListView = getView().findViewById(R.id.eventListView);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -109,5 +166,20 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
             CalendarUtils.selectedDate = date;
             setMonthView();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onResume() {
+        super.onResume();
+        setEventAdapter();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private void setEventAdapter() {
+        ArrayList<Event> dailyEvents = eventsForDate(CalendarUtils.selectedDate);
+        EventAdapter eventAdapter = new EventAdapter(getActivity().getApplicationContext(),dailyEvents);
+        eventListView.setAdapter(eventAdapter);
+        eventAdapter.ordenarPorHora();
     }
 }

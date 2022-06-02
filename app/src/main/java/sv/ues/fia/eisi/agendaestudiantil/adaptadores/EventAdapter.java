@@ -16,6 +16,7 @@ import androidx.navigation.Navigation;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
@@ -24,9 +25,10 @@ import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
 import sv.ues.fia.eisi.agendaestudiantil.ui.examen.ExamenViewModel;
 
 public class EventAdapter extends ArrayAdapter<Event> {
-
-    public EventAdapter(@NonNull Context context, List<Event> events) {
-        super(context, 0, events);
+    private ArrayList<Event> listaEvento;
+    public EventAdapter(@NonNull Context context, ArrayList<Event> listaEvento) {
+        super(context, 0, listaEvento);
+        this.listaEvento = listaEvento;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -82,4 +84,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
         return convertView;
     }
 
+    public void ordenarPorHora(){
+        Collections.sort(listaEvento, Event.timeComparator);
+    }
 }

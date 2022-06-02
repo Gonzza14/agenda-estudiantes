@@ -229,5 +229,7 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
         ArrayList<Event> dailyEvents = eventsForDate(CalendarUtils.selectedDate);
         EventAdapter eventAdapter = new EventAdapter(getActivity().getApplicationContext(),dailyEvents);
         eventListView.setAdapter(eventAdapter);
+
+        eventAdapter.ordenarPorHora();
     }
 }

@@ -1,5 +1,6 @@
 package sv.ues.fia.eisi.agendaestudiantil.adaptadores;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,13 +8,16 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
+import sv.ues.fia.eisi.agendaestudiantil.ui.examen.ExamenViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.tarea.TareaViewModel;
 
 public class ListaTareaAdapter extends RecyclerView.Adapter<ListaTareaAdapter.TareaViewHolder> {
@@ -39,6 +43,10 @@ public class ListaTareaAdapter extends RecyclerView.Adapter<ListaTareaAdapter.Ta
         holder.lblFechaHora.setText(listaTarea.get(position).getFechaTarea() + " " + listaTarea.get(position).getHoraTarea());
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void ordenarPorFecha(){
+        Collections.sort(listaTarea, TareaViewModel.dateComparator);
+    }
     @Override
     public int getItemCount() {
         return listaTarea.size();

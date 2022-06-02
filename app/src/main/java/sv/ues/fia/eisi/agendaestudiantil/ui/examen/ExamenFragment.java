@@ -1,13 +1,16 @@
 package sv.ues.fia.eisi.agendaestudiantil.ui.examen;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
@@ -29,6 +32,8 @@ public class ExamenFragment extends Fragment {
     private FloatingActionButton btnAgregarExamen;
     private BD helper;
     private ArrayList<ExamenViewModel> listaArrayExamenes;
+    private ListaExamenAdapter adapter;
+    private Spinner spOrdenar;
 
     public static ExamenFragment newInstance() { return new ExamenFragment();}
 
@@ -37,9 +42,11 @@ public class ExamenFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_examen, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         listaExamenes = view.findViewById(R.id.listaExamenes);
         listaExamenes.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
@@ -48,11 +55,13 @@ public class ExamenFragment extends Fragment {
         listaArrayExamenes = new ArrayList<>();
         listaArrayExamenes = helper.mostrarExamenes();
 
-        ListaExamenAdapter adapter = new ListaExamenAdapter(listaArrayExamenes);
+        adapter = new ListaExamenAdapter(listaArrayExamenes);
         listaExamenes.setAdapter(adapter);
 
         btnAgregarExamen = view.findViewById(R.id.btnAgregarExamen);
 
+
+        adapter.ordenarPorFecha();
         btnAgregarExamen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

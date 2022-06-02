@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginBottom="20dp"
-        android:layout_marginTop="20dp">
+        android:layout_marginTop="0dp">
 
         <Button
             android:id="@+id/btnAtras"
@@ -133,6 +133,20 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/calendarRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="228dp"></androidx.recyclerview.widget.RecyclerView>
+
+    <ListView
+        android:id="@+id/eventListView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnNuevoEvento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        app:srcCompat="@android:drawable/ic_input_add" />
 </LinearLayout>

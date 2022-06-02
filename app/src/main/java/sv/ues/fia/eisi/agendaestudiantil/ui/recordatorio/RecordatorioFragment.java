@@ -1,7 +1,9 @@
 package sv.ues.fia.eisi.agendaestudiantil.ui.recordatorio;
 
+import androidx.annotation.RequiresApi;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -37,6 +39,7 @@ public class RecordatorioFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_recordatorio, container, false);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -53,6 +56,7 @@ public class RecordatorioFragment extends Fragment {
 
         btnAgregarRecordatorio = view.findViewById(R.id.btnAgregarRecordatorio);
 
+        adapter.ordenarPorFecha();
         btnAgregarRecordatorio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
