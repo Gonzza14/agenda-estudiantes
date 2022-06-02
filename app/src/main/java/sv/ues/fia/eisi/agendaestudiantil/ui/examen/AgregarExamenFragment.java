@@ -74,7 +74,10 @@ public class AgregarExamenFragment extends Fragment {
         txtAulaExamen = view.findViewById(R.id.txtAulaExamen);
 
         txtFechaExamen = view.findViewById(R.id.txtFechaExamen);
-        txtFechaExamen.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
+        if (CalendarUtils.selectedDate != null)
+            txtFechaExamen.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
+        else if (CalendarUtils.selectedDate == null)
+            txtFechaExamen.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate.now()));
         txtFechaExamen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

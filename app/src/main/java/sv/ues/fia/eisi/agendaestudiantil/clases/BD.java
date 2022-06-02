@@ -599,6 +599,34 @@ public class BD {
             return listaExamenes;
     }
 
+    public ArrayList<TareaViewModel> mostrarTareas(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<TareaViewModel> listaTareas = new ArrayList<>();
+        TareaViewModel tarea = null;
+        Cursor cursorTareas = null;
+
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME, null);
+        if (cursorTareas.moveToFirst()){
+            do {
+                tarea = new TareaViewModel();
+                tarea.setIdTarea(cursorTareas.getInt(0));
+                tarea.setNombre(cursorTareas.getString(1));
+                tarea.setIdMateria(cursorTareas.getInt(2));
+                tarea.setIdAgenda(cursorTareas.getInt(3));
+                tarea.setTituloTarea(cursorTareas.getString(4));
+                tarea.setDescripcionTarea(cursorTareas.getString(5));
+                tarea.setFechaTarea(cursorTareas.getString(6));
+                tarea.setHoraTarea(cursorTareas.getString(7));
+                tarea.setFinalizadaTarea(cursorTareas.getInt(8));
+                tarea.setArchivadaTarea(cursorTareas.getInt(9));
+                listaTareas.add(tarea);
+            }while (cursorTareas.moveToNext());
+        }
+        cursorTareas.close();
+        return listaTareas;
+    }
+
     public ArrayList<MateriaViewModel> mostrarMaterias(){
         bD = bDHelper.getWritableDatabase();
 
@@ -649,6 +677,31 @@ public class BD {
         }
         cursorClases.close();
         return listaClases;
+    }
+
+    public ArrayList<RecordatorioViewModel> mostrarRecordatorios(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<RecordatorioViewModel> listaRecordatorios = new ArrayList<>();
+        RecordatorioViewModel recordatorio = null;
+        Cursor cursorRecordatorios = null;
+
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME, null);
+
+        if (cursorRecordatorios.moveToFirst()){
+            do {
+                recordatorio = new RecordatorioViewModel();
+                recordatorio.setIdRecordatorio(cursorRecordatorios.getInt(0));
+                recordatorio.setNombreRecordatorio(cursorRecordatorios.getString(1));
+                recordatorio.setIdAgenda(cursorRecordatorios.getInt(2));
+                recordatorio.setFecha(cursorRecordatorios.getString(3));
+                recordatorio.setHora(cursorRecordatorios.getString(4));
+                recordatorio.setDescripcionRecordatorio(cursorRecordatorios.getString(5));
+                listaRecordatorios.add(recordatorio);
+            }while (cursorRecordatorios.moveToNext());
+        }
+        cursorRecordatorios.close();
+        return listaRecordatorios;
     }
 
     public ArrayList<TipoExamenViewModel> mostrarTipoExamen(){

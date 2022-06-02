@@ -76,7 +76,8 @@ public class EditarExamenFragment extends Fragment {
         txtAulaExamen = view.findViewById(R.id.txtAulaExamen);
 
         txtFechaExamen = view.findViewById(R.id.txtFechaExamen);
-        txtFechaExamen.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
+        if(CalendarUtils.selectedDate !=null)
+            txtFechaExamen.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         txtFechaExamen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

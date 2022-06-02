@@ -74,7 +74,8 @@ public class EditarTareaFragment extends Fragment {
         txtDescripcionTarea = view.findViewById(R.id.txtDescripcionTarea);
 
         txtFechaTarea = view.findViewById(R.id.txtFechaTarea);
-        txtFechaTarea.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
+        if (CalendarUtils.selectedDate != null)
+            txtFechaTarea.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         txtFechaTarea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

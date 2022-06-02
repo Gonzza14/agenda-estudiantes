@@ -65,7 +65,8 @@ public class EditarRecordatorioFragment extends Fragment {
         txtDescripcionRecordatorio = view.findViewById(R.id.txtDescripcionRecordatorio);
 
         txtFechaRecordatorio = view.findViewById(R.id.txtFechaRecordatorio);
-        txtFechaRecordatorio.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
+        if (CalendarUtils.selectedDate != null)
+            txtFechaRecordatorio.setText(CalendarUtils.formattedDate(CalendarUtils.selectedDate));
         txtFechaRecordatorio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
