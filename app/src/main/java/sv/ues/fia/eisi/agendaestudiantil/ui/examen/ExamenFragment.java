@@ -26,6 +26,7 @@ import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaExamenAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
 import sv.ues.fia.eisi.agendaestudiantil.databinding.FragmentExamenBinding;
+import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
 
 public class ExamenFragment extends Fragment {
 
@@ -54,17 +55,70 @@ public class ExamenFragment extends Fragment {
         helper = new BD(view.getContext());
 
         listaArrayExamenes = new ArrayList<>();
-        listaArrayExamenes = helper.mostrarExamenes();
-
-        adapter = new ListaExamenAdapter(listaArrayExamenes);
-        listaExamenes.setAdapter(adapter);
 
         spOrdenar = view.findViewById(R.id.spOrdenar);
         spOrdenar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (spOrdenar.getSelectedItemPosition() == 0) {
+                    listaArrayExamenes = helper.mostrarExamenesAyer();
+                    adapter = new ListaExamenAdapter(listaArrayExamenes);
+                    listaExamenes.setAdapter(adapter);
+                    adapter.ordenarPorFecha();
 
+                }
+                else if (spOrdenar.getSelectedItemPosition() == 1){
+                    listaArrayExamenes = helper.mostrarExamenesHoy();
+                    adapter = new ListaExamenAdapter(listaArrayExamenes);
+                    listaExamenes.setAdapter(adapter);
+                    adapter.ordenarPorFecha();
+                }
+                else if (spOrdenar.getSelectedItemPosition() == 2){
+                    listaArrayExamenes = helper.mostrarExamenesMañana();
+                    adapter = new ListaExamenAdapter(listaArrayExamenes);
+                    listaExamenes.setAdapter(adapter);
+                    adapter.ordenarPorFecha();
+                }
+                else if (spOrdenar.getSelectedItemPosition() == 3){
+                    listaArrayExamenes = helper.mostrarExamenesSieteDias();
+                    adapter = new ListaExamenAdapter(listaArrayExamenes);
+                    listaExamenes.setAdapter(adapter);
+                    adapter.ordenarPorFecha();
+                }
+                else if (spOrdenar.getSelectedItemPosition() == 4){
+                    String mesCadena = "";
+                    int mes =  CalendarUtils.selectedDate.now().getMonthValue();
+                    if (mes < 10) {
+                        mesCadena = "0" + mes;
+                    }else{
+                        mesCadena = String.valueOf(mes);
+                    }
+                    listaArrayExamenes = helper.mostrarExamenesEsteMes(mesCadena);
+                    adapter = new ListaExamenAdapter(listaArrayExamenes);
+                    listaExamenes.setAdapter(adapter);
+                    adapter.ordenarPorFecha();
+                }
+                else if (spOrdenar.getSelectedItemPosition() == 5){
+                    String mesCadena = "";
+                    int mes = CalendarUtils.selectedDate.now().getMonthValue();
+                    mes++;
+                    if (mes > 12){
+                        mes = 1;
+                    }else if (mes < 10){
+                        mesCadena = "0" + mes;
+                    }else{
+                        mesCadena = String.valueOf(mes);
+                    }
+                    listaArrayExamenes = helper.mostrarExamenesSiguienteMes(mesCadena);
+                    adapter = new ListaExamenAdapter(listaArrayExamenes);
+                    listaExamenes.setAdapter(adapter);
+                    adapter.ordenarPorFecha();
+                }
+                else if (spOrdenar.getSelectedItemPosition() == 6){
+                    listaArrayExamenes = helper.mostrarExamenes();
+                    adapter = new ListaExamenAdapter(listaArrayExamenes);
+                    listaExamenes.setAdapter(adapter);
+                    adapter.ordenarPorFecha();
                 }
             }
 
@@ -76,8 +130,6 @@ public class ExamenFragment extends Fragment {
         spOrdenar.setSelection(1);
         btnAgregarExamen = view.findViewById(R.id.btnAgregarExamen);
 
-
-        adapter.ordenarPorFecha();
         btnAgregarExamen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

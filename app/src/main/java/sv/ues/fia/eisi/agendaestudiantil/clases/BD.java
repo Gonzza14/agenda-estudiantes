@@ -546,6 +546,8 @@ public class BD {
         return listaProfesores;
     }
 
+
+
     public ArrayList<PeriodoViewModel> mostrarPeriodos(){
 
         bD = bDHelper.getWritableDatabase();
@@ -597,6 +599,174 @@ public class BD {
         }
             cursorExamenes.close();
             return listaExamenes;
+    }
+
+    public ArrayList<ExamenViewModel> mostrarExamenesAyer(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<ExamenViewModel> listaExamenes = new ArrayList<>();
+        ExamenViewModel examen = null;
+        Cursor cursorExamenes = null;
+
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA + " = date(DATE('now'), '-1 days')", null);
+
+        if (cursorExamenes.moveToFirst()){
+            do {
+                examen = new ExamenViewModel();
+                examen.setIdExamen(cursorExamenes.getInt(0));
+                examen.setNombreExamen(cursorExamenes.getString(1));
+                examen.setIdAgenda(cursorExamenes.getInt(2));
+                examen.setIdMateria(cursorExamenes.getInt(3));
+                examen.setIdTipoExamen(cursorExamenes.getInt(4));
+                examen.setFechaExamen(cursorExamenes.getString(5));
+                examen.setHoraExamen(cursorExamenes.getString(6));
+                examen.setDescripcionExamen(cursorExamenes.getString(7));
+                examen.setAulaExamen(cursorExamenes.getString(8));
+                listaExamenes.add(examen);
+            } while (cursorExamenes.moveToNext());
+        }
+        cursorExamenes.close();
+        return listaExamenes;
+    }
+
+    public ArrayList<ExamenViewModel> mostrarExamenesHoy(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<ExamenViewModel> listaExamenes = new ArrayList<>();
+        ExamenViewModel examen = null;
+        Cursor cursorExamenes = null;
+
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA + " = date(DATE('now'))", null);
+
+        if (cursorExamenes.moveToFirst()){
+            do {
+                examen = new ExamenViewModel();
+                examen.setIdExamen(cursorExamenes.getInt(0));
+                examen.setNombreExamen(cursorExamenes.getString(1));
+                examen.setIdAgenda(cursorExamenes.getInt(2));
+                examen.setIdMateria(cursorExamenes.getInt(3));
+                examen.setIdTipoExamen(cursorExamenes.getInt(4));
+                examen.setFechaExamen(cursorExamenes.getString(5));
+                examen.setHoraExamen(cursorExamenes.getString(6));
+                examen.setDescripcionExamen(cursorExamenes.getString(7));
+                examen.setAulaExamen(cursorExamenes.getString(8));
+                listaExamenes.add(examen);
+            } while (cursorExamenes.moveToNext());
+        }
+        cursorExamenes.close();
+        return listaExamenes;
+    }
+
+    public ArrayList<ExamenViewModel> mostrarExamenesMañana(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<ExamenViewModel> listaExamenes = new ArrayList<>();
+        ExamenViewModel examen = null;
+        Cursor cursorExamenes = null;
+
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA +" = date(DATE('now'), '+1 days')", null);
+
+        if (cursorExamenes.moveToFirst()){
+            do {
+                examen = new ExamenViewModel();
+                examen.setIdExamen(cursorExamenes.getInt(0));
+                examen.setNombreExamen(cursorExamenes.getString(1));
+                examen.setIdAgenda(cursorExamenes.getInt(2));
+                examen.setIdMateria(cursorExamenes.getInt(3));
+                examen.setIdTipoExamen(cursorExamenes.getInt(4));
+                examen.setFechaExamen(cursorExamenes.getString(5));
+                examen.setHoraExamen(cursorExamenes.getString(6));
+                examen.setDescripcionExamen(cursorExamenes.getString(7));
+                examen.setAulaExamen(cursorExamenes.getString(8));
+                listaExamenes.add(examen);
+            } while (cursorExamenes.moveToNext());
+        }
+        cursorExamenes.close();
+        return listaExamenes;
+    }
+
+    public ArrayList<ExamenViewModel> mostrarExamenesSieteDias(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<ExamenViewModel> listaExamenes = new ArrayList<>();
+        ExamenViewModel examen = null;
+        Cursor cursorExamenes = null;
+
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA +" >= date(DATE('now')) AND " + AgendaContract.Examen.COLUMN_FECHA + " < date(DATE('now'), '+7 days')", null);
+
+        if (cursorExamenes.moveToFirst()){
+            do {
+                examen = new ExamenViewModel();
+                examen.setIdExamen(cursorExamenes.getInt(0));
+                examen.setNombreExamen(cursorExamenes.getString(1));
+                examen.setIdAgenda(cursorExamenes.getInt(2));
+                examen.setIdMateria(cursorExamenes.getInt(3));
+                examen.setIdTipoExamen(cursorExamenes.getInt(4));
+                examen.setFechaExamen(cursorExamenes.getString(5));
+                examen.setHoraExamen(cursorExamenes.getString(6));
+                examen.setDescripcionExamen(cursorExamenes.getString(7));
+                examen.setAulaExamen(cursorExamenes.getString(8));
+                listaExamenes.add(examen);
+            } while (cursorExamenes.moveToNext());
+        }
+        cursorExamenes.close();
+        return listaExamenes;
+    }
+
+    public ArrayList<ExamenViewModel> mostrarExamenesEsteMes(String mes){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<ExamenViewModel> listaExamenes = new ArrayList<>();
+        ExamenViewModel examen = null;
+        Cursor cursorExamenes = null;
+
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE strftime('%m', " + AgendaContract.Examen.COLUMN_FECHA + ") = " + "'" + mes +"'", null);
+
+        if (cursorExamenes.moveToFirst()){
+            do {
+                examen = new ExamenViewModel();
+                examen.setIdExamen(cursorExamenes.getInt(0));
+                examen.setNombreExamen(cursorExamenes.getString(1));
+                examen.setIdAgenda(cursorExamenes.getInt(2));
+                examen.setIdMateria(cursorExamenes.getInt(3));
+                examen.setIdTipoExamen(cursorExamenes.getInt(4));
+                examen.setFechaExamen(cursorExamenes.getString(5));
+                examen.setHoraExamen(cursorExamenes.getString(6));
+                examen.setDescripcionExamen(cursorExamenes.getString(7));
+                examen.setAulaExamen(cursorExamenes.getString(8));
+                listaExamenes.add(examen);
+            } while (cursorExamenes.moveToNext());
+        }
+        cursorExamenes.close();
+        return listaExamenes;
+    }
+
+    public ArrayList<ExamenViewModel> mostrarExamenesSiguienteMes(String mes){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<ExamenViewModel> listaExamenes = new ArrayList<>();
+        ExamenViewModel examen = null;
+        Cursor cursorExamenes = null;
+
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE strftime('%m', " + AgendaContract.Examen.COLUMN_FECHA + ") = " + "'" + mes +"'", null);
+
+        if (cursorExamenes.moveToFirst()){
+            do {
+                examen = new ExamenViewModel();
+                examen.setIdExamen(cursorExamenes.getInt(0));
+                examen.setNombreExamen(cursorExamenes.getString(1));
+                examen.setIdAgenda(cursorExamenes.getInt(2));
+                examen.setIdMateria(cursorExamenes.getInt(3));
+                examen.setIdTipoExamen(cursorExamenes.getInt(4));
+                examen.setFechaExamen(cursorExamenes.getString(5));
+                examen.setHoraExamen(cursorExamenes.getString(6));
+                examen.setDescripcionExamen(cursorExamenes.getString(7));
+                examen.setAulaExamen(cursorExamenes.getString(8));
+                listaExamenes.add(examen);
+            } while (cursorExamenes.moveToNext());
+        }
+        cursorExamenes.close();
+        return listaExamenes;
     }
 
     public ArrayList<TareaViewModel> mostrarTareas(){
