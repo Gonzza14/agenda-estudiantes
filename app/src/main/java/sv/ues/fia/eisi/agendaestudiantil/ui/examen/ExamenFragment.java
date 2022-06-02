@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -58,6 +59,21 @@ public class ExamenFragment extends Fragment {
         adapter = new ListaExamenAdapter(listaArrayExamenes);
         listaExamenes.setAdapter(adapter);
 
+        spOrdenar = view.findViewById(R.id.spOrdenar);
+        spOrdenar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (spOrdenar.getSelectedItemPosition() == 0) {
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+        spOrdenar.setSelection(1);
         btnAgregarExamen = view.findViewById(R.id.btnAgregarExamen);
 
 

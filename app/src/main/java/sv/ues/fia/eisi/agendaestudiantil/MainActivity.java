@@ -9,7 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
+import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         helper = new BD(this);
