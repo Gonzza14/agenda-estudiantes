@@ -797,6 +797,185 @@ public class BD {
         return listaTareas;
     }
 
+    public ArrayList<TareaViewModel> mostrarTareasAyer(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<TareaViewModel> listaTareas = new ArrayList<>();
+        TareaViewModel tarea = null;
+        Cursor cursorTareas = null;
+
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA + " = date(DATE('now'), '-1 days')", null);
+
+        if (cursorTareas.moveToFirst()){
+            do {
+                tarea = new TareaViewModel();
+                tarea.setIdTarea(cursorTareas.getInt(0));
+                tarea.setNombre(cursorTareas.getString(1));
+                tarea.setIdMateria(cursorTareas.getInt(2));
+                tarea.setIdAgenda(cursorTareas.getInt(3));
+                tarea.setTituloTarea(cursorTareas.getString(4));
+                tarea.setDescripcionTarea(cursorTareas.getString(5));
+                tarea.setFechaTarea(cursorTareas.getString(6));
+                tarea.setHoraTarea(cursorTareas.getString(7));
+                tarea.setFinalizadaTarea(cursorTareas.getInt(8));
+                tarea.setArchivadaTarea(cursorTareas.getInt(9));
+                listaTareas.add(tarea);
+            } while (cursorTareas.moveToNext());
+        }
+        cursorTareas.close();
+        return listaTareas;
+    }
+
+    public ArrayList<TareaViewModel> mostrarTareasHoy(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<TareaViewModel> listaTareas = new ArrayList<>();
+        TareaViewModel tarea = null;
+        Cursor cursorTareas = null;
+
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA + " = date(DATE('now'))", null);
+
+        if (cursorTareas.moveToFirst()){
+            do {
+                tarea = new TareaViewModel();
+                tarea.setIdTarea(cursorTareas.getInt(0));
+                tarea.setNombre(cursorTareas.getString(1));
+                tarea.setIdMateria(cursorTareas.getInt(2));
+                tarea.setIdAgenda(cursorTareas.getInt(3));
+                tarea.setTituloTarea(cursorTareas.getString(4));
+                tarea.setDescripcionTarea(cursorTareas.getString(5));
+                tarea.setFechaTarea(cursorTareas.getString(6));
+                tarea.setHoraTarea(cursorTareas.getString(7));
+                tarea.setFinalizadaTarea(cursorTareas.getInt(8));
+                tarea.setArchivadaTarea(cursorTareas.getInt(9));
+                listaTareas.add(tarea);
+            } while (cursorTareas.moveToNext());
+        }
+        cursorTareas.close();
+        return listaTareas;
+    }
+
+    public ArrayList<TareaViewModel> mostrarTareasMañana(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<TareaViewModel> listaTareas = new ArrayList<>();
+        TareaViewModel tarea = null;
+        Cursor cursorTareas = null;
+
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA +" = date(DATE('now'), '+1 days')", null);
+
+        if (cursorTareas.moveToFirst()){
+            do {
+                tarea = new TareaViewModel();
+                tarea.setIdTarea(cursorTareas.getInt(0));
+                tarea.setNombre(cursorTareas.getString(1));
+                tarea.setIdMateria(cursorTareas.getInt(2));
+                tarea.setIdAgenda(cursorTareas.getInt(3));
+                tarea.setTituloTarea(cursorTareas.getString(4));
+                tarea.setDescripcionTarea(cursorTareas.getString(5));
+                tarea.setFechaTarea(cursorTareas.getString(6));
+                tarea.setHoraTarea(cursorTareas.getString(7));
+                tarea.setFinalizadaTarea(cursorTareas.getInt(8));
+                tarea.setArchivadaTarea(cursorTareas.getInt(9));
+                listaTareas.add(tarea);
+            } while (cursorTareas.moveToNext());
+        }
+        cursorTareas.close();
+        return listaTareas;
+    }
+
+    public ArrayList<TareaViewModel> mostrarTareasSieteDias(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<TareaViewModel> listaTareas = new ArrayList<>();
+        TareaViewModel tarea = null;
+        Cursor cursorTareas = null;
+
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA +" >= date(DATE('now')) AND " + AgendaContract.Tarea.COLUMN_FECHA + " < date(DATE('now'), '+7 days')", null);
+
+
+        if (cursorTareas.moveToFirst()){
+            do {
+                tarea = new TareaViewModel();
+                tarea.setIdTarea(cursorTareas.getInt(0));
+                tarea.setNombre(cursorTareas.getString(1));
+                tarea.setIdMateria(cursorTareas.getInt(2));
+                tarea.setIdAgenda(cursorTareas.getInt(3));
+                tarea.setTituloTarea(cursorTareas.getString(4));
+                tarea.setDescripcionTarea(cursorTareas.getString(5));
+                tarea.setFechaTarea(cursorTareas.getString(6));
+                tarea.setHoraTarea(cursorTareas.getString(7));
+                tarea.setFinalizadaTarea(cursorTareas.getInt(8));
+                tarea.setArchivadaTarea(cursorTareas.getInt(9));
+                listaTareas.add(tarea);
+            } while (cursorTareas.moveToNext());
+        }
+        cursorTareas.close();
+        return listaTareas;
+    }
+
+    public ArrayList<TareaViewModel> mostrarTareasEsteMes(String mes){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<TareaViewModel> listaTareas = new ArrayList<>();
+        TareaViewModel tarea = null;
+        Cursor cursorTareas = null;
+
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE strftime('%m', " + AgendaContract.Tarea.COLUMN_FECHA + ") = " + "'" + mes +"'", null);
+
+
+        if (cursorTareas.moveToFirst()){
+            do {
+                tarea = new TareaViewModel();
+                tarea.setIdTarea(cursorTareas.getInt(0));
+                tarea.setNombre(cursorTareas.getString(1));
+                tarea.setIdMateria(cursorTareas.getInt(2));
+                tarea.setIdAgenda(cursorTareas.getInt(3));
+                tarea.setTituloTarea(cursorTareas.getString(4));
+                tarea.setDescripcionTarea(cursorTareas.getString(5));
+                tarea.setFechaTarea(cursorTareas.getString(6));
+                tarea.setHoraTarea(cursorTareas.getString(7));
+                tarea.setFinalizadaTarea(cursorTareas.getInt(8));
+                tarea.setArchivadaTarea(cursorTareas.getInt(9));
+                listaTareas.add(tarea);
+            } while (cursorTareas.moveToNext());
+        }
+        cursorTareas.close();
+        return listaTareas;
+    }
+
+    public ArrayList<TareaViewModel> mostrarTareasSiguienteMes(String mes){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<TareaViewModel> listaTareas = new ArrayList<>();
+        TareaViewModel tarea = null;
+        Cursor cursorTareas = null;
+
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE strftime('%m', " + AgendaContract.Tarea.COLUMN_FECHA + ") = " + "'" + mes +"'", null);
+
+
+        if (cursorTareas.moveToFirst()){
+            do {
+                tarea = new TareaViewModel();
+                tarea.setIdTarea(cursorTareas.getInt(0));
+                tarea.setNombre(cursorTareas.getString(1));
+                tarea.setIdMateria(cursorTareas.getInt(2));
+                tarea.setIdAgenda(cursorTareas.getInt(3));
+                tarea.setTituloTarea(cursorTareas.getString(4));
+                tarea.setDescripcionTarea(cursorTareas.getString(5));
+                tarea.setFechaTarea(cursorTareas.getString(6));
+                tarea.setHoraTarea(cursorTareas.getString(7));
+                tarea.setFinalizadaTarea(cursorTareas.getInt(8));
+                tarea.setArchivadaTarea(cursorTareas.getInt(9));
+                listaTareas.add(tarea);
+            } while (cursorTareas.moveToNext());
+        }
+        cursorTareas.close();
+        return listaTareas;
+    }
+
+
+
     public ArrayList<MateriaViewModel> mostrarMaterias(){
         bD = bDHelper.getWritableDatabase();
 
@@ -857,6 +1036,156 @@ public class BD {
         Cursor cursorRecordatorios = null;
 
         cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME, null);
+
+        if (cursorRecordatorios.moveToFirst()){
+            do {
+                recordatorio = new RecordatorioViewModel();
+                recordatorio.setIdRecordatorio(cursorRecordatorios.getInt(0));
+                recordatorio.setNombreRecordatorio(cursorRecordatorios.getString(1));
+                recordatorio.setIdAgenda(cursorRecordatorios.getInt(2));
+                recordatorio.setFecha(cursorRecordatorios.getString(3));
+                recordatorio.setHora(cursorRecordatorios.getString(4));
+                recordatorio.setDescripcionRecordatorio(cursorRecordatorios.getString(5));
+                listaRecordatorios.add(recordatorio);
+            }while (cursorRecordatorios.moveToNext());
+        }
+        cursorRecordatorios.close();
+        return listaRecordatorios;
+    }
+
+    public ArrayList<RecordatorioViewModel> mostrarRecordatoriosAyer(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<RecordatorioViewModel> listaRecordatorios = new ArrayList<>();
+        RecordatorioViewModel recordatorio = null;
+        Cursor cursorRecordatorios = null;
+
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA + " = date(DATE('now'), '-1 days')", null);
+
+        if (cursorRecordatorios.moveToFirst()){
+            do {
+                recordatorio = new RecordatorioViewModel();
+                recordatorio.setIdRecordatorio(cursorRecordatorios.getInt(0));
+                recordatorio.setNombreRecordatorio(cursorRecordatorios.getString(1));
+                recordatorio.setIdAgenda(cursorRecordatorios.getInt(2));
+                recordatorio.setFecha(cursorRecordatorios.getString(3));
+                recordatorio.setHora(cursorRecordatorios.getString(4));
+                recordatorio.setDescripcionRecordatorio(cursorRecordatorios.getString(5));
+                listaRecordatorios.add(recordatorio);
+            }while (cursorRecordatorios.moveToNext());
+        }
+        cursorRecordatorios.close();
+        return listaRecordatorios;
+    }
+
+    public ArrayList<RecordatorioViewModel> mostrarRecordatoriosHoy(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<RecordatorioViewModel> listaRecordatorios = new ArrayList<>();
+        RecordatorioViewModel recordatorio = null;
+        Cursor cursorRecordatorios = null;
+
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA + " = date(DATE('now'))", null);
+
+        if (cursorRecordatorios.moveToFirst()){
+            do {
+                recordatorio = new RecordatorioViewModel();
+                recordatorio.setIdRecordatorio(cursorRecordatorios.getInt(0));
+                recordatorio.setNombreRecordatorio(cursorRecordatorios.getString(1));
+                recordatorio.setIdAgenda(cursorRecordatorios.getInt(2));
+                recordatorio.setFecha(cursorRecordatorios.getString(3));
+                recordatorio.setHora(cursorRecordatorios.getString(4));
+                recordatorio.setDescripcionRecordatorio(cursorRecordatorios.getString(5));
+                listaRecordatorios.add(recordatorio);
+            }while (cursorRecordatorios.moveToNext());
+        }
+        cursorRecordatorios.close();
+        return listaRecordatorios;
+    }
+
+    public ArrayList<RecordatorioViewModel> mostrarRecordatoriosMañana(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<RecordatorioViewModel> listaRecordatorios = new ArrayList<>();
+        RecordatorioViewModel recordatorio = null;
+        Cursor cursorRecordatorios = null;
+
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA +" = date(DATE('now'), '+1 days')", null);
+
+        if (cursorRecordatorios.moveToFirst()){
+            do {
+                recordatorio = new RecordatorioViewModel();
+                recordatorio.setIdRecordatorio(cursorRecordatorios.getInt(0));
+                recordatorio.setNombreRecordatorio(cursorRecordatorios.getString(1));
+                recordatorio.setIdAgenda(cursorRecordatorios.getInt(2));
+                recordatorio.setFecha(cursorRecordatorios.getString(3));
+                recordatorio.setHora(cursorRecordatorios.getString(4));
+                recordatorio.setDescripcionRecordatorio(cursorRecordatorios.getString(5));
+                listaRecordatorios.add(recordatorio);
+            }while (cursorRecordatorios.moveToNext());
+        }
+        cursorRecordatorios.close();
+        return listaRecordatorios;
+    }
+
+    public ArrayList<RecordatorioViewModel> mostrarRecordatoriosSieteDias(){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<RecordatorioViewModel> listaRecordatorios = new ArrayList<>();
+        RecordatorioViewModel recordatorio = null;
+        Cursor cursorRecordatorios = null;
+
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA +" >= date(DATE('now')) AND " + AgendaContract.Recordatorio.COLUMN_FECHA + " < date(DATE('now'), '+7 days')", null);
+
+        if (cursorRecordatorios.moveToFirst()){
+            do {
+                recordatorio = new RecordatorioViewModel();
+                recordatorio.setIdRecordatorio(cursorRecordatorios.getInt(0));
+                recordatorio.setNombreRecordatorio(cursorRecordatorios.getString(1));
+                recordatorio.setIdAgenda(cursorRecordatorios.getInt(2));
+                recordatorio.setFecha(cursorRecordatorios.getString(3));
+                recordatorio.setHora(cursorRecordatorios.getString(4));
+                recordatorio.setDescripcionRecordatorio(cursorRecordatorios.getString(5));
+                listaRecordatorios.add(recordatorio);
+            }while (cursorRecordatorios.moveToNext());
+        }
+        cursorRecordatorios.close();
+        return listaRecordatorios;
+    }
+
+    public ArrayList<RecordatorioViewModel> mostrarRecordatoriosEsteMes(String mes){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<RecordatorioViewModel> listaRecordatorios = new ArrayList<>();
+        RecordatorioViewModel recordatorio = null;
+        Cursor cursorRecordatorios = null;
+
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE strftime('%m', " + AgendaContract.Recordatorio.COLUMN_FECHA + ") = " + "'" + mes +"'", null);
+
+        if (cursorRecordatorios.moveToFirst()){
+            do {
+                recordatorio = new RecordatorioViewModel();
+                recordatorio.setIdRecordatorio(cursorRecordatorios.getInt(0));
+                recordatorio.setNombreRecordatorio(cursorRecordatorios.getString(1));
+                recordatorio.setIdAgenda(cursorRecordatorios.getInt(2));
+                recordatorio.setFecha(cursorRecordatorios.getString(3));
+                recordatorio.setHora(cursorRecordatorios.getString(4));
+                recordatorio.setDescripcionRecordatorio(cursorRecordatorios.getString(5));
+                listaRecordatorios.add(recordatorio);
+            }while (cursorRecordatorios.moveToNext());
+        }
+        cursorRecordatorios.close();
+        return listaRecordatorios;
+    }
+
+    public ArrayList<RecordatorioViewModel> mostrarRecordatoriosSiguienteMes(String mes){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<RecordatorioViewModel> listaRecordatorios = new ArrayList<>();
+        RecordatorioViewModel recordatorio = null;
+        Cursor cursorRecordatorios = null;
+
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE strftime('%m', " + AgendaContract.Recordatorio.COLUMN_FECHA + ") = " + "'" + mes +"'", null);
 
         if (cursorRecordatorios.moveToFirst()){
             do {
