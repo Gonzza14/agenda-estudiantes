@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
@@ -14,11 +15,16 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.navigation.Navigation;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.list.DialogListExtKt;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import sv.ues.fia.eisi.agendaestudiantil.InicioActivity;
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
@@ -74,7 +80,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
                 Bundle bundle = new Bundle();
                 bundle.putInt("ID", event.getIdEvento());
                 if (event.getNombre().equals("Examen"))
-                    Navigation.findNavController(view).navigate(R.id.nav_editar_examen, bundle);
+                    showPlainListDialog(bundle, view);
                 else if (event.getNombre().equals("Tarea"))
                     Navigation.findNavController(view).navigate(R.id.nav_editar_tarea, bundle);
                 else if (event.getNombre().equals("Recordatorio"))
@@ -91,5 +97,27 @@ public class EventAdapter extends ArrayAdapter<Event> {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void ordenarPorFecha(){
         Collections.sort(listaEvento, Event.dateComparator);
+    }
+
+    private void showPlainListDialog(Bundle bundle, View view) {
+        String[] args = {"Editar examen", "Agregar nota de examen"};
+        List<String> list = Arrays.asList(args);
+
+        MaterialDialog dialog = new MaterialDialog(InicioActivity.getContextOfApplicaction(), MaterialDialog.getDEFAULT_BEHAVIOR());
+        dialog.title(null, "Seleccione");
+        DialogListExtKt.listItems(dialog, null, list, null, false, (materialDialog, integer, s) -> {
+            if (integer == 0)
+                Navigation.findNavController(view).navigate(R.id.nav_editar_examen, bundle);
+            if (integer == 1)
+                Navigation.findNavController(view).navigate(R.id.nav_agregar_nota_examen,bundle);
+            dialog.dismiss();
+            return null;
+        });
+        try {
+            dialog.show();
+        }
+        catch (WindowManager.BadTokenException e) {
+            //use a log message
+        }
     }
 }

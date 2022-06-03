@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -28,19 +29,20 @@ import java.util.List;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.EventAdapter;
+import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaEventoAdaptador;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
 import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
 import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
-import sv.ues.fia.eisi.agendaestudiantil.databinding.FragmentAgendaBinding;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
 
 public class AgendaFragment extends Fragment {
 
     private ListView eventListView;
+    private RecyclerView listaEventos;
     private FloatingActionButton btnAgregar;
     private BD helper;
     private ArrayList<Event> listaArrayEvento;
-    private EventAdapter eventAdapter;
+    private ListaEventoAdaptador eventAdapter;
     private EventAdapter adapter;
     private Spinner spOrdenar;
 
@@ -55,7 +57,8 @@ public class AgendaFragment extends Fragment {
         Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
         if (Event.eventsList == null)
             Event.eventsList = new ArrayList<>();
-        eventListView = view.findViewById(R.id.eventListView);
+        listaEventos = view.findViewById(R.id.listaEventos);
+        listaEventos.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         listaArrayEvento = new ArrayList<>();
 
@@ -66,44 +69,44 @@ public class AgendaFragment extends Fragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (spOrdenar.getSelectedItemPosition() == 0){
                     listaArrayEvento = Event.eventos(CalendarUtils.selectedDate.now().minusDays(1));
-                    eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
-                    eventListView.setAdapter(eventAdapter);
+                    eventAdapter = new ListaEventoAdaptador(listaArrayEvento);
+                    listaEventos.setAdapter(eventAdapter);
                     eventAdapter.ordenarPorFecha();
                 }
                 else if (spOrdenar.getSelectedItemPosition() == 1){
                     listaArrayEvento = Event.eventos(CalendarUtils.selectedDate.now());
-                    eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
-                    eventListView.setAdapter(eventAdapter);
+                    eventAdapter = new ListaEventoAdaptador(listaArrayEvento);
+                    listaEventos.setAdapter(eventAdapter);
                     eventAdapter.ordenarPorFecha();
                 }
                 else if (spOrdenar.getSelectedItemPosition() == 2){
                     listaArrayEvento = Event.eventos(CalendarUtils.selectedDate.now().plusDays(1));
-                    eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
-                    eventListView.setAdapter(eventAdapter);
+                    eventAdapter = new ListaEventoAdaptador(listaArrayEvento);
+                    listaEventos.setAdapter(eventAdapter);
                     eventAdapter.ordenarPorFecha();
                 }
                 else if (spOrdenar.getSelectedItemPosition() == 3){
                     listaArrayEvento = Event.eventosSieteDias(CalendarUtils.selectedDate.now());
-                    eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
-                    eventListView.setAdapter(eventAdapter);
+                    eventAdapter = new ListaEventoAdaptador(listaArrayEvento);
+                    listaEventos.setAdapter(eventAdapter);
                     eventAdapter.ordenarPorFecha();
                 }
                 else if (spOrdenar.getSelectedItemPosition() == 4){
                     listaArrayEvento = Event.eventosPorMes(CalendarUtils.selectedDate.now());
-                    eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
-                    eventListView.setAdapter(eventAdapter);
+                    eventAdapter = new ListaEventoAdaptador(listaArrayEvento);
+                    listaEventos.setAdapter(eventAdapter);
                     eventAdapter.ordenarPorFecha();
                 }
                 else if (spOrdenar.getSelectedItemPosition() == 5){
                     listaArrayEvento = Event.eventosSiguienteMes(CalendarUtils.selectedDate.now());
-                    eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
-                    eventListView.setAdapter(eventAdapter);
+                    eventAdapter = new ListaEventoAdaptador(listaArrayEvento);
+                    listaEventos.setAdapter(eventAdapter);
                     eventAdapter.ordenarPorFecha();
                 }
                 else if (spOrdenar.getSelectedItemPosition() == 6){
                     listaArrayEvento = Event.eventsList;
-                    eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
-                    eventListView.setAdapter(eventAdapter);
+                    eventAdapter = new ListaEventoAdaptador(listaArrayEvento);
+                    listaEventos.setAdapter(eventAdapter);
                     eventAdapter.ordenarPorFecha();
                 }
             }

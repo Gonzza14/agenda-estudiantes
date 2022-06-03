@@ -135,11 +135,10 @@
         android:layout_width="match_parent"
         android:layout_height="228dp"></androidx.recyclerview.widget.RecyclerView>
 
-    <ListView
-        android:id="@+id/eventListView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listaEventos"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="5"/>
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnNuevoEvento"

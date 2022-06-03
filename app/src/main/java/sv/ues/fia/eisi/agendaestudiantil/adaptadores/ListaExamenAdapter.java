@@ -87,7 +87,7 @@ public class ListaExamenAdapter extends RecyclerView.Adapter<ListaExamenAdapter.
         List<String> list = Arrays.asList(args);
 
         MaterialDialog dialog = new MaterialDialog(view.getContext(), MaterialDialog.getDEFAULT_BEHAVIOR());
-        dialog.title(null, "Seleccione el evento");
+        dialog.title(null, "Seleccione");
         DialogListExtKt.listItems(dialog, null, list, null, false, (materialDialog, integer, s) -> {
             if (integer == 0)
                 Navigation.findNavController(view).navigate(R.id.nav_editar_examen, bundle);

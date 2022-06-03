@@ -28,10 +28,9 @@
             android:layout_marginBottom="10dp"
             android:entries="@array/agenda_fechas"/>
 
-        <ListView
-            android:id="@+id/eventListView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/listaEventos"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="5"/>
+            android:layout_height="wrap_content" />
     </LinearLayout>
 </FrameLayout>

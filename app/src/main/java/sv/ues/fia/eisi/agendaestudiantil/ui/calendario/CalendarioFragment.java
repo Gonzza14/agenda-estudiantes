@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ import java.util.List;
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.CalendarAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.EventAdapter;
+import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaEventoAdaptador;
 import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
 import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 
@@ -62,7 +64,7 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
     }
 
     private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
+    private RecyclerView calendarRecyclerView, listaEventos;
     private ListView eventListView;
     private Button btnAtras, btnAdelante, btnSemanal;
     private FloatingActionButton btnNuevoEvento;
@@ -82,6 +84,8 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initWidgets();
+        listaEventos = view.findViewById(R.id.listaEventos);
+        listaEventos.setLayoutManager(new LinearLayoutManager(view.getContext()));
         if (CalendarUtils.selectedDate == null)
             CalendarUtils.selectedDate = LocalDate.now();
         setMonthView();
@@ -158,7 +162,6 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
     private void initWidgets() {
         calendarRecyclerView = getView().findViewById(R.id.calendarRecyclerView);
         monthYearText = getView().findViewById(R.id.mesAñoCalendario);
-        eventListView = getView().findViewById(R.id.eventListView);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -180,8 +183,8 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setEventAdapter() {
         ArrayList<Event> dailyEvents = eventsForDate(CalendarUtils.selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(getActivity().getApplicationContext(),dailyEvents);
-        eventListView.setAdapter(eventAdapter);
+        ListaEventoAdaptador eventAdapter = new ListaEventoAdaptador(dailyEvents);
+        listaEventos.setAdapter(eventAdapter);
         eventAdapter.ordenarPorHora();
     }
 }

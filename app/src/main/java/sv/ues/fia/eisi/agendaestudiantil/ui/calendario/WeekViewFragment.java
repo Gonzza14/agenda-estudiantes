@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -38,6 +39,7 @@ import java.util.List;
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.CalendarAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.EventAdapter;
+import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaEventoAdaptador;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
 import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
 import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
@@ -65,7 +67,7 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
 
     private BD helper;
     private TextView monthYearText;
-    private RecyclerView calendarRecyclerView;
+    private RecyclerView calendarRecyclerView, listaEventos;
     private ListView eventListView;
     Button btnSemanaAtras, btnSemanaAdelante;
     FloatingActionButton btnNuevoEvento;
@@ -102,8 +104,9 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initWidgets();
+        listaEventos = view.findViewById(R.id.listaEventos);
+        listaEventos.setLayoutManager(new LinearLayoutManager(view.getContext()));
         setWeekView();
-
         helper = new BD(view.getContext());
 
 
@@ -209,7 +212,6 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
     private void initWidgets() {
         calendarRecyclerView = getView().findViewById(R.id.calendarRecyclerView);
         monthYearText = getView().findViewById(R.id.mesAñoCalendario);
-        eventListView = getView().findViewById(R.id.eventListView);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -229,9 +231,8 @@ public class WeekViewFragment extends Fragment implements CalendarAdapter.OnItem
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void setEventAdapter() {
         ArrayList<Event> dailyEvents = eventsForDate(CalendarUtils.selectedDate);
-        EventAdapter eventAdapter = new EventAdapter(getActivity().getApplicationContext(),dailyEvents);
-        eventListView.setAdapter(eventAdapter);
-
+        ListaEventoAdaptador eventAdapter = new ListaEventoAdaptador(dailyEvents);
+        listaEventos.setAdapter(eventAdapter);
         eventAdapter.ordenarPorHora();
     }
 }
