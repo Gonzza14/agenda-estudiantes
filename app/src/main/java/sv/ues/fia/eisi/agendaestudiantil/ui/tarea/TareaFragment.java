@@ -49,7 +49,9 @@ public class TareaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(view.getContext());
+        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
+        if (Event.eventsList == null)
+            Event.eventsList = new ArrayList<>();
         listaTareas = view.findViewById(R.id.listaTareas);
         listaTareas.setLayoutManager(new LinearLayoutManager(view.getContext()));
 

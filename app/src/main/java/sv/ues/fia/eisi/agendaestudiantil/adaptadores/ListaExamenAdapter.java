@@ -83,7 +83,7 @@ public class ListaExamenAdapter extends RecyclerView.Adapter<ListaExamenAdapter.
     }
 
     private void showPlainListDialog(Bundle bundle, View view) {
-        String[] args = {"Editar examen", "Agregar nota de examen", "Agregar recordatorio"};
+        String[] args = {"Editar examen", "Agregar nota de examen"};
         List<String> list = Arrays.asList(args);
 
         MaterialDialog dialog = new MaterialDialog(view.getContext(), MaterialDialog.getDEFAULT_BEHAVIOR());
@@ -92,7 +92,7 @@ public class ListaExamenAdapter extends RecyclerView.Adapter<ListaExamenAdapter.
             if (integer == 0)
                 Navigation.findNavController(view).navigate(R.id.nav_editar_examen, bundle);
             if (integer == 1)
-                Navigation.findNavController(view).navigate(R.id.nav_agregar_examen,bundle);
+                Navigation.findNavController(view).navigate(R.id.nav_agregar_nota_examen,bundle);
             dialog.dismiss();
             return null;
         });

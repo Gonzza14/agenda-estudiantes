@@ -52,6 +52,8 @@ public class ExamenFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(view.getContext());
+        if (Event.eventsList == null)
+            Event.eventsList = new ArrayList<>();
         listaExamenes = view.findViewById(R.id.listaExamenes);
         listaExamenes.setLayoutManager(new LinearLayoutManager(view.getContext()));
 

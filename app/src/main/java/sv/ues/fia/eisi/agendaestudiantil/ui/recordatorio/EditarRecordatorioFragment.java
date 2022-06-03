@@ -106,9 +106,10 @@ public class EditarRecordatorioFragment extends Fragment {
                 String estado = helper.actualizar(recordatorio);
                 helper.cerrar();
 
+                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 if (Event.eventsList == null)
                     Event.eventsList = new ArrayList<>();
-                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
+
                 for (Event event : Event.eventsList) {
                     if (event.getIdEvento() == recordatorio.getIdRecordatorio() && event.getNombre().equals(recordatorio.getNombreRecordatorio())){
                         event.setIdEvento(recordatorio.getIdRecordatorio());
@@ -131,9 +132,9 @@ public class EditarRecordatorioFragment extends Fragment {
                 String mensaje;
 
                 ArrayList<Event> eventoEliminar = new ArrayList<>();
+                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 if (Event.eventsList == null)
                     Event.eventsList = new ArrayList<>();
-                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 for (Event event : Event.eventsList){
                     if (event.getIdEvento() == recordatorio.getIdRecordatorio() && event.getNombre().equals(recordatorio.getNombreRecordatorio())) {
                         eventoEliminar.add(event);

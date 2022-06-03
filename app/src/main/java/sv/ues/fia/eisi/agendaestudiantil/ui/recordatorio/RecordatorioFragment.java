@@ -51,7 +51,9 @@ public class RecordatorioFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(view.getContext());
+        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
+        if (Event.eventsList == null)
+            Event.eventsList = new ArrayList<>();
         listaRecordatorio = view.findViewById(R.id.listaRecordatorios);
         listaRecordatorio.setLayoutManager(new LinearLayoutManager(view.getContext()));
 

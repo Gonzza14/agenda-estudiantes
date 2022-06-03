@@ -52,8 +52,9 @@ public class AgendaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (Event.eventsList != null)
-            Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
+        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
+        if (Event.eventsList == null)
+            Event.eventsList = new ArrayList<>();
         eventListView = view.findViewById(R.id.eventListView);
 
         listaArrayEvento = new ArrayList<>();
@@ -101,11 +102,9 @@ public class AgendaFragment extends Fragment {
                 }
                 else if (spOrdenar.getSelectedItemPosition() == 6){
                     listaArrayEvento = Event.eventsList;
-                    if (listaArrayEvento != null){
-                        eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
-                        eventListView.setAdapter(eventAdapter);
-                        eventAdapter.ordenarPorFecha();
-                    }
+                    eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
+                    eventListView.setAdapter(eventAdapter);
+                    eventAdapter.ordenarPorFecha();
                 }
             }
 

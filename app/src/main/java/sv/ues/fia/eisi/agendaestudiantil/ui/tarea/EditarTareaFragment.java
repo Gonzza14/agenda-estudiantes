@@ -140,9 +140,9 @@ public class EditarTareaFragment extends Fragment {
                 String estado = helper.actualizar(tarea);
                 helper.cerrar();
 
+                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 if (Event.eventsList == null)
                     Event.eventsList = new ArrayList<>();
-                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 for (Event event: Event.eventsList){
                     if (event.getIdEvento() == tarea.getIdTarea() && event.getNombre().equals(tarea.getNombre())){
                         event.setIdEvento(tarea.getIdTarea());
@@ -165,9 +165,9 @@ public class EditarTareaFragment extends Fragment {
                 String mensaje;
 
                 ArrayList<Event> eventoEliminar = new ArrayList<>();
+                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 if (Event.eventsList == null)
                     Event.eventsList = new ArrayList<>();
-                Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 for (Event event : Event.eventsList){
                     if (event.getIdEvento() == tarea.getIdTarea() && event.getNombre().equals(tarea.getNombre())) {
                         eventoEliminar.add(event);

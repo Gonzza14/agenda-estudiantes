@@ -102,6 +102,9 @@
         <action
             android:id="@+id/action_nav_examen_to_nav_agregar_examen"
             app:destination="@id/nav_agregar_examen" />
+        <action
+            android:id="@+id/action_nav_examen_to_nav_agregar_nota_examen"
+            app:destination="@id/nav_agregar_nota_examen" />
     </fragment>
 
     <fragment
@@ -480,5 +483,16 @@
         <action
             android:id="@+id/action_nav_editar_recordatorio_to_nav_calendario_semanal"
             app:destination="@id/nav_calendario_semanal" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_agregar_nota_examen"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.examen.NotaExamenFragment"
+        android:label="@string/agregar_nota_examen"
+        tools:layout="@layout/fragment_nota_examen">
+        >
+        <action
+            android:id="@+id/action_nav_agregar_nota_examen_to_nav_examen"
+            app:destination="@id/nav_examen" />
     </fragment>
 </navigation>
