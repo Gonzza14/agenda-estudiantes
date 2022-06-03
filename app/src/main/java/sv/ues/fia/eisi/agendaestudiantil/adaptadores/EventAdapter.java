@@ -87,4 +87,9 @@ public class EventAdapter extends ArrayAdapter<Event> {
     public void ordenarPorHora(){
         Collections.sort(listaEvento, Event.timeComparator);
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void ordenarPorFecha(){
+        Collections.sort(listaEvento, Event.dateComparator);
+    }
 }
