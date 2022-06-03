@@ -30,6 +30,7 @@ import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.EventAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
 import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 import sv.ues.fia.eisi.agendaestudiantil.databinding.FragmentAgendaBinding;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
 
@@ -51,7 +52,8 @@ public class AgendaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        if (Event.eventsList != null)
+            Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
         eventListView = view.findViewById(R.id.eventListView);
 
         listaArrayEvento = new ArrayList<>();
@@ -99,9 +101,11 @@ public class AgendaFragment extends Fragment {
                 }
                 else if (spOrdenar.getSelectedItemPosition() == 6){
                     listaArrayEvento = Event.eventsList;
-                    eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
-                    eventListView.setAdapter(eventAdapter);
-                    eventAdapter.ordenarPorFecha();
+                    if (listaArrayEvento != null){
+                        eventAdapter = new EventAdapter(getActivity().getApplicationContext(),listaArrayEvento);
+                        eventListView.setAdapter(eventAdapter);
+                        eventAdapter.ordenarPorFecha();
+                    }
                 }
             }
 

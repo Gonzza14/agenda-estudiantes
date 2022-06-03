@@ -26,6 +26,8 @@ import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaExamenAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaTareaAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
+import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 import sv.ues.fia.eisi.agendaestudiantil.databinding.FragmentTareaBinding;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
 
@@ -47,6 +49,7 @@ public class TareaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(view.getContext());
         listaTareas = view.findViewById(R.id.listaTareas);
         listaTareas.setLayoutManager(new LinearLayoutManager(view.getContext()));
 

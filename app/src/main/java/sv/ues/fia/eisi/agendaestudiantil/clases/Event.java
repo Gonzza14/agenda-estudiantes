@@ -21,10 +21,12 @@ public class Event {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Event> eventos(LocalDate date){
         ArrayList<Event> eventos = new ArrayList<>();
-        for (Event event : eventsList){
-            LocalDate fecha = LocalDate.parse(event.getFecha());
-            if (fecha.equals(date))
-                eventos.add(event);
+        if (eventsList != null){
+            for (Event event : eventsList){
+                LocalDate fecha = LocalDate.parse(event.getFecha());
+                if (fecha.equals(date))
+                    eventos.add(event);
+            }
         }
         return eventos;
     }
@@ -32,10 +34,12 @@ public class Event {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Event> eventosSieteDias(LocalDate date){
         ArrayList<Event> eventos = new ArrayList<>();
-        for (Event event : eventsList){
-            LocalDate fecha = LocalDate.parse(event.getFecha());
-            if (fecha.equals(date) || fecha.isAfter(date) && fecha.isBefore(date.plusDays(7)))
-                eventos.add(event);
+        if (eventsList != null) {
+            for (Event event : eventsList) {
+                LocalDate fecha = LocalDate.parse(event.getFecha());
+                if (fecha.equals(date) || fecha.isAfter(date) && fecha.isBefore(date.plusDays(7)))
+                    eventos.add(event);
+            }
         }
         return eventos;
     }
@@ -43,10 +47,12 @@ public class Event {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Event> eventosPorMes(LocalDate date){
         ArrayList<Event> eventos = new ArrayList<>();
-        for (Event event : eventsList){
-            LocalDate fecha = LocalDate.parse(event.getFecha());
-            if (fecha.getMonthValue() == date.getMonthValue())
-                eventos.add(event);
+        if (eventsList != null) {
+            for (Event event : eventsList) {
+                LocalDate fecha = LocalDate.parse(event.getFecha());
+                if (fecha.getMonthValue() == date.getMonthValue())
+                    eventos.add(event);
+            }
         }
         return eventos;
     }
@@ -54,11 +60,13 @@ public class Event {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static ArrayList<Event> eventosSiguienteMes(LocalDate date){
         ArrayList<Event> eventos = new ArrayList<>();
-        for (Event event : eventsList){
-            LocalDate fecha = LocalDate.parse(event.getFecha());
-            int siguiente = date.getMonthValue()+1;
-            if (fecha.getMonthValue() == siguiente)
-                eventos.add(event);
+        if (eventsList != null) {
+            for (Event event : eventsList) {
+                LocalDate fecha = LocalDate.parse(event.getFecha());
+                int siguiente = date.getMonthValue() + 1;
+                if (fecha.getMonthValue() == siguiente)
+                    eventos.add(event);
+            }
         }
         return eventos;
     }

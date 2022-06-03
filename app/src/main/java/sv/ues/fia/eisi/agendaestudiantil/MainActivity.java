@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (Event.eventsList == null)
+            Event.eventsList = new ArrayList<>();
         Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

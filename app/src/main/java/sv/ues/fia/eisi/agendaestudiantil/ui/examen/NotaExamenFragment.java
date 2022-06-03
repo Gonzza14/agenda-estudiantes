@@ -16,11 +16,8 @@ import sv.ues.fia.eisi.agendaestudiantil.R;
 
 public class NotaExamenFragment extends Fragment {
 
-    private NotaExamenViewModel mViewModel;
+    private NotaExamenViewModel notaExamen;
 
-    public static NotaExamenFragment newInstance() {
-        return new NotaExamenFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -29,10 +26,7 @@ public class NotaExamenFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(NotaExamenViewModel.class);
-        // TODO: Use the ViewModel
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
     }
-
 }

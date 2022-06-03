@@ -288,6 +288,10 @@ public class BD {
             = "INSERT INTO "
             + AgendaContract.TipoExamen.TABLE_NAME + "(" +AgendaContract.TipoExamen._ID + ", " + AgendaContract.TipoExamen.COLUMN_NAME + ") VALUES (5,'Examen escrito')";
 
+    private static final String SQL_INSERT_TIPO_EXAMEN_6
+            = "INSERT INTO "
+            + AgendaContract.TipoExamen.TABLE_NAME + "(" +AgendaContract.TipoExamen._ID + ", " + AgendaContract.TipoExamen.COLUMN_NAME + ") VALUES (6,'Proyecto/Tarea')";
+
     private static class DataBaseHelper extends SQLiteOpenHelper{
         private static final String BASE_DATOS = "agenda-bd.s3db";
         private static final int VERSION = 1;
@@ -320,6 +324,7 @@ public class BD {
                 bD.execSQL(SQL_INSERT_TIPO_EXAMEN_3);
                 bD.execSQL(SQL_INSERT_TIPO_EXAMEN_4);
                 bD.execSQL(SQL_INSERT_TIPO_EXAMEN_5);
+                bD.execSQL(SQL_INSERT_TIPO_EXAMEN_6);
 
             }catch (SQLException e){
                 e.printStackTrace();
@@ -1000,6 +1005,30 @@ public class BD {
         return listaMaterias;
     }
 
+    public ArrayList<MateriaViewModel> mostrarMateriasPorPeriodo(int id){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<MateriaViewModel> listaMaterias = new ArrayList<>();
+        MateriaViewModel materia = null;
+        Cursor cursorMaterias = null;
+
+        cursorMaterias = bD.rawQuery("SELECT * FROM " + AgendaContract.Materia.TABLE_NAME + " WHERE " + AgendaContract.Materia.COLUMN_ID_PERIODO + " = " + id + " ORDER BY " + AgendaContract.Materia.COLUMN_NAME, null);
+
+        if (cursorMaterias.moveToFirst()){
+            do {
+                materia = new MateriaViewModel();
+                materia.setIdMateria(cursorMaterias.getInt(0));
+                materia.setIdProfesor(cursorMaterias.getInt(1));
+                materia.setIdPeriodo(cursorMaterias.getInt(2));
+                materia.setNombreMateria(cursorMaterias.getString(3));
+                materia.setAulaMateria(cursorMaterias.getString(4));
+                listaMaterias.add(materia);
+            }while (cursorMaterias.moveToNext());
+        }
+        cursorMaterias.close();
+        return listaMaterias;
+    }
+
     public ArrayList<ClaseViewModel> mostrarClases(){
         bD = bDHelper.getWritableDatabase();
 
@@ -1646,7 +1675,7 @@ public class BD {
         String mensaje = "Materia eliminada";
         long contado = 0;
 
-        String[] id = {String.valueOf(materia.getIdProfesor())};
+        String[] id = {String.valueOf(materia.getIdMateria())};
         bD.delete(AgendaContract.Materia.TABLE_NAME,AgendaContract.Materia._ID + " = ?", id);
         return mensaje;
     }

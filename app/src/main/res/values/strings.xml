@@ -112,4 +112,6 @@
         <item>Siguiente mes</item>
         <item>Todo</item>
     </string-array>
+
+    <string name="agregar_nota_examen">Agregar nota de examen</string>
 </resources>

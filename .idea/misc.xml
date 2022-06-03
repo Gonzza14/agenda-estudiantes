@@ -45,6 +45,7 @@
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_horario.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_materia.xml" value="0.265625" />
+        <entry key="app/src/main/res/layout/fragment_nota_examen.xml" value="0.265625" />
         <entry key="app/src/main/res/layout/fragment_periodo.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_profesor.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_recordatorio.xml" value="0.2" />

@@ -12,8 +12,13 @@ import androidx.annotation.RequiresApi;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.list.DialogListExtKt;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
@@ -70,10 +75,27 @@ public class ListaExamenAdapter extends RecyclerView.Adapter<ListaExamenAdapter.
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("ID", listaExamen.get(getAdapterPosition()).getIdExamen());
-                    Navigation.findNavController(view).navigate(R.id.nav_editar_examen, bundle);
+                    showPlainListDialog(bundle, view);
                 }
             });
 
         }
+    }
+
+    private void showPlainListDialog(Bundle bundle, View view) {
+        String[] args = {"Editar examen", "Agregar nota de examen", "Agregar recordatorio"};
+        List<String> list = Arrays.asList(args);
+
+        MaterialDialog dialog = new MaterialDialog(view.getContext(), MaterialDialog.getDEFAULT_BEHAVIOR());
+        dialog.title(null, "Seleccione el evento");
+        DialogListExtKt.listItems(dialog, null, list, null, false, (materialDialog, integer, s) -> {
+            if (integer == 0)
+                Navigation.findNavController(view).navigate(R.id.nav_editar_examen, bundle);
+            if (integer == 1)
+                Navigation.findNavController(view).navigate(R.id.nav_agregar_examen,bundle);
+            dialog.dismiss();
+            return null;
+        });
+        dialog.show();
     }
 }

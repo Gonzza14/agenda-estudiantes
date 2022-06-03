@@ -28,6 +28,8 @@ import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaExamenAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaRecordatorioAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaTareaAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
+import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
 
 public class RecordatorioFragment extends Fragment {
@@ -49,6 +51,7 @@ public class RecordatorioFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(view.getContext());
         listaRecordatorio = view.findViewById(R.id.listaRecordatorios);
         listaRecordatorio.setLayoutManager(new LinearLayoutManager(view.getContext()));
 

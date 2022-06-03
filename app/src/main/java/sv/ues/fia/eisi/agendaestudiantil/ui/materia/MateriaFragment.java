@@ -38,7 +38,7 @@ public class MateriaFragment extends Fragment {
     private String registroProfesor, registroPeriodo;
     private MateriaViewModel materia;
     private EditText txtNombreMateria, txtAulaMateria;
-    private Spinner spProfesorMateria, spPeriodoMateria;
+    private Spinner spProfesorMateria, spPeriodoMateria, spOrdenar;
     private Button btnEditar, btnEliminar, btnCancelar;
     private RecyclerView listaMaterias;
     private FloatingActionButton btnAgregarMateria;
@@ -47,7 +47,7 @@ public class MateriaFragment extends Fragment {
     private BD helper;
     private ArrayList<MateriaViewModel> listaArrayMaterias;
     private ListaMateriaAdapter adapter;
-    private int id = 0, position = 0, idProfesor = 0, idPeriodo = 0;;
+    private int id = 0, position = 0, idProfesor = 0, idPeriodo = 0, idPeriodoMateria = 0;;
 
     public static MateriaFragment newInstance() {
         return new MateriaFragment();
@@ -68,10 +68,10 @@ public class MateriaFragment extends Fragment {
         helper = new BD(view.getContext());
 
         listaArrayMaterias = new ArrayList<>();
-        listaArrayMaterias = helper.mostrarMaterias();
+        /*listaArrayMaterias = helper.mostrarMaterias();
 
         adapter = new ListaMateriaAdapter(listaArrayMaterias);
-        listaMaterias.setAdapter(adapter);
+        listaMaterias.setAdapter(adapter);*/
 
         btnAgregarMateria = view.findViewById(R.id.btnAgregarMateria);
         btnAgregarMateria.setOnClickListener(new View.OnClickListener() {
@@ -81,17 +81,35 @@ public class MateriaFragment extends Fragment {
             }
         });
 
-        adapter.setOnClickListener(new View.OnClickListener() {
+        spOrdenar = view.findViewById(R.id.spOrdenar);
+        ArrayList<PeriodoViewModel> periodos = helper.mostrarPeriodos();
+        adaptadorPeriodos = new ArrayAdapter<>(view.getContext(), androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, periodos);
+        spOrdenar.setAdapter(adaptadorPeriodos);
+        spOrdenar.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                id = helper.mostrarMaterias().get(listaMaterias.getChildAdapterPosition(view)).getIdMateria();
-                position = listaMaterias.getChildAdapterPosition(view);
-                showCustomViewDialog(view,id,position);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                idPeriodoMateria = ((PeriodoViewModel) adapterView.getSelectedItem()).getIdPeriodo();
+                listaArrayMaterias = helper.mostrarMateriasPorPeriodo(idPeriodoMateria);
+                adapter = new ListaMateriaAdapter(listaArrayMaterias);
+                listaMaterias.setAdapter(adapter);
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        id = helper.mostrarMateriasPorPeriodo(idPeriodoMateria).get(listaMaterias.getChildAdapterPosition(view)).getIdMateria();
+                        position = listaMaterias.getChildAdapterPosition(view);
+                        showCustomViewDialog(view,id,position);
+                    }
+                });
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
             }
         });
     }
 
-    private void showCustomViewDialog(View view, int id, int position){
+    private void showCustomViewDialog(View view,int id,int position){
         EditarMateriaView customView = new EditarMateriaView(view.getContext());
 
         txtNombreMateria = customView.findViewById(R.id.txtNombreMateriaView);
@@ -163,8 +181,20 @@ public class MateriaFragment extends Fragment {
                 helper.abrir();
                 String estado = helper.actualizar(materia);
                 helper.cerrar();
+                listaArrayMaterias = helper.mostrarMateriasPorPeriodo(idPeriodoMateria);
+                adapter = new ListaMateriaAdapter(listaArrayMaterias);
+                listaMaterias.setAdapter(adapter);
 
-                adapter.updateItem(materia, position);
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        int idInner = helper.mostrarMateriasPorPeriodo(idPeriodoMateria).get(listaMaterias.getChildAdapterPosition(view)).getIdMateria();
+                        int positionInner = listaMaterias.getChildAdapterPosition(view);
+                        showCustomViewDialog(view,idInner,positionInner);
+                    }
+                });
+
+                //adapter.updateItem(materia, position);
                 Toast.makeText(view.getContext(),estado,Toast.LENGTH_SHORT).show();
                 alertDialog.dismiss();
             }

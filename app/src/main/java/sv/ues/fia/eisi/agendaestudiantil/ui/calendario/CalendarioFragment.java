@@ -48,13 +48,15 @@ public class CalendarioFragment extends Fragment implements CalendarAdapter.OnIt
     public ArrayList<Event> eventsForDate(LocalDate date)
     {
         ArrayList<Event> events = new ArrayList<>();
-        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
         if (Event.eventsList == null)
             Event.eventsList = new ArrayList<>();
-        for (Event event : Event.eventsList){
-            LocalDate fecha = LocalDate.parse(event.getFecha());
-            if (fecha.equals(date))
-                events.add(event);
+        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
+        if (Event.eventsList != null) {
+            for (Event event : Event.eventsList) {
+                LocalDate fecha = LocalDate.parse(event.getFecha());
+                if (fecha.equals(date))
+                    events.add(event);
+            }
         }
         return events;
     }

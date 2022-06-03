@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.adaptadores.ListaExamenAdapter;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
+import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 import sv.ues.fia.eisi.agendaestudiantil.databinding.FragmentExamenBinding;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
 
@@ -41,6 +43,7 @@ public class ExamenFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         return inflater.inflate(R.layout.fragment_examen, container, false);
     }
 
@@ -48,7 +51,7 @@ public class ExamenFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(view.getContext());
         listaExamenes = view.findViewById(R.id.listaExamenes);
         listaExamenes.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
