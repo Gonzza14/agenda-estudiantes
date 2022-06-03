@@ -5,21 +5,17 @@ import androidx.lifecycle.ViewModel;
 public class NotaExamenViewModel extends ViewModel {
     private int idNotaExamen;
     private int idExamen;
-    private int idPeriodo;
     private int calificacion;
-    private String fechaExamen;
     private int porcentaje;
     private String descripcionExamen;
 
     public NotaExamenViewModel() {
     }
 
-    public NotaExamenViewModel(int idNotaExamen, int idExamen, int idPeriodo, int calificacion, String fechaExamen, int porcentaje, String descripcionExamen) {
+    public NotaExamenViewModel(int idNotaExamen, int idExamen, int calificacion, int porcentaje, String descripcionExamen) {
         this.idNotaExamen = idNotaExamen;
         this.idExamen = idExamen;
-        this.idPeriodo = idPeriodo;
         this.calificacion = calificacion;
-        this.fechaExamen = fechaExamen;
         this.porcentaje = porcentaje;
         this.descripcionExamen = descripcionExamen;
     }
@@ -40,13 +36,6 @@ public class NotaExamenViewModel extends ViewModel {
         this.idExamen = idExamen;
     }
 
-    public int getIdPeriodo() {
-        return idPeriodo;
-    }
-
-    public void setIdPeriodo(int idPeriodo) {
-        this.idPeriodo = idPeriodo;
-    }
 
     public int getCalificacion() {
         return calificacion;
@@ -54,14 +43,6 @@ public class NotaExamenViewModel extends ViewModel {
 
     public void setCalificacion(int calificacion) {
         this.calificacion = calificacion;
-    }
-
-    public String getFechaExamen() {
-        return fechaExamen;
-    }
-
-    public void setFechaExamen(String fechaExamen) {
-        this.fechaExamen = fechaExamen;
     }
 
     public int getPorcentaje() {

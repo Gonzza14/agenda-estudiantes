@@ -46,6 +46,7 @@ public class AgregarExamenFragment extends Fragment {
     private BD helper;
     private int idMateria, idTipoExamen;
     private ExamenViewModel examen;
+    private NotaExamenViewModel notaExamen;
     private int id;
     public AgregarExamenFragment() {
         // Required empty public constructor
@@ -61,6 +62,7 @@ public class AgregarExamenFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         examen = new ViewModelProvider(this).get(ExamenViewModel.class);
+        notaExamen = new ViewModelProvider(this).get(NotaExamenViewModel.class);
         return inflater.inflate(R.layout.fragment_agregar_examen, container, false);
     }
 
@@ -162,6 +164,12 @@ public class AgregarExamenFragment extends Fragment {
                 eventoExamen.setDescripcion(examen.getDescripcionExamen());
                 Event.eventsList.add(eventoExamen);
                 PrefCofig.writeListInPref(getActivity().getApplicationContext(), Event.eventsList);
+
+                notaExamen.setIdExamen(id);
+
+                helper.abrir();
+                helper.insertar(notaExamen);
+                helper.cerrar();
 
                 Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).popBackStack();

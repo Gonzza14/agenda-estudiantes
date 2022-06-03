@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import sv.ues.fia.eisi.agendaestudiantil.ui.examen.ExamenViewModel;
+import sv.ues.fia.eisi.agendaestudiantil.ui.examen.NotaExamenViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.examen.TipoExamenViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.horario.ClaseViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
@@ -211,17 +212,12 @@ public class BD {
             + AgendaContract.NotaExamen.TABLE_NAME + " ("
             + AgendaContract.NotaExamen._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + AgendaContract.NotaExamen.COLUMN_ID_EXAMEN + " INTEGER NOT NULL, "
-            + AgendaContract.NotaExamen.COLUMN_ID_PERIODO + " INTEGER NOT NULL, "
-            + AgendaContract.NotaExamen.COLUMN_CALIFICACION + " INTEGER NOT NULL, "
-            + AgendaContract.NotaExamen.COLUMN_FECHA + " INTEGER NOT NULL, "
-            + AgendaContract.NotaExamen.COLUMN_PORCENTAJE + " INTEGER NOT NULL, "
+            + AgendaContract.NotaExamen.COLUMN_CALIFICACION + " INTEGER, "
+            + AgendaContract.NotaExamen.COLUMN_PORCENTAJE + " INTEGER, "
             + AgendaContract.NotaExamen.COLUMN_DESCRIPCION + " TEXT(250), FOREIGN KEY ( "
             + AgendaContract.NotaExamen.COLUMN_ID_EXAMEN + " ) REFERENCES "
             + AgendaContract.Examen.TABLE_NAME + " ("
-            + AgendaContract.Examen._ID + ") ON DELETE CASCADE, FOREIGN KEY ( "
-            + AgendaContract.NotaExamen.COLUMN_ID_PERIODO+ " ) REFERENCES "
-            + AgendaContract.Periodo.TABLE_NAME + " ("
-            + AgendaContract.Periodo._ID + ") ON DELETE CASCADE)";
+            + AgendaContract.Examen._ID + ") ON DELETE CASCADE)";
 
     private static final String SQL_DELETE_NOTA_EXAMEN
             = "DROP TABLE IF EXISTS " + AgendaContract.NotaExamen.TABLE_NAME;
@@ -409,7 +405,7 @@ public class BD {
     }
 
     public String insertar(ExamenViewModel examen){
-        String mensaje = "Examen guardada";
+        String mensaje = "Examen guardado";
         long nuevaFilaId = 0;
 
         ContentValues examenes = new ContentValues();
@@ -426,6 +422,23 @@ public class BD {
 
         if (nuevaFilaId == -1 || nuevaFilaId == 0)
             mensaje = "Error al insertar el examen";
+        return mensaje;
+    }
+
+    public String insertar(NotaExamenViewModel notaExamen){
+        String mensaje = "Nota de examen guardada";
+        long nuevaFilaId = 0;
+
+        ContentValues notas = new ContentValues();
+        notas.put(AgendaContract.NotaExamen.COLUMN_ID_EXAMEN, notaExamen.getIdExamen());
+        notas.put(AgendaContract.NotaExamen.COLUMN_CALIFICACION, notaExamen.getCalificacion());
+        notas.put(AgendaContract.NotaExamen.COLUMN_PORCENTAJE, notaExamen.getPorcentaje());
+        notas.put(AgendaContract.NotaExamen.COLUMN_DESCRIPCION, notaExamen.getDescripcionExamen());
+
+        nuevaFilaId = bD.insert(AgendaContract.NotaExamen.TABLE_NAME,null,notas);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar la nota de examen";
         return mensaje;
     }
 
@@ -1323,6 +1336,18 @@ public class BD {
         return cadena;
     }
 
+    public int obtenerPeriodoDeMateriaId(int id){
+        bD = bDHelper.getWritableDatabase();
+        int cadena = 0;
+        Cursor cursor = null;
+        cursor = bD.rawQuery("SELECT " + AgendaContract.Materia.COLUMN_ID_PERIODO + " FROM " + AgendaContract.Materia.TABLE_NAME + " WHERE " + AgendaContract.Materia._ID + " = " + id, null );
+        if (cursor.moveToFirst()) {
+            cadena = cursor.getInt(0);
+        }
+        cursor.close();
+        return cadena;
+    }
+
     public String obtenerMateriaDeClase(int id){
         bD = bDHelper.getWritableDatabase();
         String cadena = "";
@@ -1541,6 +1566,25 @@ public class BD {
         return recordatorio;
     }
 
+    public NotaExamenViewModel verNotaExamen(int id){
+        bD = bDHelper.getWritableDatabase();
+        NotaExamenViewModel notaExamen = null;
+        Cursor cursorNotas = null;
+
+        cursorNotas = bD.rawQuery("SELECT * FROM " + AgendaContract.NotaExamen.TABLE_NAME + " WHERE " + AgendaContract.NotaExamen.COLUMN_ID_EXAMEN  + " = " + id + " LIMIT 1", null);
+
+        if (cursorNotas.moveToFirst()){
+            notaExamen = new NotaExamenViewModel();
+            notaExamen.setIdNotaExamen(cursorNotas.getInt(0));
+            notaExamen.setIdExamen(cursorNotas.getInt(1));
+            notaExamen.setCalificacion(cursorNotas.getInt(2));
+            notaExamen.setPorcentaje(cursorNotas.getInt(3));
+            notaExamen.setDescripcionExamen(cursorNotas.getString(4));
+        }
+        cursorNotas.close();
+        return notaExamen;
+    }
+
     public String actualizar(ProfesorViewModel profesor){
         String[] id = {String.valueOf(profesor.getIdProfesor())};
         ContentValues profesores = new ContentValues();
@@ -1554,6 +1598,20 @@ public class BD {
         bD.update(AgendaContract.Profesor.TABLE_NAME, profesores, AgendaContract.Profesor._ID + " = ?", id);
 
         return "Profesor actualizado correctamente";
+    }
+
+    public String actualizar(NotaExamenViewModel notaExamen){
+        String[] id = {String.valueOf(notaExamen.getIdNotaExamen())};
+        ContentValues notas = new ContentValues();
+
+        notas.put(AgendaContract.NotaExamen.COLUMN_ID_EXAMEN, notaExamen.getIdExamen());
+        notas.put(AgendaContract.NotaExamen.COLUMN_CALIFICACION, notaExamen.getCalificacion());
+        notas.put(AgendaContract.NotaExamen.COLUMN_PORCENTAJE, notaExamen.getPorcentaje());
+        notas.put(AgendaContract.NotaExamen.COLUMN_DESCRIPCION, notaExamen.getDescripcionExamen());
+
+        bD.update(AgendaContract.NotaExamen.TABLE_NAME, notas, AgendaContract.NotaExamen._ID + " = ?", id);
+
+        return "Nota de examen guardada correctamente";
     }
 
     public String actualizar(PeriodoViewModel periodo){
@@ -1713,6 +1771,15 @@ public class BD {
 
         String[] id = {String.valueOf(recordatorio.getIdRecordatorio())};
         bD.delete(AgendaContract.Recordatorio.TABLE_NAME,AgendaContract.Recordatorio._ID + " = ?", id);
+        return mensaje;
+    }
+
+    public String eliminar(NotaExamenViewModel notaExamen){
+        String mensaje = "Nota de examen eliminada";
+        long contado = 0;
+
+        String[] id = {String.valueOf(notaExamen.getIdExamen())};
+        bD.delete(AgendaContract.NotaExamen.TABLE_NAME,AgendaContract.NotaExamen.COLUMN_ID_EXAMEN + " = ?", id);
         return mensaje;
     }
 

@@ -46,6 +46,7 @@ public class EditarExamenFragment extends Fragment {
     private BD helper;
     private int idMateria, idTipoExamen;
     private ExamenViewModel examen;
+    private NotaExamenViewModel notaExamen;
     private int id = 0;
 
 
@@ -63,6 +64,7 @@ public class EditarExamenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        notaExamen = new ViewModelProvider(this).get(NotaExamenViewModel.class);
         examen = new ViewModelProvider(this).get(ExamenViewModel.class);
         return inflater.inflate(R.layout.fragment_editar_examen, container, false);
     }
@@ -200,6 +202,11 @@ public class EditarExamenFragment extends Fragment {
                 examen.setIdExamen(id);
                 helper.abrir();
                 mensaje = helper.eliminar(examen);
+                helper.cerrar();
+
+                notaExamen.setIdExamen(id);
+                helper.abrir();
+                helper.eliminar(notaExamen);
                 helper.cerrar();
 
                 Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
