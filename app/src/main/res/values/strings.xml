@@ -114,4 +114,5 @@
     </string-array>
 
     <string name="agregar_nota_examen">Agregar nota de examen</string>
+    <string name="ver_notas">Notas</string>
 </resources>

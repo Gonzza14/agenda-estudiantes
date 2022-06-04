@@ -16,7 +16,7 @@
         android:background="@drawable/shape_rectangle"
         android:ems="10"
         android:hint="Calificacion"
-        android:inputType="number"
+        android:inputType="numberDecimal"
         android:minHeight="48dp"
         android:padding="10dp"
         app:layout_constraintBottom_toTopOf="@+id/txtPorcentaje"

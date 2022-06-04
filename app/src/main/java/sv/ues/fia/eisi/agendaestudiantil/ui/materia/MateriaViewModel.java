@@ -2,7 +2,11 @@ package sv.ues.fia.eisi.agendaestudiantil.ui.materia;
 
 import androidx.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
+
+import sv.ues.fia.eisi.agendaestudiantil.ui.examen.NotaExamenViewModel;
 
 public class MateriaViewModel extends ViewModel {
     private int idMateria;
@@ -10,6 +14,9 @@ public class MateriaViewModel extends ViewModel {
     private int idPeriodo;
     private String nombreMateria;
     private String aulaMateria;
+    private ArrayList<NotaExamenViewModel> subItemList = new ArrayList<>();
+
+
 
 
     public MateriaViewModel() {
@@ -71,5 +78,13 @@ public class MateriaViewModel extends ViewModel {
 
     public String toString(){
         return nombreMateria;
+    }
+
+    public ArrayList<NotaExamenViewModel> getSubItemList() {
+        return subItemList;
+    }
+
+    public void setSubItemList(ArrayList<NotaExamenViewModel> subItemList) {
+        this.subItemList = subItemList;
     }
 }

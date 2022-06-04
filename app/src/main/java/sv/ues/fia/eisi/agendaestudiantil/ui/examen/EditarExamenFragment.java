@@ -162,6 +162,14 @@ public class EditarExamenFragment extends Fragment {
                 String estado = helper.actualizar(examen);
                 helper.cerrar();
 
+
+                notaExamen = helper.verNotaExamen(id);
+                notaExamen.setIdMateria(idMateria);
+
+                helper.abrir();
+                helper.actualizar(notaExamen);
+                helper.cerrar();
+
                 Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 if (Event.eventsList == null)
                     Event.eventsList = new ArrayList<>();

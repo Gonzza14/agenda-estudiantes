@@ -8,12 +8,10 @@
             android:id="@+id/nav_agenda"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/agenda" />
-
         <item
             android:id="@+id/nav_calendario"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/calendario" />
-
         <item
             android:id="@+id/nav_tarea"
             android:icon="@drawable/ic_menu_gallery"
@@ -30,20 +28,21 @@
             android:id="@+id/nav_profesor"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/profesores" />
-
         <item
             android:id="@+id/nav_periodo"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/periodo" />
-
         <item
             android:id="@+id/nav_materia"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/materia"/>
-
         <item
             android:id="@+id/nav_horario"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/horario"/>
+        <item
+            android:id="@+id/nav_ver_notas"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/ver_notas"/>
     </group>
 </menu>

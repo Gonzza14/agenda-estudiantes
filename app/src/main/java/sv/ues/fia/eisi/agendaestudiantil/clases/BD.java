@@ -212,12 +212,16 @@ public class BD {
             + AgendaContract.NotaExamen.TABLE_NAME + " ("
             + AgendaContract.NotaExamen._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + AgendaContract.NotaExamen.COLUMN_ID_EXAMEN + " INTEGER NOT NULL, "
-            + AgendaContract.NotaExamen.COLUMN_CALIFICACION + " INTEGER, "
+            + AgendaContract.NotaExamen.COLUMN_ID_MATERIA + " INTEGER NOT NULL, "
+            + AgendaContract.NotaExamen.COLUMN_CALIFICACION + " REAL, "
             + AgendaContract.NotaExamen.COLUMN_PORCENTAJE + " INTEGER, "
             + AgendaContract.NotaExamen.COLUMN_DESCRIPCION + " TEXT(250), FOREIGN KEY ( "
             + AgendaContract.NotaExamen.COLUMN_ID_EXAMEN + " ) REFERENCES "
             + AgendaContract.Examen.TABLE_NAME + " ("
-            + AgendaContract.Examen._ID + ") ON DELETE CASCADE)";
+            + AgendaContract.Examen._ID + ") ON DELETE CASCADE, FOREIGN KEY ( "
+            + AgendaContract.NotaExamen.COLUMN_ID_MATERIA + " ) REFERENCES "
+            + AgendaContract.Materia.TABLE_NAME + " ("
+            + AgendaContract.Materia._ID + ") ON DELETE CASCADE)";
 
     private static final String SQL_DELETE_NOTA_EXAMEN
             = "DROP TABLE IF EXISTS " + AgendaContract.NotaExamen.TABLE_NAME;
@@ -431,6 +435,7 @@ public class BD {
 
         ContentValues notas = new ContentValues();
         notas.put(AgendaContract.NotaExamen.COLUMN_ID_EXAMEN, notaExamen.getIdExamen());
+        notas.put(AgendaContract.NotaExamen.COLUMN_ID_MATERIA, notaExamen.getIdMateria());
         notas.put(AgendaContract.NotaExamen.COLUMN_CALIFICACION, notaExamen.getCalificacion());
         notas.put(AgendaContract.NotaExamen.COLUMN_PORCENTAJE, notaExamen.getPorcentaje());
         notas.put(AgendaContract.NotaExamen.COLUMN_DESCRIPCION, notaExamen.getDescripcionExamen());
@@ -626,7 +631,7 @@ public class BD {
         ExamenViewModel examen = null;
         Cursor cursorExamenes = null;
 
-        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA + " = date(DATE('now'), '-1 days')", null);
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA + " = date(datetime('now', 'localtime'), '-1 days')", null);
 
         if (cursorExamenes.moveToFirst()){
             do {
@@ -654,7 +659,7 @@ public class BD {
         ExamenViewModel examen = null;
         Cursor cursorExamenes = null;
 
-        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA + " = date(DATE('now'))", null);
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA + " = date(datetime('now', 'localtime'))", null);
 
         if (cursorExamenes.moveToFirst()){
             do {
@@ -682,7 +687,7 @@ public class BD {
         ExamenViewModel examen = null;
         Cursor cursorExamenes = null;
 
-        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA +" = date(DATE('now'), '+1 days')", null);
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA +" = date(datetime('now', 'localtime'), '+1 days')", null);
 
         if (cursorExamenes.moveToFirst()){
             do {
@@ -710,7 +715,7 @@ public class BD {
         ExamenViewModel examen = null;
         Cursor cursorExamenes = null;
 
-        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA +" >= date(DATE('now')) AND " + AgendaContract.Examen.COLUMN_FECHA + " < date(DATE('now'), '+7 days')", null);
+        cursorExamenes = bD.rawQuery("SELECT * FROM " + AgendaContract.Examen.TABLE_NAME + " WHERE " + AgendaContract.Examen.COLUMN_FECHA +" >= date(datetime('now', 'localtime')) AND " + AgendaContract.Examen.COLUMN_FECHA + " < date(datetime('now', 'localtime'), '+1 days')", null);
 
         if (cursorExamenes.moveToFirst()){
             do {
@@ -822,7 +827,7 @@ public class BD {
         TareaViewModel tarea = null;
         Cursor cursorTareas = null;
 
-        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA + " = date(DATE('now'), '-1 days')", null);
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA + " = date(datetime('now', 'localtime'), '-1 days')", null);
 
         if (cursorTareas.moveToFirst()){
             do {
@@ -851,7 +856,7 @@ public class BD {
         TareaViewModel tarea = null;
         Cursor cursorTareas = null;
 
-        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA + " = date(DATE('now'))", null);
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA + " = date(datetime('now', 'localtime'))", null);
 
         if (cursorTareas.moveToFirst()){
             do {
@@ -880,7 +885,7 @@ public class BD {
         TareaViewModel tarea = null;
         Cursor cursorTareas = null;
 
-        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA +" = date(DATE('now'), '+1 days')", null);
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA +" = date(datetime('now', 'localtime'), '+1 days')", null);
 
         if (cursorTareas.moveToFirst()){
             do {
@@ -909,7 +914,7 @@ public class BD {
         TareaViewModel tarea = null;
         Cursor cursorTareas = null;
 
-        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA +" >= date(DATE('now')) AND " + AgendaContract.Tarea.COLUMN_FECHA + " < date(DATE('now'), '+7 days')", null);
+        cursorTareas = bD.rawQuery("SELECT * FROM " + AgendaContract.Tarea.TABLE_NAME + " WHERE " + AgendaContract.Tarea.COLUMN_FECHA +" >= date(datetime('now', 'localtime')) AND " + AgendaContract.Tarea.COLUMN_FECHA + " < date(datetime('now', 'localtime'), '+7 days')", null);
 
 
         if (cursorTareas.moveToFirst()){
@@ -1070,6 +1075,31 @@ public class BD {
         return listaClases;
     }
 
+    public ArrayList<NotaExamenViewModel> mostrarNotasExamenesPorMateria(int id){
+        bD = bDHelper.getWritableDatabase();
+
+        ArrayList<NotaExamenViewModel> listaNotasExamenes = new ArrayList<>();
+        NotaExamenViewModel notaExamen = null;
+        Cursor cursorNotas = null;
+
+        cursorNotas = bD.rawQuery("SELECT * FROM " + AgendaContract.NotaExamen.TABLE_NAME + " WHERE " + AgendaContract.NotaExamen.COLUMN_ID_MATERIA + " = " + id, null);
+
+        if (cursorNotas.moveToFirst()){
+            do {
+                notaExamen = new NotaExamenViewModel();
+                notaExamen.setIdNotaExamen(cursorNotas.getInt(0));
+                notaExamen.setIdExamen(cursorNotas.getInt(1));
+                notaExamen.setIdMateria(cursorNotas.getInt(2));
+                notaExamen.setCalificacion(cursorNotas.getInt(3));
+                notaExamen.setPorcentaje(cursorNotas.getInt(4));
+                notaExamen.setDescripcionExamen(cursorNotas.getString(5));
+                listaNotasExamenes.add(notaExamen);
+            }while (cursorNotas.moveToNext());
+        }
+        cursorNotas.close();
+        return listaNotasExamenes;
+    }
+
     public ArrayList<RecordatorioViewModel> mostrarRecordatorios(){
         bD = bDHelper.getWritableDatabase();
 
@@ -1102,7 +1132,7 @@ public class BD {
         RecordatorioViewModel recordatorio = null;
         Cursor cursorRecordatorios = null;
 
-        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA + " = date(DATE('now'), '-1 days')", null);
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA + " = date(datetime('now', 'localtime'), '-1 days')", null);
 
         if (cursorRecordatorios.moveToFirst()){
             do {
@@ -1127,7 +1157,7 @@ public class BD {
         RecordatorioViewModel recordatorio = null;
         Cursor cursorRecordatorios = null;
 
-        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA + " = date(DATE('now'))", null);
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA + " = date(datetime('now', 'localtime'))", null);
 
         if (cursorRecordatorios.moveToFirst()){
             do {
@@ -1152,7 +1182,7 @@ public class BD {
         RecordatorioViewModel recordatorio = null;
         Cursor cursorRecordatorios = null;
 
-        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA +" = date(DATE('now'), '+1 days')", null);
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA +" = date(datetime('now', 'localtime'), '+1 days')", null);
 
         if (cursorRecordatorios.moveToFirst()){
             do {
@@ -1177,7 +1207,7 @@ public class BD {
         RecordatorioViewModel recordatorio = null;
         Cursor cursorRecordatorios = null;
 
-        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA +" >= date(DATE('now')) AND " + AgendaContract.Recordatorio.COLUMN_FECHA + " < date(DATE('now'), '+7 days')", null);
+        cursorRecordatorios = bD.rawQuery("SELECT * FROM " + AgendaContract.Recordatorio.TABLE_NAME + " WHERE " + AgendaContract.Recordatorio.COLUMN_FECHA +" >= date(datetime('now', 'localtime')) AND " + AgendaContract.Recordatorio.COLUMN_FECHA + " < date(datetime('now', 'localtime'), '+7 days')", null);
 
         if (cursorRecordatorios.moveToFirst()){
             do {
@@ -1577,9 +1607,10 @@ public class BD {
             notaExamen = new NotaExamenViewModel();
             notaExamen.setIdNotaExamen(cursorNotas.getInt(0));
             notaExamen.setIdExamen(cursorNotas.getInt(1));
-            notaExamen.setCalificacion(cursorNotas.getInt(2));
-            notaExamen.setPorcentaje(cursorNotas.getInt(3));
-            notaExamen.setDescripcionExamen(cursorNotas.getString(4));
+            notaExamen.setIdMateria(cursorNotas.getInt(2));
+            notaExamen.setCalificacion(cursorNotas.getInt(3));
+            notaExamen.setPorcentaje(cursorNotas.getInt(4));
+            notaExamen.setDescripcionExamen(cursorNotas.getString(5));
         }
         cursorNotas.close();
         return notaExamen;
@@ -1605,6 +1636,7 @@ public class BD {
         ContentValues notas = new ContentValues();
 
         notas.put(AgendaContract.NotaExamen.COLUMN_ID_EXAMEN, notaExamen.getIdExamen());
+        notas.put(AgendaContract.NotaExamen.COLUMN_ID_MATERIA, notaExamen.getIdMateria());
         notas.put(AgendaContract.NotaExamen.COLUMN_CALIFICACION, notaExamen.getCalificacion());
         notas.put(AgendaContract.NotaExamen.COLUMN_PORCENTAJE, notaExamen.getPorcentaje());
         notas.put(AgendaContract.NotaExamen.COLUMN_DESCRIPCION, notaExamen.getDescripcionExamen());

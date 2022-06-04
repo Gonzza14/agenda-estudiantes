@@ -59,7 +59,7 @@ public class NotaExamenFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 notaExamen.setIdExamen(idExamen);
-                notaExamen.setCalificacion(Integer.parseInt(txtCalificacion.getText().toString()));
+                notaExamen.setCalificacion(Float.parseFloat(txtCalificacion.getText().toString()));
                 notaExamen.setPorcentaje(Integer.parseInt(txtPorcentaje.getText().toString()));
                 notaExamen.setDescripcionExamen(txtDescripcion.getText().toString());
 

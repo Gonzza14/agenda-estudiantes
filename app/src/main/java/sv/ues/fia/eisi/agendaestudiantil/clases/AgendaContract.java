@@ -104,6 +104,7 @@ public final class AgendaContract {
     public static class NotaExamen implements BaseColumns{
         public static final String TABLE_NAME = "nota_examen";
         public static final String COLUMN_ID_EXAMEN = "id_examen";
+        public static final String COLUMN_ID_MATERIA = "id_materia";
         public static final String COLUMN_CALIFICACION = "calificacion";
         public static final String COLUMN_PORCENTAJE = "porcentaje";
         public static final String COLUMN_DESCRIPCION = "descripcion";

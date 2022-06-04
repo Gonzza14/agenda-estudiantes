@@ -166,6 +166,7 @@ public class AgregarExamenFragment extends Fragment {
                 PrefCofig.writeListInPref(getActivity().getApplicationContext(), Event.eventsList);
 
                 notaExamen.setIdExamen(id);
+                notaExamen.setIdMateria(idMateria);
 
                 helper.abrir();
                 helper.insertar(notaExamen);
