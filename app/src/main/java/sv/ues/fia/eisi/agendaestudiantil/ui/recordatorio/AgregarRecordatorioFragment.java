@@ -11,6 +11,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.work.Data;
+import androidx.work.WorkManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +24,13 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Calendar;
+
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
 import sv.ues.fia.eisi.agendaestudiantil.clases.DatePickerFragment;
 import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.clases.Notificacion;
 import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 import sv.ues.fia.eisi.agendaestudiantil.clases.TimePickerFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
@@ -38,6 +43,7 @@ public class AgregarRecordatorioFragment extends Fragment {
     private BD helper;
     private RecordatorioViewModel recordatorio;
     private int id;
+    Calendar calendar = Calendar.getInstance();
 
     public AgregarRecordatorioFragment() {
         // Required empty public constructor
@@ -116,6 +122,14 @@ public class AgregarRecordatorioFragment extends Fragment {
                 Event.eventsList.add(eventoRecordatorio);
                 PrefCofig.writeListInPref(getActivity().getApplicationContext(), Event.eventsList);
 
+                String tag = recordatorio.getNombreRecordatorio()+recordatorio.getIdRecordatorio();
+                long time = calendar.getTimeInMillis();
+                long timeNow = System.currentTimeMillis();
+                Long alertTime = time - timeNow;
+
+                Data data = guardarData(recordatorio.getNombreRecordatorio(), recordatorio.getDescripcionRecordatorio(), "Notficacion de "+ recordatorio.getNombreRecordatorio());
+                Notificacion.guardarNotificacion(alertTime,data,tag);
+
                 Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).popBackStack();
             }
@@ -127,6 +141,10 @@ public class AgregarRecordatorioFragment extends Fragment {
         DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.YEAR, year);
+
                 final String selectedDate = year + "-" + twoDigits(month+1) + "-" + twoDigits(day);
                 editText.setText(selectedDate);
             }
@@ -143,6 +161,8 @@ public class AgregarRecordatorioFragment extends Fragment {
         TimePickerFragment newFragment = TimePickerFragment.newInstance(new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hora, int minuto) {
+                calendar.set(Calendar.HOUR_OF_DAY,hora);
+                calendar.set(Calendar.MINUTE,minuto);
                 String AM_PM = "AM";
                 if (hora >=12){
                     AM_PM = "PM";
@@ -159,5 +179,17 @@ public class AgregarRecordatorioFragment extends Fragment {
             }
         });
         newFragment.show(getActivity().getSupportFragmentManager(),"timePicker");
+    }
+
+    /*private void eliminarNotificacion(String tag){
+        WorkManager.getInstance(getContext()).cancelAllWorkByTag(tag);
+        Toast.makeText(getContext(), "Notificacion eliminada", Toast.LENGTH_SHORT).show();
+    }*/
+
+    private Data guardarData(String titulo, String detalle, String ticker){
+        return new Data.Builder()
+                .putString("TITULO", titulo)
+                .putString("DETALLE", detalle)
+                .putString("TICKER", ticker).build();
     }
 }

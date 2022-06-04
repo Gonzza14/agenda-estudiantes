@@ -11,6 +11,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.work.Data;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +29,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
 import sv.ues.fia.eisi.agendaestudiantil.clases.DatePickerFragment;
 import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.clases.Notificacion;
 import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 import sv.ues.fia.eisi.agendaestudiantil.clases.TimePickerFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
@@ -48,6 +51,7 @@ public class AgregarExamenFragment extends Fragment {
     private ExamenViewModel examen;
     private NotaExamenViewModel notaExamen;
     private int id;
+    Calendar calendar = Calendar.getInstance();
     public AgregarExamenFragment() {
         // Required empty public constructor
     }
@@ -172,6 +176,12 @@ public class AgregarExamenFragment extends Fragment {
                 helper.insertar(notaExamen);
                 helper.cerrar();
 
+                String tag = examen.getNombreExamen()+examen.getIdExamen();
+                Long alertTime = calendar.getTimeInMillis() - System.currentTimeMillis();
+
+                Data data = guardarData(examen.getNombreExamen(), helper.obtenerTipoExamenDeExamen(examen.getIdExamen())+" "+ examen.getDescripcionExamen(),"Notifiacion de " + examen.getNombreExamen());
+                Notificacion.guardarNotificacion(alertTime,data,tag);
+
                 Toast.makeText(view.getContext(), mensaje, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).popBackStack();
 
@@ -183,6 +193,9 @@ public class AgregarExamenFragment extends Fragment {
         DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.YEAR, year);
                 final String selectedDate = year + "-" + twoDigits(month+1) + "-" + twoDigits(day);
                 editText.setText(selectedDate);
             }
@@ -199,6 +212,8 @@ public class AgregarExamenFragment extends Fragment {
         TimePickerFragment newFragment = TimePickerFragment.newInstance(new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hora, int minuto) {
+                calendar.set(Calendar.HOUR_OF_DAY,hora);
+                calendar.set(Calendar.MINUTE,minuto);
                 String AM_PM = "AM";
                 if (hora >=12){
                     AM_PM = "PM";
@@ -215,5 +230,12 @@ public class AgregarExamenFragment extends Fragment {
             }
         });
         newFragment.show(getActivity().getSupportFragmentManager(),"timePicker");
+    }
+
+    private Data guardarData(String titulo, String detalle, String ticker){
+        return new Data.Builder()
+                .putString("TITULO", titulo)
+                .putString("DETALLE", detalle)
+                .putString("TICKER", ticker).build();
     }
 }

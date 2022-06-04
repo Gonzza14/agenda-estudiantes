@@ -11,6 +11,8 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.work.Data;
+import androidx.work.WorkManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +28,13 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import sv.ues.fia.eisi.agendaestudiantil.R;
 import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
 import sv.ues.fia.eisi.agendaestudiantil.clases.DatePickerFragment;
 import sv.ues.fia.eisi.agendaestudiantil.clases.Event;
+import sv.ues.fia.eisi.agendaestudiantil.clases.Notificacion;
 import sv.ues.fia.eisi.agendaestudiantil.clases.PrefCofig;
 import sv.ues.fia.eisi.agendaestudiantil.clases.TimePickerFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.calendario.CalendarUtils;
@@ -47,7 +51,7 @@ public class EditarTareaFragment extends Fragment {
     private int idMateria;
     private TareaViewModel tarea;
     private int id;
-
+    Calendar calendar = Calendar.getInstance();
     public EditarTareaFragment() {
         // Required empty public constructor
     }
@@ -120,12 +124,45 @@ public class EditarTareaFragment extends Fragment {
             txtFechaTarea.setText(tarea.getFechaTarea());
             txtHoraEntrega.setText(tarea.getHoraTarea());
             spMateriaTarea.setSelection(obtenerPosicionMateria(spMateriaTarea, registroMateria));
+
+            String parts [], parts2[], parts3[], fecha, tiempo, horaPura, amPm;
+            int dia, mes, año, hora, minuto;
+
+            fecha = tarea.getFechaTarea();
+
+            parts = fecha.split("-");
+            año = Integer.parseInt(parts[0]);
+            mes = Integer.parseInt(parts[1])-1;
+            dia = Integer.parseInt(parts[2]);
+
+            calendar.set(Calendar.DAY_OF_MONTH, dia);
+            calendar.set(Calendar.MONTH, mes);
+            calendar.set(Calendar.YEAR, año);
+
+            tiempo = tarea.getHoraTarea();
+
+            parts2 = tiempo.split(" ");
+            horaPura = parts2[0];
+            amPm = parts2[1];
+
+            parts3 = horaPura.split(":");
+            hora = Integer.parseInt(parts3[0]);
+            minuto = Integer.parseInt(parts3[1]);
+
+            if (amPm.equals("PM") && hora != 12)
+                hora += 12;
+            if (amPm.equals("AM") && hora == 12)
+                hora +=12;
+
+            calendar.set(Calendar.HOUR_OF_DAY, hora);
+            calendar.set(Calendar.MINUTE, minuto);
         }
 
         btnEditarTarea = view.findViewById(R.id.btnEditarTarea);
         btnEditarTarea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                eliminarNotificacion( tarea.getNombre()+tarea.getIdTarea());
                 tarea.setNombre("Tarea");
                 tarea.setIdMateria(idMateria);
                 tarea.setIdAgenda(1);
@@ -153,6 +190,15 @@ public class EditarTareaFragment extends Fragment {
                     }
                 }
                 PrefCofig.writeListInPref(getActivity().getApplicationContext(), Event.eventsList);
+
+                String tag = tarea.getNombre()+tarea.getIdTarea();
+                long time = calendar.getTimeInMillis();
+                long timeNow = System.currentTimeMillis();
+                Long alertTime = time - timeNow;
+
+                Data data = guardarData(tarea.getNombre()+": " + tarea.getTituloTarea(), tarea.getDescripcionTarea(), "Notificacion de " + tarea.getTituloTarea());
+                Notificacion.guardarNotificacion(alertTime,data,tag);
+
                 Toast.makeText(view.getContext(), estado, Toast.LENGTH_SHORT).show();
                 Navigation.findNavController(view).popBackStack();
             }
@@ -163,7 +209,7 @@ public class EditarTareaFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String mensaje;
-
+                eliminarNotificacion( tarea.getNombre()+tarea.getIdTarea());
                 ArrayList<Event> eventoEliminar = new ArrayList<>();
                 Event.eventsList = (ArrayList<Event>) PrefCofig.readListFromPref(getContext());
                 if (Event.eventsList == null)
@@ -191,6 +237,9 @@ public class EditarTareaFragment extends Fragment {
         DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                calendar.set(Calendar.DAY_OF_MONTH, day);
+                calendar.set(Calendar.MONTH, month);
+                calendar.set(Calendar.YEAR, year);
                 final String selectedDate = year + "-" + twoDigits(month+1) + "-" + twoDigits(day);
                 editText.setText(selectedDate);
             }
@@ -207,6 +256,8 @@ public class EditarTareaFragment extends Fragment {
         TimePickerFragment newFragment = TimePickerFragment.newInstance(new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hora, int minuto) {
+                calendar.set(Calendar.HOUR_OF_DAY,hora);
+                calendar.set(Calendar.MINUTE,minuto);
                 String AM_PM = "AM";
                 if (hora >=12){
                     AM_PM = "PM";
@@ -233,5 +284,16 @@ public class EditarTareaFragment extends Fragment {
             }
         }
         return position;
+    }
+    private void eliminarNotificacion(String tag){
+        WorkManager.getInstance(getContext()).cancelAllWorkByTag(tag);
+        Toast.makeText(getContext(), "Notificacion eliminada", Toast.LENGTH_SHORT).show();
+    }
+
+    private Data guardarData(String titulo, String detalle, String ticker){
+        return new Data.Builder()
+                .putString("TITULO", titulo)
+                .putString("DETALLE", detalle)
+                .putString("TICKER", ticker).build();
     }
 }
