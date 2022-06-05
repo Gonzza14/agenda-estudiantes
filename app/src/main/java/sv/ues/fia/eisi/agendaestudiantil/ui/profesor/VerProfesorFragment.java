@@ -1,6 +1,9 @@
 package sv.ues.fia.eisi.agendaestudiantil.ui.profesor;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,10 +66,35 @@ public class VerProfesorFragment extends Fragment {
 
         CollapsingToolbarLayout toolBarLayout = binding.toolbarLayout;
 
+
         if (profesor != null){
             toolBarLayout.setTitle(profesor.getNombreProfesor() + " " + profesor.getApellidoProfesor());
             lblTelefonoView.setText(profesor.getTelefonoProfesor());
+            lblTelefonoView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String phoneNo = lblTelefonoView.getText().toString();
+                    if(!TextUtils.isEmpty(phoneNo)) {
+                        String dial = "tel:" + phoneNo;
+                        startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+                    }else
+                        Toast.makeText(getContext(), "No hay numero de telefono", Toast.LENGTH_SHORT).show();
+
+                }
+            });
             lblCorreoView.setText(profesor.getCorreoProfesor());
+            lblCorreoView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String correo = lblCorreoView.getText().toString();
+                    if(!TextUtils.isEmpty(correo)) {
+                        Bundle bundle = new Bundle();
+                        bundle.putString("CORREO", profesor.getCorreoProfesor());
+                        Navigation.findNavController(view).navigate(R.id.nav_enviar_correo, bundle);
+                    }else
+                        Toast.makeText(getContext(), "No hay correo de usuario", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

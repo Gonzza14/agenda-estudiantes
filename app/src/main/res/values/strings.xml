@@ -119,4 +119,8 @@
     <string name="graficos">Graficos</string>
     <string name="logout">Salir</string>
     <string name="cerrar_sesion">Cerrar sesion</string>
+    <string name="enviar_correo">Enviar correo</string>
+    <string name="asunto">Asunto</string>
+    <string name="mensaje">Mensaje</string>
+    <string name="correo_a_enviar">Correo</string>
 </resources>

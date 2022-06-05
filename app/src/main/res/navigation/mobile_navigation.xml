@@ -240,6 +240,9 @@
         <action
             android:id="@+id/action_nav_ver_profesor_to_nav_editar_profesor"
             app:destination="@id/nav_editar_profesor" />
+        <action
+            android:id="@+id/action_nav_ver_profesor_to_nav_enviar_correo"
+            app:destination="@id/nav_enviar_correo" />
     </fragment>
 
     <fragment
@@ -520,5 +523,15 @@
         <action
             android:id="@+id/action_nav_graficos_to_nav_agenda"
             app:destination="@id/nav_agenda" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_enviar_correo"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.correo.EnviarCorreoFragment"
+        android:label="@string/enviar_correo"
+        tools:layout="@layout/fragment_enviar_correo">
+        <action
+            android:id="@+id/action_nav_enviar_correo_to_nav_ver_profesor"
+            app:destination="@id/nav_ver_profesor" />
     </fragment>
 </navigation>
