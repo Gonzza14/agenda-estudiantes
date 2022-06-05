@@ -29,6 +29,12 @@ public class CalendarUtils {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String formattedDia(LocalDate date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEEE dd");
+        return date.format(formatter);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static String monthYearFromDate(LocalDate date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM yyyy");
         return date.format(formatter);

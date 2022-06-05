@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/agenda" />
         <item
+            android:id="@+id/nav_graficos"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="@string/graficos" />
+        <item
             android:id="@+id/nav_calendario"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/calendario" />
