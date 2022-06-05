@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             Event.eventsList = new ArrayList<>();
         helper = new BD(this);
         if (helper.verificarExistenciaDeAgenda()) {
-            Intent inte = new Intent(this, sv.ues.fia.eisi.agendaestudiantil.InicioActivity.class);
+            Intent inte = new Intent(this, sv.ues.fia.eisi.agendaestudiantil.LoginActivity.class);
             startActivity(inte);
             helper.cerrar();
         }

@@ -117,4 +117,6 @@
     <string name="ver_notas">Notas</string>
 
     <string name="graficos">Graficos</string>
+    <string name="logout">Salir</string>
+    <string name="cerrar_sesion">Cerrar sesion</string>
 </resources>

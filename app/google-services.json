@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "28199561536",
+    "project_id": "agendaestudiantil-5178f",
+    "storage_bucket": "agendaestudiantil-5178f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:28199561536:android:965b02b900548a8b5172a5",
+        "android_client_info": {
+          "package_name": "sv.ues.fia.eisi.agendaestudiantil"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "28199561536-3nc4cbf7m2lo0t9d9g6l3dumambi834h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "sv.ues.fia.eisi.agendaestudiantil",
+            "certificate_hash": "bd7704fe068b7f8789643ed8f4e8f3ed8b22b05f"
+          }
+        },
+        {
+          "client_id": "28199561536-34gc7n6nc6bh8b33g9144kkl93vt99jt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOllvJqRf6BLKC36MGva8A6UsGCumICBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "28199561536-34gc7n6nc6bh8b33g9144kkl93vt99jt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
