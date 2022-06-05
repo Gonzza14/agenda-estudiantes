@@ -63,6 +63,10 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.afollestad.material-dialogs:input:3.3.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    //iText
+    implementation 'com.itextpdf:itextg:5.5.10'
+    //Android-pdf-viewer
+    implementation 'com.github.barteksc:AndroidPdfViewer:2.3.0'
     //JavaMail
     implementation files('libs/activation.jar')
     implementation files('libs/additionnal.jar')

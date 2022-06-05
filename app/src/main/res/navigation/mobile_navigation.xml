@@ -519,10 +519,13 @@
         android:id="@+id/nav_graficos"
         android:name="sv.ues.fia.eisi.agendaestudiantil.ui.grafico.GraficoFragment"
         android:label="@string/graficos"
-        tools:layout="@layout/fragment_grafico">>
+        tools:layout="@layout/fragment_grafico">
         <action
             android:id="@+id/action_nav_graficos_to_nav_agenda"
             app:destination="@id/nav_agenda" />
+        <action
+            android:id="@+id/action_nav_graficos_to_nav_ver_pdf"
+            app:destination="@id/nav_ver_pdf" />
     </fragment>
 
     <fragment
@@ -533,5 +536,16 @@
         <action
             android:id="@+id/action_nav_enviar_correo_to_nav_ver_profesor"
             app:destination="@id/nav_ver_profesor" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_ver_pdf"
+        android:name="sv.ues.fia.eisi.agendaestudiantil.ui.grafico.ViewPDFFragment"
+        android:label="@string/ver_pdf"
+        tools:layout="@layout/fragment_view_p_d_f">
+        <action
+            android:id="@+id/action_nav_ver_pdf_to_nav_graficos"
+            app:destination="@id/nav_graficos" />
     </fragment>
 </navigation>

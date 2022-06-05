@@ -122,5 +122,6 @@
     <string name="enviar_correo">Enviar correo</string>
     <string name="asunto">Asunto</string>
     <string name="mensaje">Mensaje</string>
-    <string name="correo_a_enviar">Correo</string>
+    <string name="correo_a_enviar">Correo</string>}
+    <string name="ver_pdf">Ver eventos diarios</string>
 </resources>
