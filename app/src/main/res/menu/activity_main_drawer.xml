@@ -6,47 +6,47 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_agenda"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_agenda"
             android:title="@string/agenda" />
         <item
-            android:id="@+id/nav_graficos"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="@string/graficos" />
-        <item
             android:id="@+id/nav_calendario"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_menu_calendario"
             android:title="@string/calendario" />
         <item
             android:id="@+id/nav_tarea"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_tarea"
             android:title="@string/tarea" />
         <item
             android:id="@+id/nav_examen"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_examen"
             android:title="@string/examen" />
         <item
             android:id="@+id/nav_recordatorio"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_tarea"
             android:title="@string/recordatorio" />
         <item
             android:id="@+id/nav_profesor"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_profesor"
             android:title="@string/profesores" />
         <item
             android:id="@+id/nav_periodo"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_periodo"
             android:title="@string/periodo" />
         <item
             android:id="@+id/nav_materia"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_materia"
             android:title="@string/materia"/>
         <item
             android:id="@+id/nav_horario"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_horario"
             android:title="@string/horario"/>
         <item
             android:id="@+id/nav_ver_notas"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_menu_notas"
             android:title="@string/ver_notas"/>
+        <item
+            android:id="@+id/nav_graficos"
+            android:icon="@drawable/ic_menu_grafico"
+            android:title="@string/graficos" />
     </group>
 </menu>
