@@ -33,6 +33,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
+import sv.ues.fia.eisi.agendaestudiantil.clases.BD;
 import sv.ues.fia.eisi.agendaestudiantil.databinding.ActivityInicioBinding;
 
 public class InicioActivity extends AppCompatActivity {
@@ -48,6 +49,7 @@ public class InicioActivity extends AppCompatActivity {
     private ImageView imageView;
     private TextView lblNombreUsuario, lblCorreoUsuario, logout;
     private GoogleSignInClient mGoogleSignInClient;
+    private BD helper;
     private SignInButton signInButton;
 
     @Override
@@ -56,7 +58,9 @@ public class InicioActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-
+        helper = new BD(this);
+        helper.abrir();
+        helper.cerrar();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         contextOfApplicaction = getApplicationContext();
@@ -157,6 +161,13 @@ public class InicioActivity extends AppCompatActivity {
                             }
                         }
                     });
+        }
+        if (id == R.id.llenar_bd){
+            helper.abrir();
+            String toast = helper.llenarBD();
+            helper.cerrar();
+            Toast.makeText(this, toast, Toast.LENGTH_SHORT).show();
+
         }
         return super.onOptionsItemSelected(item);
     }

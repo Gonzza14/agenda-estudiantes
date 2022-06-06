@@ -109,8 +109,9 @@ public class EditarProfesorFragment extends Fragment {
             txtApellido.setText(profesor.getApellidoProfesor());
             txtTelefono.setText(profesor.getTelefonoProfesor());
             txtCorreo.setText(profesor.getCorreoProfesor());
-            imageUri = Uri.parse(profesor.getImagenProfesor());
-            imgProfesor.setImageURI(Uri.parse(profesor.getImagenProfesor()));
+            if (profesor.getImagenProfesor() != null) {
+                imgProfesor.setImageURI(Uri.parse(profesor.getImagenProfesor()));
+            }
         }
 
         btnGuardar = (FloatingActionButton) view.findViewById(R.id.btnGuardarClase);
@@ -121,7 +122,10 @@ public class EditarProfesorFragment extends Fragment {
                 profesor.setApellidoProfesor(txtApellido.getText().toString());
                 profesor.setTelefonoProfesor(txtTelefono.getText().toString());
                 profesor.setCorreoProfesor(txtCorreo.getText().toString());
-                profesor.setImagenProfesor(imageUri.toString());
+                if (profesor.getImagenProfesor() != null) {
+                    imageUri = Uri.parse(profesor.getImagenProfesor());
+                    profesor.setImagenProfesor(imageUri.toString());
+                }
 
                 helper.abrir();
                 String estado = helper.actualizar(profesor);
@@ -176,6 +180,7 @@ public class EditarProfesorFragment extends Fragment {
                         Intent data = result.getData();
                         imageUri = data.getData();
                         imgProfesor.setImageURI(imageUri);
+                        profesor.setImagenProfesor(imageUri.toString());
                     }
 
                     new ActivityCompat.OnRequestPermissionsResultCallback() {
@@ -215,6 +220,7 @@ public class EditarProfesorFragment extends Fragment {
                     if (result.getResultCode() == Activity.RESULT_OK){
                         try {
                             imgProfesor.setImageURI(imageUri);
+                            profesor.setImagenProfesor(imageUri.toString());
                         }
                         catch (Exception e) {
                             e.printStackTrace();

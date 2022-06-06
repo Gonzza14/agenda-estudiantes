@@ -2,20 +2,31 @@ package sv.ues.fia.eisi.agendaestudiantil.clases;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.widget.Toast;
 
+import androidx.navigation.Navigation;
+import androidx.work.Data;
+import androidx.work.WorkManager;
+
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import sv.ues.fia.eisi.agendaestudiantil.ui.examen.ExamenViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.examen.NotaExamenViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.examen.TipoExamenViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.horario.ClaseViewModel;
+import sv.ues.fia.eisi.agendaestudiantil.ui.horario.HorarioViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.materia.MateriaViewModel;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.AgregarPeriodoFragment;
 import sv.ues.fia.eisi.agendaestudiantil.ui.periodo.PeriodoViewModel;
@@ -42,21 +53,6 @@ public class BD {
     private static final String SQL_DELETE_AGENDA
             = "DROP TABLE IF EXISTS " + AgendaContract.Agenda.TABLE_NAME;
 
-    private static final String SQL_CREATE_NOTIFICACION
-            = "CREATE TABLE "
-            + AgendaContract.Notificacion.TABLE_NAME + " ("
-            + AgendaContract.Notificacion._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + AgendaContract.Notificacion.COLUMN_ID_AGENDA + " INTEGER NOT NULL, "
-            + AgendaContract.Notificacion.COLUMN_DIA + " TEXT(10) NOT NULL, "
-            + AgendaContract.Notificacion.COLUMN_NOTIFICACION + " INTEGER DEFAULT 0, "
-            + AgendaContract.Notificacion.COLUMN_HORA + " TEXT NOT NULL, FOREIGN KEY ( "
-            + AgendaContract.Notificacion.COLUMN_ID_AGENDA + " ) REFERENCES "
-            + AgendaContract.Agenda.TABLE_NAME + " ("
-            + AgendaContract.Agenda._ID + ") ON DELETE CASCADE)";
-
-
-    private static final String SQL_DELETE_NOTIFICACION
-            = "DROP TABLE IF EXISTS " + AgendaContract.Notificacion.TABLE_NAME;
 
     private static final String SQL_CREATE_RECORDATORIO
             = "CREATE TABLE "
@@ -226,40 +222,6 @@ public class BD {
     private static final String SQL_DELETE_NOTA_EXAMEN
             = "DROP TABLE IF EXISTS " + AgendaContract.NotaExamen.TABLE_NAME;
 
-    private static final String SQL_CREATE_ESTUDIO
-            = "CREATE TABLE "
-            + AgendaContract.Estudio.TABLE_NAME + " ("
-            + AgendaContract.Estudio._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + AgendaContract.Estudio.COLUMN_DIA + " TEXT NOT NULL, "
-            + AgendaContract.Estudio.COLUMN_INICIO + " TEXT NOT NULL, "
-            + AgendaContract.Estudio.COLUMN_FIN + " TEXT NOT NULL, "
-            + AgendaContract.Estudio.COLUMN_DESCRIPCION + " TEXT(250))";
-
-    private static final String SQL_DELETE_ESTUDIO
-            = "DROP TABLE IF EXISTS " + AgendaContract.Estudio.TABLE_NAME;
-
-    private static final String SQL_CREATE_ARCHIVO
-            = "CREATE TABLE "
-            + AgendaContract.Archivo.TABLE_NAME + " ("
-            + AgendaContract.Archivo._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + AgendaContract.Archivo.COLUMN_ID_TAREA + " INTEGER NOT NULL, "
-            + AgendaContract.Archivo.COLUMN_ID_PROFESOR+ " INTEGER NOT NULL, "
-            + AgendaContract.Archivo.COLUMN_ID_EXAMEN + " INTEGER NOT NULL, "
-            + AgendaContract.Archivo.COLUMN_NAME + " TEXT(250) NOT NULL, "
-            + AgendaContract.Archivo.COLUMN_ARCHIVO + " TEXT NOT NULL, FOREIGN KEY ( "
-            + AgendaContract.Archivo.COLUMN_ID_TAREA+ " ) REFERENCES "
-            + AgendaContract.Tarea.TABLE_NAME + " ("
-            + AgendaContract.Tarea._ID + ") ON DELETE CASCADE, FOREIGN KEY ( "
-            + AgendaContract.Archivo.COLUMN_ID_PROFESOR+ " ) REFERENCES "
-            + AgendaContract.Profesor.TABLE_NAME + " ("
-            + AgendaContract.Profesor._ID + ") ON DELETE CASCADE, FOREIGN KEY ( "
-            + AgendaContract.Archivo.COLUMN_ID_EXAMEN+ " ) REFERENCES "
-            + AgendaContract.Examen.TABLE_NAME + " ("
-            + AgendaContract.Examen._ID + ") ON DELETE CASCADE)";
-
-    private static final String SQL_DELETE_ARCHIVO
-            = "DROP TABLE IF EXISTS " + AgendaContract.Archivo.TABLE_NAME;
-
     private static final String SQL_INSERT_HORARIO
             = "INSERT INTO "
             + AgendaContract.Horario.TABLE_NAME + "(" +AgendaContract.Horario._ID + ", " + AgendaContract.Horario.COLUMN_NAME + ") VALUES (1,'Horario predeterminado')";
@@ -304,7 +266,6 @@ public class BD {
         public void onCreate(SQLiteDatabase bD){
             try {
                 bD.execSQL(SQL_CREATE_AGENDA);
-                bD.execSQL(SQL_CREATE_NOTIFICACION);
                 bD.execSQL(SQL_CREATE_RECORDATORIO);
                 bD.execSQL(SQL_CREATE_PROFESOR);
                 bD.execSQL(SQL_CREATE_MATERIA);
@@ -315,8 +276,6 @@ public class BD {
                 bD.execSQL(SQL_CREATE_EXAMEN);
                 bD.execSQL(SQL_CREATE_PERIODO);
                 bD.execSQL(SQL_CREATE_NOTA_EXAMEN);
-                bD.execSQL(SQL_CREATE_ARCHIVO);
-                bD.execSQL(SQL_CREATE_ESTUDIO);
                 bD.execSQL(SQL_INSERT_HORARIO);
                 bD.execSQL(SQL_INSERT_AGENDA);
                 bD.execSQL(SQL_INSERT_TIPO_EXAMEN);
@@ -332,7 +291,6 @@ public class BD {
         }
         public void onUpgrade(SQLiteDatabase bD, int oldVersion, int newVersion){
             bD.execSQL(SQL_DELETE_AGENDA);
-            bD.execSQL(SQL_DELETE_NOTIFICACION);
             bD.execSQL(SQL_DELETE_RECORDATORIO);
             bD.execSQL(SQL_DELETE_PROFESOR);
             bD.execSQL(SQL_DELETE_MATERIA);
@@ -343,8 +301,6 @@ public class BD {
             bD.execSQL(SQL_DELETE_EXAMEN);
             bD.execSQL(SQL_DELETE_PERIODO);
             bD.execSQL(SQL_DELETE_NOTA_EXAMEN);
-            bD.execSQL(SQL_DELETE_ARCHIVO);
-            bD.execSQL(SQL_DELETE_ESTUDIO);
             onCreate(bD);
         }
         public void onDowngrade(SQLiteDatabase bD, int oldVersion, int newVersion) {
@@ -374,6 +330,36 @@ public class BD {
             mensaje = "Error al insertar la agenda";
         return mensaje;
     }
+
+    public String insertar(HorarioViewModel horario){
+        String mensaje = "Horario guardado";
+        long nuevaFilaId = 0;
+
+        ContentValues horarios = new ContentValues();
+        horarios.put(AgendaContract.Horario.COLUMN_NAME, horario.getNombreHorario());
+
+        nuevaFilaId = bD.insert(AgendaContract.Horario.TABLE_NAME,null,horarios);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar el horario";
+        return mensaje;
+    }
+
+    public String insertar(TipoExamenViewModel tipoExamen){
+        String mensaje = "Tipo de examen guardado";
+        long nuevaFilaId = 0;
+
+        ContentValues tipos = new ContentValues();
+        tipos.put(AgendaContract.TipoExamen.COLUMN_NAME, tipoExamen.getNombreTipoExamen());
+
+        nuevaFilaId = bD.insert(AgendaContract.TipoExamen.TABLE_NAME,null,tipos);
+
+        if (nuevaFilaId == -1 || nuevaFilaId == 0)
+            mensaje = "Error al insertar el tipo de examen";
+        return mensaje;
+    }
+
+
 
     public Boolean verificarExistenciaDeAgenda(){
         try
@@ -1815,5 +1801,126 @@ public class BD {
         return mensaje;
     }
 
+    public String llenarBD(){
 
+        final String[] nombreAgenda = {"Agenda predeterminada"};
+
+        final String[] nombreHorario = {"Horario predeterminado"};
+
+        final String[] tituloPeriodo = {"CICLO I-2022", "CICLO II-2022"};
+        final String[] inicioPeriodo = {"2022-02-20", "2022-06-20"};
+        final String[] finPeriodo = {"2022-07-20", "2022-12-20"};
+
+        final String[] nombreProfesor = {"Oscar", "Edwin", "Braian", "Gonzalo"};
+        final String[] apellidoProfesor = {"Elías", "Chávez", "Pineda", "Ortiz"};
+        final String[] telefonoProfesor = {"22224444", "55552222", "77778888", "79460607"};
+        final String[] correoProfesor = {"em19009@ues.edu.sv","cz18012@ues.edu.sv","pr17013@ues.edu.sv", "om18026@ues.edu.sv"};
+
+        final int[] idProfesorMateria = {1, 2, 3, 4, 1, 2};
+        final int[] idPeriodoMateria = {1, 1, 1, 2, 2, 2};
+        final String[] nombreMateria = {"Matematica I", "Introduccion a la informatica", "Psicologia", "Fisica I", "Matematica II", "Programacion I"};
+        final String[] aulaMateria = {"B13","C12","A23","D12","B15","B22"};
+
+        final String[] nombreTipoExamen = {"Examen parcial", "Examen corto", "Evaluado de laboratorio", "Examen oral", "Examen escrito", "Proyecto/Tarea"};
+
+        final int[] idHorarioClase = {1, 1};
+        final int[] idMateriaClase = {1, 3};
+        final int[] idProfesorClase = {4 , 2};
+        final String[] aulaClase = {"B13", "C12"};
+        final String[] diaClase = {"Lunes", "Jueves"};
+        final String[] inicioClase = {"8:05 AM", "3:05 PM"};
+        final String[] finClase = {"9:45 AM", "4:45 PM"};
+        final String[] descripcionClase = {"Clase de matematica I en la mañana", "Clase de Psicologia en la tarde"};
+
+        abrir();
+        bD.execSQL(SQL_DELETE_AGENDA);
+        bD.execSQL(SQL_DELETE_RECORDATORIO);
+        bD.execSQL(SQL_DELETE_PROFESOR);
+        bD.execSQL(SQL_DELETE_MATERIA);
+        bD.execSQL(SQL_DELETE_HORARIO);
+        bD.execSQL(SQL_DELETE_CLASE);
+        bD.execSQL(SQL_DELETE_TAREA);
+        bD.execSQL(SQL_DELETE_TIPO_EXAMEN);
+        bD.execSQL(SQL_DELETE_EXAMEN);
+        bD.execSQL(SQL_DELETE_PERIODO);
+        bD.execSQL(SQL_DELETE_NOTA_EXAMEN);
+        bD.execSQL(SQL_CREATE_AGENDA);
+        bD.execSQL(SQL_CREATE_RECORDATORIO);
+        bD.execSQL(SQL_CREATE_PROFESOR);
+        bD.execSQL(SQL_CREATE_MATERIA);
+        bD.execSQL(SQL_CREATE_HORARIO);
+        bD.execSQL(SQL_CREATE_CLASE);
+        bD.execSQL(SQL_CREATE_TAREA);
+        bD.execSQL(SQL_CREATE_TIPO_EXAMEN);
+        bD.execSQL(SQL_CREATE_EXAMEN);
+        bD.execSQL(SQL_CREATE_PERIODO);
+        bD.execSQL(SQL_CREATE_NOTA_EXAMEN);
+
+        Agenda agenda = new Agenda();
+        agenda.setNombreAgenda(nombreAgenda[0]);
+        insertar(agenda);
+
+        HorarioViewModel horario = new HorarioViewModel();
+        horario.setNombreHorario(nombreHorario[0]);
+        insertar(horario);
+
+        PeriodoViewModel periodo = new PeriodoViewModel();
+        for (int i = 0; i < 2; i++) {
+            periodo.setTituloPeriodo(tituloPeriodo[i]);
+            periodo.setInicioPeriodo(inicioPeriodo[i]);
+            periodo.setFinPeriodo(finPeriodo[i]);
+            insertar(periodo);
+        }
+
+        ProfesorViewModel profesor = new ProfesorViewModel();
+        for (int i = 0; i < 4; i++) {
+            profesor.setNombreProfesor(nombreProfesor[i]);
+            profesor.setApellidoProfesor(apellidoProfesor[i]);
+            profesor.setTelefonoProfesor(telefonoProfesor[i]);
+            profesor.setCorreoProfesor(correoProfesor[i]);
+            insertar(profesor);
+        }
+
+        MateriaViewModel materia = new MateriaViewModel();
+        for (int i = 0; i< 6; i++){
+            materia.setIdProfesor(idProfesorMateria[i]);
+            materia.setIdPeriodo(idPeriodoMateria[i]);
+            materia.setNombreMateria(nombreMateria[i]);
+            materia.setAulaMateria(aulaMateria[i]);
+            insertar(materia);
+        }
+
+        TipoExamenViewModel tipoExamen = new TipoExamenViewModel();
+        for (int i = 0; i< 6; i++){
+            tipoExamen.setNombreTipoExamen(nombreTipoExamen[i]);
+            insertar(tipoExamen);
+        }
+
+        ClaseViewModel clase = new ClaseViewModel();
+        for (int i = 0; i < 2; i++){
+            clase.setIdHorario(idHorarioClase[i]);
+            clase.setIdMateria(idMateriaClase[i]);
+            clase.setIdProfesor(idProfesorClase[i]);
+            clase.setAulaClase(aulaClase[i]);
+            clase.setDiaClase(diaClase[i]);
+            clase.setInicioClase(inicioClase[i]);
+            clase.setFinClase(finClase[i]);
+            clase.setDescripcionClase(descripcionClase[i]);
+            insertar(clase);
+        }
+        cerrar();
+        return "Guardado correctamente";
+    }
+
+    private Data guardarData(String titulo, String detalle, String ticker){
+        return new Data.Builder()
+                .putString("TITULO", titulo)
+                .putString("DETALLE", detalle)
+                .putString("TICKER", ticker).build();
+    }
+
+    private void eliminarNotificacion(String tag){
+        WorkManager.getInstance(context.getApplicationContext()).cancelAllWorkByTag(tag);
+        Toast.makeText(context.getApplicationContext(), "Notificacion eliminada", Toast.LENGTH_SHORT).show();
+    }
 }

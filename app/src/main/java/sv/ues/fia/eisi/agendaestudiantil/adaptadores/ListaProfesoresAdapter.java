@@ -36,7 +36,8 @@ public class ListaProfesoresAdapter extends RecyclerView.Adapter<ListaProfesores
 
     @Override
     public void onBindViewHolder(@NonNull ProfesorViewHolder holder, int position) {
-        Picasso.get().load(Uri.parse(listaProfesor.get(position).getImagenProfesor())).fit().into(holder.imgProfesorView);
+        if (listaProfesor.get(position).getImagenProfesor() != null)
+            Picasso.get().load(Uri.parse(listaProfesor.get(position).getImagenProfesor())).fit().into(holder.imgProfesorView);
         //holder.imgProfesorView.setImageURI(Uri.parse(listaProfesor.get(position).getImagenProfesor()));
         holder.lblNombreView.setText(listaProfesor.get(position).getNombreProfesor() + " " + listaProfesor.get(position).getApellidoProfesor());
     }

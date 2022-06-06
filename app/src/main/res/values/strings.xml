@@ -124,4 +124,5 @@
     <string name="mensaje">Mensaje</string>
     <string name="correo_a_enviar">Correo</string>}
     <string name="ver_pdf">Ver eventos diarios</string>
+    <string name="llenar_base_de_datos">Llenar base de datos</string>
 </resources>

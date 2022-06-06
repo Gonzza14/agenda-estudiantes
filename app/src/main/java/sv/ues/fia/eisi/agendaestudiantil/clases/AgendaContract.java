@@ -11,14 +11,6 @@ public final class AgendaContract {
         public static final String COLUMN_NAME = "nombre";
     }
 
-    public static class Notificacion implements BaseColumns{
-        public static final String TABLE_NAME = "notificacion";
-        public static final String COLUMN_ID_AGENDA = "id_agenda";
-        public static final String COLUMN_DIA = "dia";
-        public static final String COLUMN_NOTIFICACION = "con_notificacion";
-        public static final String COLUMN_HORA = "hora";
-    }
-
     public static class Recordatorio implements BaseColumns{
         public static final String TABLE_NAME = "recordatorio";
         public static final String COLUMN_NAME = "nombre";
@@ -108,26 +100,5 @@ public final class AgendaContract {
         public static final String COLUMN_CALIFICACION = "calificacion";
         public static final String COLUMN_PORCENTAJE = "porcentaje";
         public static final String COLUMN_DESCRIPCION = "descripcion";
-    }
-
-    public static class Estudio implements BaseColumns{
-        public static final String TABLE_NAME = "estudio";
-        public static final String COLUMN_DIA = "dia";
-        public static final String COLUMN_INICIO= "inicio";
-        public static final String COLUMN_FIN = "fin";
-        public static final String COLUMN_DESCRIPCION = "descripcion";
-    }
-
-    public static class Archivo implements BaseColumns{
-        public static final String TABLE_NAME = "archivo";
-        public static final String COLUMN_ID_TAREA = "id_tarea";
-        public static final String COLUMN_ID_PROFESOR = "id_profesor";
-        public static final String COLUMN_ID_EXAMEN = "id_examen";
-        public static final String COLUMN_NAME = "nombre";
-        public static final String COLUMN_EXTENSION = "extension";
-        public static final String COLUMN_ARCHIVO = "archivo";
-        public static final String COLUMN_TAMANIO = "tamanio";
-        public static final String COLUMN_TIPO_ARCHIVO = "tipo_archivo";
-
     }
 }

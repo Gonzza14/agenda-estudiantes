@@ -6,4 +6,10 @@
         android:orderInCategory="100"
         android:title="@string/logout"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/llenar_bd"
+        android:orderInCategory="100"
+        android:title="@string/llenar_base_de_datos"
+        app:showAsAction="never" />
 </menu>

@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel;
 
 public class HorarioViewModel extends ViewModel {
     private int idHorario;
-    private int nombreHorario;
+    private String nombreHorario;
 
     public HorarioViewModel() {
     }
 
-    public HorarioViewModel(int idHorario, int nombreHorario) {
+    public HorarioViewModel(int idHorario, String nombreHorario) {
         this.idHorario = idHorario;
         this.nombreHorario = nombreHorario;
     }
@@ -22,11 +22,11 @@ public class HorarioViewModel extends ViewModel {
         this.idHorario = idHorario;
     }
 
-    public int getNombreHorario() {
+    public String getNombreHorario() {
         return nombreHorario;
     }
 
-    public void setNombreHorario(int nombreHorario) {
+    public void setNombreHorario(String nombreHorario) {
         this.nombreHorario = nombreHorario;
     }
 }
